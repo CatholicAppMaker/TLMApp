@@ -11,6 +11,7 @@ struct MassCatalog: Codable, Sendable {
     let glossaryEntries: [GlossaryEntry]
     let pronunciationGuides: [PronunciationGuide]
     let participationGuides: [ParticipationGuide]
+    let chantGuides: [ChantGuide]
 }
 
 struct SourceReference: Codable, Identifiable, Hashable, Sendable {
@@ -30,6 +31,42 @@ struct CoverageWindow: Codable, Hashable, Sendable {
     let startDate: String
     let endDate: String
     let description: String
+}
+
+enum MassForm: String, Codable, CaseIterable, Identifiable, Hashable, Sendable {
+    case low
+    case sung
+
+    var id: Self {
+        self
+    }
+
+    var title: String {
+        switch self {
+        case .low:
+            "Low Mass"
+        case .sung:
+            "Sung Mass"
+        }
+    }
+
+    var subtitle: String {
+        switch self {
+        case .low:
+            "Quieter follow-along with silence and server responses."
+        case .sung:
+            "Use chant-aware guidance for sung Ordinary parts and ceremonial pacing."
+        }
+    }
+
+    var libraryBadge: String {
+        switch self {
+        case .low:
+            "Low"
+        case .sung:
+            "Sung"
+        }
+    }
 }
 
 enum MassPhase: String, Codable, CaseIterable, Hashable, Sendable {
@@ -58,6 +95,38 @@ enum MassPhase: String, Codable, CaseIterable, Hashable, Sendable {
     }
 }
 
+struct MassFormProfile: Codable, Hashable, Sendable {
+    let massForm: MassForm
+    let summary: String?
+    let liveNote: String?
+    let participationNote: String?
+    let gestureCues: [GestureCue]?
+    let sourceIDs: [String]?
+    let chantGuideIDs: [String]?
+
+    var profileSourceIDs: [String] {
+        sourceIDs ?? []
+    }
+
+    var resolvedGestureCues: [GestureCue] {
+        gestureCues ?? []
+    }
+
+    var resolvedChantGuideIDs: [String] {
+        chantGuideIDs ?? []
+    }
+
+    var searchableText: String {
+        let pieces =
+            [summary ?? "", liveNote ?? "", participationNote ?? ""]
+                + profileSourceIDs
+                + resolvedChantGuideIDs
+                + resolvedGestureCues.flatMap { [$0.label, $0.detail] }
+
+        return pieces.joined(separator: " ").lowercased()
+    }
+}
+
 struct MassPart: Codable, Identifiable, Hashable, Sendable {
     let id: String
     let order: Int
@@ -73,6 +142,7 @@ struct MassPart: Codable, Identifiable, Hashable, Sendable {
     let sourceIDs: [String]?
     let glossaryIDs: [String]?
     let pronunciationIDs: [String]?
+    let formProfiles: [MassFormProfile]?
 
     var directSourceIDs: [String] {
         sourceIDs ?? []
@@ -88,6 +158,10 @@ struct MassPart: Codable, Identifiable, Hashable, Sendable {
 
     var alternateSearchTerms: [String] {
         searchAliases ?? []
+    }
+
+    func profile(for massForm: MassForm) -> MassFormProfile? {
+        formProfiles?.first(where: { $0.massForm == massForm })
     }
 
     var searchableText: String {
@@ -106,6 +180,7 @@ struct MassPart: Codable, Identifiable, Hashable, Sendable {
                 + gestureCues.flatMap { [$0.label, $0.detail] }
                 + textBlocks.flatMap { [$0.speaker, $0.latin, $0.english, $0.rubric ?? ""] }
                 + explanationNotes.flatMap { [$0.title, $0.body, $0.sourceID ?? ""] }
+                + (formProfiles ?? []).map(\.searchableText)
                 + glossaryEntries.flatMap {
                     [$0.term, $0.definition] + $0.keywords + $0.relatedTerms + ($0.searchAliases ?? [])
                 }
@@ -163,6 +238,11 @@ struct CelebrationSection: Codable, Identifiable, Hashable, Sendable {
     let sourceIDs: [String]
     let glossaryIDs: [String]
     let pronunciationIDs: [String]
+    let formProfiles: [MassFormProfile]?
+
+    func profile(for massForm: MassForm) -> MassFormProfile? {
+        formProfiles?.first(where: { $0.massForm == massForm })
+    }
 }
 
 struct LiturgicalDateIndex: Codable, Hashable, Identifiable, Sendable {
@@ -207,8 +287,26 @@ struct PronunciationGuide: Codable, Identifiable, Hashable, Sendable {
     }
 }
 
+enum ParticipationGuideKind: String, Codable, CaseIterable, Hashable, Sendable {
+    case orientation
+    case changes
+    case participation
+
+    var title: String {
+        switch self {
+        case .orientation:
+            "Start Here"
+        case .changes:
+            "What Changes"
+        case .participation:
+            "Participation"
+        }
+    }
+}
+
 struct ParticipationGuide: Codable, Identifiable, Hashable, Sendable {
     let id: String
+    let kind: ParticipationGuideKind
     let title: String
     let body: String
     let keywords: [String]
@@ -216,7 +314,23 @@ struct ParticipationGuide: Codable, Identifiable, Hashable, Sendable {
     let sourceIDs: [String]
 
     var searchableText: String {
-        ([title, body] + keywords + (searchAliases ?? []))
+        ([title, body, kind.title] + keywords + (searchAliases ?? []))
+            .joined(separator: " ")
+            .lowercased()
+    }
+}
+
+struct ChantGuide: Codable, Identifiable, Hashable, Sendable {
+    let id: String
+    let title: String
+    let summary: String
+    let body: String
+    let keywords: [String]
+    let searchAliases: [String]?
+    let sourceIDs: [String]
+
+    var searchableText: String {
+        ([title, summary, body] + keywords + (searchAliases ?? []))
             .joined(separator: " ")
             .lowercased()
     }
@@ -233,54 +347,89 @@ struct ResolvedMassPart: Identifiable, Hashable, Sendable {
     let textBlocks: [TextBlock]
     let explanationNotes: [ExplanationNote]
     let liveNote: String?
+    let participationNote: String?
     let searchAliases: [String]
     let sourceIDs: [String]
     let glossaryIDs: [String]
     let pronunciationIDs: [String]
+    let chantGuideIDs: [String]
     let celebrationID: String?
     let celebrationTitle: String?
     let isProper: Bool
+    let massForm: MassForm
 
-    init(part: MassPart) {
+    init(part: MassPart, massForm: MassForm) {
+        let profile = part.profile(for: massForm)
         id = part.id
         order = part.order
         phase = part.phase
         title = part.title
-        summary = part.summary
+        summary = profile?.summary ?? part.summary
         tags = part.tags
-        gestureCues = part.gestureCues
+        gestureCues = Array(Set(part.gestureCues + (profile?.resolvedGestureCues ?? []))).sorted {
+            $0.id < $1.id
+        }
         textBlocks = part.textBlocks
         explanationNotes = part.explanationNotes
-        liveNote = part.liveNote
+        liveNote = profile?.liveNote ?? part.liveNote
+        participationNote = profile?.participationNote
         searchAliases = part.alternateSearchTerms
-        sourceIDs = part.directSourceIDs
+        sourceIDs = Array(Set(part.directSourceIDs + (profile?.profileSourceIDs ?? []))).sorted()
         glossaryIDs = part.glossaryReferenceIDs
         pronunciationIDs = part.pronunciationReferenceIDs
+        chantGuideIDs = profile?.resolvedChantGuideIDs ?? []
         celebrationID = nil
         celebrationTitle = nil
         isProper = false
+        self.massForm = massForm
     }
 
-    init(basePart: MassPart, properSection: CelebrationSection, celebration: Celebration) {
+    init(basePart: MassPart, properSection: CelebrationSection, celebration: Celebration, massForm: MassForm) {
+        let baseProfile = basePart.profile(for: massForm)
+        let properProfile = properSection.profile(for: massForm)
+
         id = basePart.id
         order = basePart.order
         phase = basePart.phase
         title = properSection.title
-        summary = properSection.summary
+        summary = properProfile?.summary ?? properSection.summary
         tags = Array(Set(basePart.tags + properSection.tags)).sorted()
-        gestureCues = properSection.gestureCues
+        gestureCues = Array(
+            Set(
+                properSection.gestureCues
+                    + (baseProfile?.resolvedGestureCues ?? [])
+                    + (properProfile?.resolvedGestureCues ?? [])
+            )
+        ).sorted { $0.id < $1.id }
         textBlocks = properSection.textBlocks
         explanationNotes = properSection.explanationNotes
-        liveNote = properSection.liveNote ?? basePart.liveNote
+        liveNote = properProfile?.liveNote ?? properSection.liveNote ?? baseProfile?.liveNote ?? basePart.liveNote
+        participationNote = properProfile?.participationNote ?? baseProfile?.participationNote
         searchAliases = Array(
             Set(basePart.alternateSearchTerms + (properSection.searchAliases ?? []))
         ).sorted()
-        sourceIDs = Array(Set(basePart.directSourceIDs + properSection.sourceIDs + celebration.sourceIDs)).sorted()
-        glossaryIDs = Array(Set(basePart.glossaryReferenceIDs + properSection.glossaryIDs)).sorted()
-        pronunciationIDs = Array(Set(basePart.pronunciationReferenceIDs + properSection.pronunciationIDs)).sorted()
+        sourceIDs = Array(
+            Set(
+                basePart.directSourceIDs
+                    + properSection.sourceIDs
+                    + celebration.sourceIDs
+                    + (baseProfile?.profileSourceIDs ?? [])
+                    + (properProfile?.profileSourceIDs ?? [])
+            )
+        ).sorted()
+        glossaryIDs = Array(
+            Set(basePart.glossaryReferenceIDs + properSection.glossaryIDs)
+        ).sorted()
+        pronunciationIDs = Array(
+            Set(basePart.pronunciationReferenceIDs + properSection.pronunciationIDs)
+        ).sorted()
+        chantGuideIDs = Array(
+            Set((baseProfile?.resolvedChantGuideIDs ?? []) + (properProfile?.resolvedChantGuideIDs ?? []))
+        ).sorted()
         celebrationID = celebration.id
         celebrationTitle = celebration.title
         isProper = true
+        self.massForm = massForm
     }
 
     var sourceReferenceIDs: [String] {
@@ -288,24 +437,37 @@ struct ResolvedMassPart: Identifiable, Hashable, Sendable {
         return Array(Set(sourceIDs + noteSourceIDs)).sorted()
     }
 
+    var libraryCategoryTitle: String {
+        isProper ? "Proper" : "Ordinary"
+    }
+
     func searchableText(
         glossaryEntries: [GlossaryEntry],
         pronunciationGuides: [PronunciationGuide]
     ) -> String {
         let pieces =
-            [title, summary, celebrationTitle ?? "", liveNote ?? "", phase.title]
-                + tags
-                + searchAliases
-                + sourceReferenceIDs
-                + gestureCues.flatMap { [$0.label, $0.detail] }
-                + textBlocks.flatMap { [$0.speaker, $0.latin, $0.english, $0.rubric ?? ""] }
-                + explanationNotes.flatMap { [$0.title, $0.body, $0.sourceID ?? ""] }
-                + glossaryEntries.flatMap {
-                    [$0.term, $0.definition] + $0.keywords + $0.relatedTerms + ($0.searchAliases ?? [])
-                }
-                + pronunciationGuides.flatMap {
-                    [$0.title, $0.latin, $0.phonetic, $0.note] + $0.keywords + ($0.searchAliases ?? [])
-                }
+            [
+                title,
+                summary,
+                celebrationTitle ?? "",
+                liveNote ?? "",
+                participationNote ?? "",
+                phase.title,
+                massForm.title
+            ]
+            + tags
+            + searchAliases
+            + sourceReferenceIDs
+            + chantGuideIDs
+            + gestureCues.flatMap { [$0.label, $0.detail] }
+            + textBlocks.flatMap { [$0.speaker, $0.latin, $0.english, $0.rubric ?? ""] }
+            + explanationNotes.flatMap { [$0.title, $0.body, $0.sourceID ?? ""] }
+            + glossaryEntries.flatMap {
+                [$0.term, $0.definition] + $0.keywords + $0.relatedTerms + ($0.searchAliases ?? [])
+            }
+            + pronunciationGuides.flatMap {
+                [$0.title, $0.latin, $0.phonetic, $0.note] + $0.keywords + ($0.searchAliases ?? [])
+            }
 
         return pieces.joined(separator: " ").lowercased()
     }
@@ -315,12 +477,14 @@ enum LearnDestination: Hashable, Sendable {
     case glossary(String)
     case pronunciation(String)
     case participation(String)
+    case chant(String)
 }
 
 enum LearningSearchResult: Identifiable, Hashable, Sendable {
     case glossary(GlossaryEntry)
     case pronunciation(PronunciationGuide)
     case participation(ParticipationGuide)
+    case chant(ChantGuide)
 
     var id: String {
         switch self {
@@ -330,6 +494,8 @@ enum LearningSearchResult: Identifiable, Hashable, Sendable {
             "pronunciation-\(guide.id)"
         case let .participation(guide):
             "participation-\(guide.id)"
+        case let .chant(guide):
+            "chant-\(guide.id)"
         }
     }
 
@@ -340,6 +506,8 @@ enum LearningSearchResult: Identifiable, Hashable, Sendable {
         case let .pronunciation(guide):
             guide.title
         case let .participation(guide):
+            guide.title
+        case let .chant(guide):
             guide.title
         }
     }
@@ -352,6 +520,8 @@ enum LearningSearchResult: Identifiable, Hashable, Sendable {
             guide.note
         case let .participation(guide):
             guide.body
+        case let .chant(guide):
+            guide.summary
         }
     }
 
@@ -362,7 +532,9 @@ enum LearningSearchResult: Identifiable, Hashable, Sendable {
         case .pronunciation:
             "Pronunciation"
         case .participation:
-            "Participation"
+            "Guide"
+        case .chant:
+            "Gregorian Chant"
         }
     }
 
@@ -374,6 +546,8 @@ enum LearningSearchResult: Identifiable, Hashable, Sendable {
             .pronunciation(guide.id)
         case let .participation(guide):
             .participation(guide.id)
+        case let .chant(guide):
+            .chant(guide.id)
         }
     }
 }

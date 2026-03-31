@@ -7,19 +7,31 @@ struct SourcesView: View {
 
     var body: some View {
         ZStack {
-            AppTheme.background.ignoresSafeArea()
+            Rectangle()
+                .fill(AppTheme.backgroundWash)
+                .ignoresSafeArea()
 
             List {
                 if !coverageWindowDateText.isEmpty {
                     Section {
                         VStack(alignment: .leading, spacing: 8) {
                             Text(coverageWindowTitle)
-                                .font(.headline)
+                                .font(.system(.headline, design: .serif))
                                 .foregroundStyle(AppTheme.ink)
 
                             Text(coverageWindowDateText)
                                 .font(.subheadline.weight(.semibold))
                                 .foregroundStyle(AppTheme.burgundy)
+
+                            Text(
+                                """
+                                This app is intentionally bounded. It keeps the Ordinary available everywhere,
+                                while date-specific material is limited to the bundled year and the celebrations
+                                listed below.
+                                """
+                            )
+                            .font(.caption)
+                            .foregroundStyle(AppTheme.mutedInk)
                         }
                         .padding(.vertical, 8)
                         .listRowBackground(AppTheme.surface)
@@ -30,7 +42,7 @@ struct SourcesView: View {
                     ForEach(sources) { source in
                         VStack(alignment: .leading, spacing: 8) {
                             Text(source.title)
-                                .font(.headline)
+                                .font(.system(.headline, design: .serif))
                                 .foregroundStyle(AppTheme.ink)
 
                             Text(source.description)
@@ -70,8 +82,14 @@ struct SourcesView: View {
                 } header: {
                     Text("Bundled Sources")
                 } footer: {
-                    Text("Section-level sources are carried into each part so the app can show where celebration and learning content came from.")
-                        .foregroundStyle(AppTheme.mutedInk)
+                    Text(
+                        """
+                        Section-level sources are carried into each part so the app can show where celebration,
+                        learning, and chant content came from without implying broader coverage than it actually
+                        bundles.
+                        """
+                    )
+                    .foregroundStyle(AppTheme.mutedInk)
                 }
             }
             .scrollContentBackground(.hidden)

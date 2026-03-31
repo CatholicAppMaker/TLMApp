@@ -13,9 +13,10 @@ struct LatinMassCompanionTests {
         #expect(catalog.parts.count == 14)
         #expect(catalog.celebrations.count == 63)
         #expect(catalog.dateIndex.count == 63)
-        #expect(catalog.glossaryEntries.count == 3)
-        #expect(catalog.pronunciationGuides.count == 2)
-        #expect(catalog.participationGuides.count == 2)
+        #expect(catalog.glossaryEntries.count == 5)
+        #expect(catalog.pronunciationGuides.count == 4)
+        #expect(catalog.participationGuides.count == 6)
+        #expect(catalog.chantGuides.count == 3)
     }
 
     @Test
@@ -33,51 +34,51 @@ struct LatinMassCompanionTests {
         let repository = BundleMassContentRepository(bundle: Bundle.main)
         let catalog = try repository.loadCatalog()
         let searchService = LocalMassSearchService()
-        let ordinaryParts = catalog.parts.sorted { $0.order < $1.order }.map(ResolvedMassPart.init(part:))
+        let ordinaryParts = catalog.parts
+            .sorted { $0.order < $1.order }
+            .map { ResolvedMassPart(part: $0, massForm: .low) }
 
-        let collectPart = try #require(catalog.parts.first(where: { $0.id == "collect-readings" }))
+        _ = try #require(catalog.parts.first(where: { $0.id == "collect-readings" }))
         let christmas = try #require(catalog.celebrations.first(where: { $0.id == "christmas" }))
+        let entranceProper = try #require(christmas.properSections.first)
+        let entrancePart = try #require(catalog.parts.first(where: { $0.id == entranceProper.replacesPartID }))
         let christmasProper = ResolvedMassPart(
-            basePart: collectPart,
-            properSection: christmas.properSections[0],
-            celebration: christmas
+            basePart: entrancePart,
+            properSection: entranceProper,
+            celebration: christmas,
+            massForm: .low
         )
         let christmasParts = ordinaryParts.map { part in
             part.id == christmasProper.id ? christmasProper : part
         }
-
-        let ordinaryResults = searchService.search(
-            query: "Et cum spiritu tuo",
-            in: ordinaryParts,
-            glossaryEntries: catalog.glossaryEntries,
-            pronunciationGuides: catalog.pronunciationGuides,
-            participationGuides: catalog.participationGuides
+        let ordinaryResults = bundledSearch(
+            "Et cum spiritu tuo",
+            parts: ordinaryParts,
+            catalog: catalog,
+            searchService: searchService
         )
-        let properResults = searchService.search(
-            query: "nativity",
-            in: christmasParts,
-            glossaryEntries: catalog.glossaryEntries,
-            pronunciationGuides: catalog.pronunciationGuides,
-            participationGuides: catalog.participationGuides
+        let properResults = bundledSearch(
+            "nativity",
+            parts: christmasParts,
+            catalog: catalog,
+            searchService: searchService
         )
-        let explanationResults = searchService.search(
-            query: "day specific shift",
-            in: christmasParts,
-            glossaryEntries: catalog.glossaryEntries,
-            pronunciationGuides: catalog.pronunciationGuides,
-            participationGuides: catalog.participationGuides
+        let explanationResults = bundledSearch(
+            "announces itself",
+            parts: christmasParts,
+            catalog: catalog,
+            searchService: searchService
         )
-        let learningResults = searchService.search(
-            query: "lord i am not worthy",
-            in: christmasParts,
-            glossaryEntries: catalog.glossaryEntries,
-            pronunciationGuides: catalog.pronunciationGuides,
-            participationGuides: catalog.participationGuides
+        let learningResults = bundledSearch(
+            "lord i am not worthy",
+            parts: christmasParts,
+            catalog: catalog,
+            searchService: searchService
         )
 
         #expect(ordinaryResults.parts.contains(where: { $0.id == "collect-readings" }))
-        #expect(properResults.parts.contains(where: { $0.id == "collect-readings" }))
-        #expect(explanationResults.parts.contains(where: { $0.id == "collect-readings" }))
+        #expect(properResults.parts.contains(where: { $0.id == entrancePart.id }))
+        #expect(explanationResults.parts.contains(where: { $0.id == entrancePart.id }))
         #expect(learningResults.learningItems.contains(where: {
             if case let .pronunciation(guide) = $0 {
                 return guide.id == "domine-non-sum-dignus"
@@ -133,4 +134,21 @@ struct LatinMassCompanionTests {
         #expect(store.loadProgress() == nil)
         defaults.removePersistentDomain(forName: suiteName)
     }
+}
+
+private func bundledSearch(
+    _ query: String,
+    parts: [ResolvedMassPart],
+    catalog: MassCatalog,
+    searchService: LocalMassSearchService
+) -> LibrarySearchResults {
+    searchService.search(
+        query: query,
+        in: parts,
+        glossaryEntries: catalog.glossaryEntries,
+        pronunciationGuides: catalog.pronunciationGuides,
+        participationGuides: catalog.participationGuides,
+
+        chantGuides: catalog.chantGuides
+    )
 }

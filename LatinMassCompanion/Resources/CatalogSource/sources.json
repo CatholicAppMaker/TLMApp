@@ -22,6 +22,17 @@
     "coverageNote": "Supports the Ordinary, learning material, and explanatory notes."
   },
   {
+    "id": "chant",
+    "title": "Gregorian chant primers and public-domain chant reference material",
+    "description": "Introductory chant guidance adapted from public-domain liturgical handbooks and chant primers.",
+    "note": "Used for chant learning content and Sung Mass guidance.",
+    "url": null,
+    "category": "chant",
+    "rights": "Public-domain chant reference and editorially adapted explanatory language.",
+    "attribution": "Compiled from public-domain chant primers and traditional liturgical reference material.",
+    "coverageNote": "Supports the text-only chant section and Sung Mass profile guidance."
+  },
+  {
     "id": "calendar-1962",
     "title": "Traditional Roman calendar reference for 2026",
     "description": "Date mapping used to bundle Sundays and major feasts for the supported 2026 coverage window.",

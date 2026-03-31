@@ -13,7 +13,9 @@ struct LibraryView: View {
 
     var body: some View {
         ZStack {
-            AppTheme.background.ignoresSafeArea()
+            Rectangle()
+                .fill(AppTheme.backgroundWash)
+                .ignoresSafeArea()
 
             List {
                 searchSection
@@ -22,7 +24,7 @@ struct LibraryView: View {
                     ContentUnavailableView(
                         "No Results",
                         systemImage: "magnifyingglass",
-                        description: Text("Try a different prayer, response, proper, or section name.")
+                        description: Text("Try a prayer, response, proper, chant topic, or section name.")
                     )
                     .listRowBackground(Color.clear)
                 } else {
@@ -53,6 +55,7 @@ struct LibraryView: View {
                                     LearningLibraryRow(item: item)
                                 }
                                 .buttonStyle(.plain)
+                                .accessibilityIdentifier("library-learning-\(item.id)")
                                 .listRowBackground(AppTheme.surface)
                             }
                         }
@@ -75,10 +78,10 @@ struct LibraryView: View {
         Section {
             VStack(alignment: .leading, spacing: 14) {
                 Text(appModel.selectedCelebrationTitle)
-                    .font(.headline)
+                    .font(.system(.headline, design: .serif))
                     .foregroundStyle(AppTheme.ink)
 
-                Text(appModel.selectedDateTitle)
+                Text("\(appModel.selectedDateTitle) • \(appModel.selectedMassFormTitle)")
                     .font(.subheadline)
                     .foregroundStyle(AppTheme.mutedInk)
 
@@ -93,24 +96,30 @@ struct LibraryView: View {
                 }
                 .pickerStyle(.segmented)
 
-                TextField("Search the selected Mass", text: $searchText)
+                TextField("Search the selected Mass and learning guides", text: $searchText)
                     .textInputAutocapitalization(.words)
                     .disableAutocorrection(true)
                     .padding(.horizontal, 14)
                     .padding(.vertical, 12)
                     .background(
-                        RoundedRectangle(cornerRadius: 10, style: .continuous)
-                            .fill(AppTheme.surface)
+                        RoundedRectangle(cornerRadius: 12, style: .continuous)
+                            .fill(AppTheme.secondarySurface)
                     )
                     .overlay(
-                        RoundedRectangle(cornerRadius: 10, style: .continuous)
+                        RoundedRectangle(cornerRadius: 12, style: .continuous)
                             .stroke(AppTheme.border, lineWidth: 1)
                     )
                     .accessibilityIdentifier("library-search-field")
 
-                Text("Search across the resolved Mass text, bundled propers, and learning material. Learning matches appear in their own section.")
-                    .font(.caption)
-                    .foregroundStyle(AppTheme.mutedInk)
+                Text(
+                    """
+                    Search across the resolved Mass text, bundled propers, glossary terms,
+                    participation guides, pronunciation help, and Gregorian chant notes.
+                    Learning matches appear separately.
+                    """
+                )
+                .font(.caption)
+                .foregroundStyle(AppTheme.mutedInk)
             }
             .padding(.vertical, 8)
             .listRowBackground(Color.clear)
@@ -124,28 +133,31 @@ private struct LibraryRow: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                Text(part.title)
-                    .font(.headline)
-                    .foregroundStyle(AppTheme.ink)
-                    .accessibilityIdentifier("library-row-\(part.id)")
+            HStack(alignment: .top) {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(part.title)
+                        .font(.system(.headline, design: .serif))
+                        .foregroundStyle(AppTheme.ink)
+                        .accessibilityIdentifier("library-row-\(part.id)")
+
+                    Text(part.summary)
+                        .font(.subheadline)
+                        .foregroundStyle(AppTheme.mutedInk)
+                        .lineLimit(2)
+                }
 
                 Spacer()
 
-                Text(part.isProper ? "Proper" : "Ordinary")
-                    .font(.caption.weight(.semibold))
-                    .foregroundStyle(part.isProper ? AppTheme.burgundy : AppTheme.mutedInk)
+                VStack(alignment: .trailing, spacing: 6) {
+                    LibraryBadge(title: part.libraryCategoryTitle, highlighted: part.isProper)
+                    LibraryBadge(title: part.massForm.libraryBadge, highlighted: false)
 
-                if isBookmarked {
-                    Image(systemName: "bookmark.fill")
-                        .foregroundStyle(AppTheme.burgundy)
+                    if isBookmarked {
+                        Image(systemName: "bookmark.fill")
+                            .foregroundStyle(AppTheme.burgundy)
+                    }
                 }
             }
-
-            Text(part.summary)
-                .font(.subheadline)
-                .foregroundStyle(AppTheme.mutedInk)
-                .lineLimit(2)
 
             Text(part.tags.joined(separator: "  •  "))
                 .font(.caption)
@@ -166,24 +178,45 @@ private struct LearningLibraryRow: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                Text(item.title)
-                    .font(.headline)
-                    .foregroundStyle(AppTheme.ink)
+            HStack(alignment: .top) {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(item.title)
+                        .font(.system(.headline, design: .serif))
+                        .foregroundStyle(AppTheme.ink)
+
+                    Text(item.summary)
+                        .font(.subheadline)
+                        .foregroundStyle(AppTheme.mutedInk)
+                        .lineLimit(2)
+                }
 
                 Spacer()
 
-                Text(item.categoryTitle)
-                    .font(.caption.weight(.semibold))
-                    .foregroundStyle(AppTheme.burgundy)
+                LibraryBadge(title: item.categoryTitle, highlighted: true)
             }
-
-            Text(item.summary)
-                .font(.subheadline)
-                .foregroundStyle(AppTheme.mutedInk)
-                .lineLimit(2)
         }
         .padding(.vertical, 6)
+    }
+}
+
+private struct LibraryBadge: View {
+    let title: String
+    let highlighted: Bool
+
+    var body: some View {
+        Text(title)
+            .font(.caption.weight(.semibold))
+            .foregroundStyle(highlighted ? AppTheme.gold : AppTheme.ink)
+            .padding(.horizontal, 8)
+            .padding(.vertical, 5)
+            .background(
+                Capsule(style: .continuous)
+                    .fill(highlighted ? AppTheme.burgundy : AppTheme.secondarySurface)
+            )
+            .overlay(
+                Capsule(style: .continuous)
+                    .stroke(AppTheme.border, lineWidth: highlighted ? 0 : 1)
+            )
     }
 }
 
@@ -194,7 +227,9 @@ private struct LibraryPartDetailView: View {
 
     var body: some View {
         ZStack {
-            AppTheme.background.ignoresSafeArea()
+            Rectangle()
+                .fill(AppTheme.backgroundWash)
+                .ignoresSafeArea()
 
             MassPartDetailView(
                 part: part,
@@ -205,6 +240,7 @@ private struct LibraryPartDetailView: View {
                 sourceReferences: appModel.sourceReferences(for: part),
                 glossaryEntries: part.glossaryIDs.compactMap(appModel.glossaryEntry(withID:)),
                 pronunciationGuides: part.pronunciationIDs.compactMap(appModel.pronunciationGuide(withID:)),
+                chantGuides: appModel.chantGuides(for: part),
                 onToggleBookmark: {
                     appModel.toggleBookmark(for: part)
                 },

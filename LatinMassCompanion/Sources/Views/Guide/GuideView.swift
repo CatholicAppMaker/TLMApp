@@ -13,7 +13,9 @@ struct GuideView: View {
 
     var body: some View {
         ZStack {
-            AppTheme.background.ignoresSafeArea()
+            Rectangle()
+                .fill(AppTheme.backgroundWash)
+                .ignoresSafeArea()
 
             if let errorMessage = appModel.errorMessage {
                 ContentUnavailableView(
@@ -31,6 +33,7 @@ struct GuideView: View {
                     sourceReferences: appModel.sourceReferences(for: part),
                     glossaryEntries: part.glossaryIDs.compactMap(appModel.glossaryEntry(withID:)),
                     pronunciationGuides: part.pronunciationIDs.compactMap(appModel.pronunciationGuide(withID:)),
+                    chantGuides: appModel.chantGuides(for: part),
                     onToggleBookmark: {
                         appModel.toggleBookmark(for: part)
                     },
@@ -62,6 +65,9 @@ struct GuideView: View {
         }
         .onAppear(perform: syncSelection)
         .onChange(of: appModel.selectedDateKey) { _, _ in
+            syncSelection()
+        }
+        .onChange(of: appModel.selectedMassForm) { _, _ in
             syncSelection()
         }
         .onChange(of: selectedPartID) { _, _ in

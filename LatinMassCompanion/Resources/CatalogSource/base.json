@@ -1,10 +1,10 @@
 {
   "title": "Traditional Latin Mass Companion",
-  "subtitle": "Offline companion for the 1962 Low Mass with a bundled 2026 Sunday and feast calendar.",
+  "subtitle": "Offline companion for the 1962 Mass with bundled 2026 Sunday and feast coverage for Low and Sung Mass use.",
   "coverageWindow": {
     "title": "2026 Bundled Sunday and Feast Coverage",
     "startDate": "2026-01-01",
     "endDate": "2026-12-31",
-    "description": "The app bundles Sundays and major feasts for calendar year 2026. Weekdays and uncovered dates still fall back to the fixed Ordinary of the Mass."
+    "description": "The app bundles Sundays and major feasts for calendar year 2026. Weekdays and uncovered dates still fall back to the fixed Ordinary of the Mass without inventing missing propers."
   }
 }

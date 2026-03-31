@@ -1,107 +1,119 @@
 import SwiftUI
 
-private enum LearnCategory: String, CaseIterable, Identifiable {
-    case glossary
-    case pronunciation
-    case participation
-
-    var id: Self {
-        self
-    }
-
-    var title: String {
-        switch self {
-        case .glossary:
-            "Glossary"
-        case .pronunciation:
-            "Pronunciation"
-        case .participation:
-            "Participation"
-        }
-    }
-}
-
 struct LearnView: View {
     let appModel: AppModel
 
-    @State private var selectedCategory: LearnCategory = .glossary
-
     var body: some View {
         ZStack {
-            AppTheme.background.ignoresSafeArea()
+            Rectangle()
+                .fill(AppTheme.backgroundWash)
+                .ignoresSafeArea()
 
             List {
+                introSection
                 focusSection
-                pickerSection
-                contentSection
+                participationSection(kind: .orientation)
+                participationSection(kind: .changes)
+                participationSection(kind: .participation)
+                chantSection
+                pronunciationSection
+                glossarySection
             }
             .scrollContentBackground(.hidden)
         }
         .navigationTitle("Learn")
         .navigationBarTitleDisplayMode(.inline)
-        .onAppear(perform: syncCategoryWithFocus)
-        .onChange(of: appModel.focusedLearningDestination) { _, _ in
-            syncCategoryWithFocus()
-        }
     }
 
-    private var focusSection: some View {
-        Group {
-            if let focusedItem = focusedContent {
-                Section {
-                    VStack(alignment: .leading, spacing: 10) {
-                        Text("From the Guide")
-                            .font(.headline)
-                            .foregroundStyle(AppTheme.ink)
-
-                        focusedItem
-
-                        Button("Clear Highlight") {
-                            appModel.clearLearnFocus()
-                        }
-                        .font(.caption.weight(.semibold))
-                        .foregroundStyle(AppTheme.burgundy)
-                    }
-                    .padding(.vertical, 8)
-                    .listRowBackground(AppTheme.surface)
-                }
-            }
-        }
-    }
-
-    private var pickerSection: some View {
+    private var introSection: some View {
         Section {
-            Picker("Category", selection: $selectedCategory) {
-                ForEach(LearnCategory.allCases) { category in
-                    Text(category.title).tag(category)
-                }
+            VStack(alignment: .leading, spacing: 10) {
+                Text(
+                    """
+                    Use this area to learn the shape of the 1962 Mass,
+                    understand what changes by day, and follow chant or
+                    pronunciation without needing a network connection.
+                    """
+                )
+                .font(.body)
+                .foregroundStyle(AppTheme.mutedInk)
+
+                Text(
+                    """
+                    The goal is practical confidence, not information overload.
+                    You do not need to master every line in order to pray fruitfully.
+                    """
+                )
+                .font(.subheadline)
+                .foregroundStyle(AppTheme.mutedInk)
             }
-            .pickerStyle(.segmented)
-            .listRowBackground(Color.clear)
+            .padding(.vertical, 8)
+            .listRowBackground(AppTheme.surface)
         }
     }
 
     @ViewBuilder
-    private var contentSection: some View {
-        switch selectedCategory {
-        case .glossary:
-            Section {
-                ForEach(appModel.glossaryEntries) { entry in
-                    GlossaryEntryRow(entry: entry)
+    private var focusSection: some View {
+        if let focusedItem = focusedContent {
+            Section("From the Guide") {
+                VStack(alignment: .leading, spacing: 10) {
+                    focusedItem
+
+                    Button("Clear Highlight") {
+                        appModel.clearLearnFocus()
+                    }
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(AppTheme.burgundy)
+                }
+                .padding(.vertical, 8)
+                .listRowBackground(AppTheme.surface)
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func participationSection(kind: ParticipationGuideKind) -> some View {
+        let items = appModel.participationGuides.filter { $0.kind == kind }
+        if !items.isEmpty {
+            Section(kind.title) {
+                ForEach(items) { guide in
+                    ParticipationGuideRow(guide: guide)
                         .listRowBackground(AppTheme.surface)
                 }
             }
-        case .pronunciation:
-            Section {
+        }
+    }
+
+    @ViewBuilder
+    private var chantSection: some View {
+        if !appModel.chantGuides.isEmpty {
+            Section("Gregorian Chant") {
+                ForEach(appModel.chantGuides) { guide in
+                    ChantGuideRow(guide: guide)
+                        .listRowBackground(AppTheme.surface)
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var pronunciationSection: some View {
+        if !appModel.pronunciationGuides.isEmpty {
+            Section("Pronunciation") {
                 ForEach(appModel.pronunciationGuides) { guide in
                     PronunciationGuideRow(guide: guide)
                         .listRowBackground(AppTheme.surface)
                 }
             }
-        case .participation:
-            Section {
-                ForEach(appModel.participationGuides) { guide in
-                    ParticipationGuideRow(guide: guide)
+        }
+    }
+
+    @ViewBuilder
+    private var glossarySection: some View {
+        if !appModel.glossaryEntries.isEmpty {
+            Section("Glossary") {
+                ForEach(appModel.glossaryEntries) { entry in
+                    GlossaryEntryRow(entry: entry)
                         .listRowBackground(AppTheme.surface)
                 }
             }
@@ -122,26 +134,15 @@ struct LearnView: View {
             if let guide = appModel.participationGuide(withID: id) {
                 return AnyView(ParticipationGuideRow(guide: guide))
             }
+        case let .chant(id):
+            if let guide = appModel.chantGuide(withID: id) {
+                return AnyView(ChantGuideRow(guide: guide))
+            }
         case nil:
             return nil
         }
 
         return nil
-    }
-
-    private func syncCategoryWithFocus() {
-        guard let destination = appModel.focusedLearningDestination else {
-            return
-        }
-
-        switch destination {
-        case .glossary:
-            selectedCategory = .glossary
-        case .pronunciation:
-            selectedCategory = .pronunciation
-        case .participation:
-            selectedCategory = .participation
-        }
     }
 }
 
@@ -151,7 +152,7 @@ private struct GlossaryEntryRow: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(entry.term)
-                .font(.headline)
+                .font(.system(.headline, design: .serif))
                 .foregroundStyle(AppTheme.ink)
                 .accessibilityIdentifier("learn-glossary-\(entry.id)")
 
@@ -175,7 +176,7 @@ private struct PronunciationGuideRow: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(guide.title)
-                .font(.headline)
+                .font(.system(.headline, design: .serif))
                 .foregroundStyle(AppTheme.ink)
                 .accessibilityIdentifier("learn-pronunciation-\(guide.id)")
 
@@ -201,9 +202,31 @@ private struct ParticipationGuideRow: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(guide.title)
-                .font(.headline)
+                .font(.system(.headline, design: .serif))
                 .foregroundStyle(AppTheme.ink)
                 .accessibilityIdentifier("learn-participation-\(guide.id)")
+
+            Text(guide.body)
+                .font(.body)
+                .foregroundStyle(AppTheme.mutedInk)
+        }
+        .padding(.vertical, 8)
+    }
+}
+
+private struct ChantGuideRow: View {
+    let guide: ChantGuide
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(guide.title)
+                .font(.system(.headline, design: .serif))
+                .foregroundStyle(AppTheme.ink)
+                .accessibilityIdentifier("learn-chant-\(guide.id)")
+
+            Text(guide.summary)
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(AppTheme.burgundy)
 
             Text(guide.body)
                 .font(.body)

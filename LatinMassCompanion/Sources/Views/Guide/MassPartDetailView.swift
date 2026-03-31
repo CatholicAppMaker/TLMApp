@@ -9,6 +9,7 @@ struct MassPartDetailView: View {
     let sourceReferences: [SourceReference]
     let glossaryEntries: [GlossaryEntry]
     let pronunciationGuides: [PronunciationGuide]
+    let chantGuides: [ChantGuide]
     let onToggleBookmark: () -> Void
     let onJump: (() -> Void)?
     let onOpenLearn: (LearnDestination) -> Void
@@ -51,7 +52,7 @@ struct MassPartDetailView: View {
                     }
                 }
 
-                if !glossaryEntries.isEmpty || !pronunciationGuides.isEmpty {
+                if !glossaryEntries.isEmpty || !pronunciationGuides.isEmpty || !chantGuides.isEmpty {
                     SectionCard(title: "Learn This Section") {
                         VStack(alignment: .leading, spacing: 12) {
                             ForEach(glossaryEntries) { entry in
@@ -63,6 +64,12 @@ struct MassPartDetailView: View {
                             ForEach(pronunciationGuides) { guide in
                                 LearnLinkButton(title: guide.title) {
                                     onOpenLearn(.pronunciation(guide.id))
+                                }
+                            }
+
+                            ForEach(chantGuides) { guide in
+                                LearnLinkButton(title: guide.title) {
+                                    onOpenLearn(.chant(guide.id))
                                 }
                             }
                         }
@@ -140,12 +147,23 @@ private struct OrientationCard: View {
                         systemImage: "list.number",
                         identifier: "guide-position-pill"
                     )
+                    OrientationPill(
+                        title: orientation.massFormTitle,
+                        systemImage: "music.note.house",
+                        identifier: "guide-form-pill"
+                    )
                 }
 
                 if let liveNote = orientation.liveNote {
                     Text(liveNote)
                         .font(.subheadline)
                         .foregroundStyle(AppTheme.mutedInk)
+                }
+
+                if let participationNote = orientation.participationNote {
+                    Text(participationNote)
+                        .font(.subheadline)
+                        .foregroundStyle(AppTheme.burgundy)
                 }
 
                 if let nextPartTitle = orientation.nextPartTitle {
@@ -188,13 +206,39 @@ private struct HeroCard: View {
                         .foregroundStyle(AppTheme.burgundy)
 
                     Text(part.title)
-                        .font(.title2.weight(.semibold))
+                        .font(.system(.title2, design: .serif).weight(.semibold))
                         .foregroundStyle(AppTheme.ink)
                         .accessibilityIdentifier("mass-part-title")
 
                     Text(part.summary)
                         .font(.body)
                         .foregroundStyle(AppTheme.mutedInk)
+
+                    HStack(spacing: 8) {
+                        Text(part.libraryCategoryTitle)
+                            .font(.caption.weight(.semibold))
+                            .foregroundStyle(AppTheme.gold)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 5)
+                            .background(
+                                Capsule(style: .continuous)
+                                    .fill(AppTheme.burgundy)
+                            )
+
+                        Text(part.massForm.title)
+                            .font(.caption.weight(.semibold))
+                            .foregroundStyle(AppTheme.ink)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 5)
+                            .background(
+                                Capsule(style: .continuous)
+                                    .fill(AppTheme.secondarySurface)
+                            )
+                            .overlay(
+                                Capsule(style: .continuous)
+                                    .stroke(AppTheme.border, lineWidth: 1)
+                            )
+                    }
 
                     if let celebrationTitle = part.celebrationTitle {
                         Text(celebrationTitle)
@@ -256,15 +300,7 @@ private struct HeroCard: View {
                     .accessibilityLabel("Open jump list")
             }
         }
-        .padding(18)
-        .background(
-            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .fill(AppTheme.surface)
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .stroke(AppTheme.border, lineWidth: 1)
-        )
+        .prayerbookPanel()
     }
 }
 
@@ -298,20 +334,13 @@ private struct SectionCard<Content: View>: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
             Text(title)
-                .font(.headline)
+                .font(.system(.headline, design: .serif))
                 .foregroundStyle(AppTheme.ink)
 
+            LiturgicalRule()
             content
         }
-        .padding(18)
-        .background(
-            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .fill(AppTheme.surface)
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .stroke(AppTheme.border, lineWidth: 1)
-        )
+        .prayerbookPanel()
     }
 }
 
@@ -327,7 +356,7 @@ private struct GestureCueRow: View {
 
             VStack(alignment: .leading, spacing: 4) {
                 Text(cue.label)
-                    .font(.headline)
+                    .font(.system(.headline, design: .serif))
                     .foregroundStyle(AppTheme.ink)
                 Text(cue.detail)
                     .font(.subheadline)
@@ -361,7 +390,7 @@ private struct TextBlockCard: View {
                 .font(.system(.body, design: .serif))
                 .foregroundStyle(AppTheme.ink)
 
-            Divider()
+            LiturgicalRule()
 
             Text(block.english)
                 .font(.body)
@@ -420,7 +449,7 @@ private struct ExplanationCard: View {
                 HStack(alignment: .top) {
                     VStack(alignment: .leading, spacing: 4) {
                         Text(note.title)
-                            .font(.headline)
+                            .font(.system(.headline, design: .serif))
                             .foregroundStyle(AppTheme.ink)
                         if let sourceID = note.sourceID {
                             Text("Source: \(sourceID)")

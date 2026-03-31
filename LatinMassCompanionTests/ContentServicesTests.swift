@@ -57,15 +57,22 @@ struct ContentServicesTests {
     @Test
     func searchReturnsOrderedPartsForBlankQueries() {
         let service = LocalMassSearchService()
-        let later = ResolvedMassPart(part: TestFixtures.makePart(id: "later", order: 2, title: "Later"))
-        let earlier = ResolvedMassPart(part: TestFixtures.makePart(id: "earlier", order: 1, title: "Earlier"))
+        let later = ResolvedMassPart(
+            part: TestFixtures.makePart(id: "later", order: 2, title: "Later"),
+            massForm: .low
+        )
+        let earlier = ResolvedMassPart(
+            part: TestFixtures.makePart(id: "earlier", order: 1, title: "Earlier"),
+            massForm: .low
+        )
 
         let results = service.search(
             query: "   ",
             in: [later, earlier],
             glossaryEntries: TestFixtures.defaultGlossaryEntries,
             pronunciationGuides: TestFixtures.defaultPronunciationGuides,
-            participationGuides: TestFixtures.defaultParticipationGuides
+            participationGuides: TestFixtures.defaultParticipationGuides,
+            chantGuides: TestFixtures.defaultChantGuides
         )
 
         #expect(results.parts.map(\.id) == ["earlier", "later"])
@@ -92,16 +99,21 @@ struct ContentServicesTests {
         let matchingPart = ResolvedMassPart(
             basePart: basePart,
             properSection: celebration.properSections[0],
-            celebration: celebration
+            celebration: celebration,
+            massForm: .low
         )
-        let otherPart = ResolvedMassPart(part: TestFixtures.makePart(id: "other", order: 1, title: "Offertory"))
+        let otherPart = ResolvedMassPart(
+            part: TestFixtures.makePart(id: "other", order: 1, title: "Offertory"),
+            massForm: .low
+        )
 
         let results = service.search(
             query: "resurrection collect",
             in: [matchingPart, otherPart],
             glossaryEntries: TestFixtures.defaultGlossaryEntries,
             pronunciationGuides: TestFixtures.defaultPronunciationGuides,
-            participationGuides: TestFixtures.defaultParticipationGuides
+            participationGuides: TestFixtures.defaultParticipationGuides,
+            chantGuides: TestFixtures.defaultChantGuides
         )
 
         #expect(results.parts.map(\.id) == ["collect-readings"])
@@ -119,7 +131,8 @@ struct ContentServicesTests {
                 searchAliases: ["domine non sum dignus"],
                 glossaryIDs: ["agnus-dei"],
                 pronunciationIDs: ["domine-non-sum-dignus"]
-            )
+            ),
+            massForm: .low
         )
 
         let results = service.search(
@@ -127,7 +140,8 @@ struct ContentServicesTests {
             in: [communion],
             glossaryEntries: TestFixtures.defaultGlossaryEntries,
             pronunciationGuides: TestFixtures.defaultPronunciationGuides,
-            participationGuides: TestFixtures.defaultParticipationGuides
+            participationGuides: TestFixtures.defaultParticipationGuides,
+            chantGuides: TestFixtures.defaultChantGuides
         )
 
         #expect(results.parts.map(\.id) == ["communion"])
@@ -137,6 +151,91 @@ struct ContentServicesTests {
             }
             return false
         }))
+    }
+
+    @Test
+    func searchReturnsLearningOnlyMatchForParticipationAlias() {
+        let service = LocalMassSearchService()
+        let ordinaryPart = ResolvedMassPart(
+            part: TestFixtures.makePart(
+                id: "canon",
+                order: 1,
+                title: "Canon",
+                summary: "The Eucharistic prayer."
+            ),
+            massForm: .low
+        )
+
+        let results = service.search(
+            query: "first visit",
+            in: [ordinaryPart],
+            glossaryEntries: TestFixtures.defaultGlossaryEntries,
+            pronunciationGuides: TestFixtures.defaultPronunciationGuides,
+            participationGuides: TestFixtures.defaultParticipationGuides,
+            chantGuides: TestFixtures.defaultChantGuides
+        )
+
+        #expect(results.parts.isEmpty)
+        #expect(results.learningItems == [.participation(TestFixtures.defaultParticipationGuides[0])])
+    }
+
+    @Test
+    func searchReturnsChantLearningMatchesSeparatelyFromMassSections() {
+        let service = LocalMassSearchService()
+        let ordinaryPart = ResolvedMassPart(
+            part: TestFixtures.makePart(
+                id: "intro",
+                order: 1,
+                title: "Intro"
+            ),
+            massForm: .low
+        )
+
+        let results = service.search(
+            query: "gregorian chant",
+            in: [ordinaryPart],
+            glossaryEntries: TestFixtures.defaultGlossaryEntries,
+            pronunciationGuides: TestFixtures.defaultPronunciationGuides,
+            participationGuides: TestFixtures.defaultParticipationGuides,
+            chantGuides: TestFixtures.defaultChantGuides
+        )
+
+        #expect(results.parts.isEmpty)
+        #expect(results.learningItems == [.chant(TestFixtures.defaultChantGuides[0])])
+    }
+
+    @Test
+    func searchRequiresAllTokensBeforeMatchingAPart() {
+        let service = LocalMassSearchService()
+        let collect = ResolvedMassPart(
+            part: TestFixtures.makePart(
+                id: "collect-readings",
+                order: 1,
+                title: "Collect",
+                summary: "Opening prayer"
+            ),
+            massForm: .low
+        )
+        let canon = ResolvedMassPart(
+            part: TestFixtures.makePart(
+                id: "canon",
+                order: 2,
+                title: "Canon",
+                summary: "Eucharistic prayer"
+            ),
+            massForm: .low
+        )
+
+        let results = service.search(
+            query: "collect canon",
+            in: [collect, canon],
+            glossaryEntries: TestFixtures.defaultGlossaryEntries,
+            pronunciationGuides: TestFixtures.defaultPronunciationGuides,
+            participationGuides: TestFixtures.defaultParticipationGuides,
+            chantGuides: TestFixtures.defaultChantGuides
+        )
+
+        #expect(results.parts.isEmpty)
     }
 
     @Test

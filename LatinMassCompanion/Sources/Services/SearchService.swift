@@ -6,7 +6,8 @@ protocol SearchService {
         in parts: [ResolvedMassPart],
         glossaryEntries: [GlossaryEntry],
         pronunciationGuides: [PronunciationGuide],
-        participationGuides: [ParticipationGuide]
+        participationGuides: [ParticipationGuide],
+        chantGuides: [ChantGuide]
     ) -> LibrarySearchResults
 }
 
@@ -16,7 +17,8 @@ struct LocalMassSearchService: SearchService {
         in parts: [ResolvedMassPart],
         glossaryEntries: [GlossaryEntry],
         pronunciationGuides: [PronunciationGuide],
-        participationGuides: [ParticipationGuide]
+        participationGuides: [ParticipationGuide],
+        chantGuides: [ChantGuide]
     ) -> LibrarySearchResults {
         let normalizedQuery = Self.normalize(query)
 
@@ -50,6 +52,9 @@ struct LocalMassSearchService: SearchService {
                 + participationGuides
                 .filter { matches(tokens: tokens, text: $0.searchableText) }
                 .map(LearningSearchResult.participation)
+                + chantGuides
+                .filter { matches(tokens: tokens, text: $0.searchableText) }
+                .map(LearningSearchResult.chant)
 
         return LibrarySearchResults(
             parts: matchingParts,

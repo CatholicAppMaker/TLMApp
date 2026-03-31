@@ -4,6 +4,7 @@ struct MassModeProgress: Codable, Hashable, Sendable {
     let dateKey: String
     let sectionID: String
     let celebrationID: String?
+    let massForm: MassForm
     let lastOpenedAt: Date
 }
 

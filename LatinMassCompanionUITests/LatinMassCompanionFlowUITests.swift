@@ -41,7 +41,7 @@ final class LatinMassCompanionFlowUITests: XCTestCase {
         app.launchApp(resetState: true, todayOverride: "2026-03-30")
 
         XCTAssertEqual(app.staticTexts["today-celebration-title"].label, "Ordinary of the Mass")
-        XCTAssertTrue(app.staticTexts["today-availability-summary"].label.contains("Ordinary of the Mass remains fully available"))
+        XCTAssertTrue(app.staticTexts["today-availability-summary"].label.contains("The Ordinary remains fully available"))
     }
 
     func testOutsideCoverageDateShowsOutsideWindowState() {
@@ -105,6 +105,31 @@ final class LatinMassCompanionFlowUITests: XCTestCase {
         XCTAssertEqual(app.staticTexts["guide-phase-pill"].label, "Preparation")
         XCTAssertTrue(app.staticTexts["guide-position-pill"].label.contains("Section 1 of"))
         XCTAssertEqual(app.staticTexts["guide-next-part-title"].label, "Confiteor and Absolution Prayers")
+    }
+
+    func testGuideNavigationReflectsBeginningAndEndBoundaries() {
+        let app = XCUIApplication()
+        app.launchApp(resetState: true, todayOverride: "2026-03-30")
+
+        app.openGuide()
+
+        let previousButton = app.buttons["previous-section"]
+        let nextButton = app.buttons["next-section"]
+
+        XCTAssertFalse(previousButton.isEnabled)
+        XCTAssertTrue(nextButton.isEnabled)
+
+        var stepCount = 0
+        while nextButton.isEnabled, stepCount < 20 {
+            nextButton.tap()
+            stepCount += 1
+        }
+
+        XCTAssertTrue(app.staticTexts["mass-part-title"].waitForExistence(timeout: 5))
+        XCTAssertEqual(app.staticTexts["mass-part-title"].label, "Postcommunion, Dismissal, and Last Gospel")
+        XCTAssertTrue(previousButton.isEnabled)
+        XCTAssertFalse(nextButton.isEnabled)
+        XCTAssertEqual(stepCount, 13)
     }
 
     func testSourcesScreenShowsBundledReferences() {

@@ -11,14 +11,24 @@ struct TodayView: View {
         )
     }
 
+    private var selectedMassFormBinding: Binding<MassForm> {
+        Binding(
+            get: { appModel.selectedMassForm },
+            set: { appModel.selectMassForm($0) }
+        )
+    }
+
     var body: some View {
         ZStack {
-            AppTheme.background.ignoresSafeArea()
+            Rectangle()
+                .fill(AppTheme.backgroundWash)
+                .ignoresSafeArea()
 
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
                     TodayHeader(appModel: appModel)
                     TodayCelebrationCard(appModel: appModel)
+                    TodayMassFormCard(selectedMassFormBinding: selectedMassFormBinding)
                     TodayDateCard(selectedDateBinding: selectedDateBinding)
                     TodayActions(
                         appModel: appModel,
@@ -32,13 +42,17 @@ struct TodayView: View {
                         )
                     }
 
+                    TodayExpectationCard(appModel: appModel)
                     TodayAboutCard(
-                        openLearn: {
-                            appModel.openLearn(.participation("participating-at-low-mass"))
+                        openFirstVisit: {
+                            appModel.openLearn(.participation("first-time-at-the-1962-mass"))
+                            selectedTab = .learn
+                        },
+                        openChangesGuide: {
+                            appModel.openLearn(.participation("what-changes-by-day"))
                             selectedTab = .learn
                         }
                     )
-
                     TodayCoverageCard(appModel: appModel)
                     TodaySourcesCard(
                         coverageWindowTitle: appModel.coverageWindowTitle,
@@ -64,18 +78,34 @@ private struct TodayHeader: View {
     let appModel: AppModel
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: 10) {
             Text(appModel.libraryTitle)
-                .font(.system(size: 30, weight: .semibold))
+                .font(.system(size: 31, weight: .semibold, design: .serif))
                 .foregroundStyle(AppTheme.ink)
 
-            Text(appModel.selectedDateTitle)
-                .font(.headline)
-                .foregroundStyle(AppTheme.burgundy)
-
             Text(appModel.librarySubtitle)
-                .font(.body)
+                .font(.subheadline)
                 .foregroundStyle(AppTheme.mutedInk)
+
+            LiturgicalRule()
+
+            HStack(alignment: .firstTextBaseline) {
+                Text(appModel.selectedDateTitle)
+                    .font(.headline)
+                    .foregroundStyle(AppTheme.burgundy)
+
+                Spacer()
+
+                Text(appModel.selectedMassFormTitle)
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(AppTheme.gold)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 6)
+                    .background(
+                        Capsule(style: .continuous)
+                            .fill(AppTheme.burgundy.opacity(0.92))
+                    )
+            }
         }
     }
 }
@@ -87,7 +117,7 @@ private struct TodayCelebrationCard: View {
         TodayCard {
             VStack(alignment: .leading, spacing: 12) {
                 Text(appModel.selectedCelebrationTitle)
-                    .font(.headline)
+                    .font(.system(.title3, design: .serif).weight(.semibold))
                     .foregroundStyle(AppTheme.ink)
                     .accessibilityIdentifier("today-celebration-title")
 
@@ -99,8 +129,7 @@ private struct TodayCelebrationCard: View {
                     .font(.body)
                     .foregroundStyle(AppTheme.mutedInk)
 
-                Divider()
-                    .overlay(AppTheme.divider)
+                LiturgicalRule()
 
                 Text(appModel.coverageTitle)
                     .font(.subheadline.weight(.semibold))
@@ -116,6 +145,32 @@ private struct TodayCelebrationCard: View {
     }
 }
 
+private struct TodayMassFormCard: View {
+    let selectedMassFormBinding: Binding<MassForm>
+
+    var body: some View {
+        TodayCard {
+            VStack(alignment: .leading, spacing: 14) {
+                Text("Mass Form")
+                    .font(.system(.headline, design: .serif))
+                    .foregroundStyle(AppTheme.ink)
+
+                Picker("Mass Form", selection: selectedMassFormBinding) {
+                    ForEach(MassForm.allCases) { massForm in
+                        Text(massForm.title).tag(massForm)
+                    }
+                }
+                .pickerStyle(.segmented)
+                .accessibilityIdentifier("today-mass-form-picker")
+
+                Text(selectedMassFormBinding.wrappedValue.subtitle)
+                    .font(.subheadline)
+                    .foregroundStyle(AppTheme.mutedInk)
+            }
+        }
+    }
+}
+
 private struct TodayDateCard: View {
     let selectedDateBinding: Binding<Date>
 
@@ -123,7 +178,7 @@ private struct TodayDateCard: View {
         TodayCard {
             VStack(alignment: .leading, spacing: 14) {
                 Text("Select a Date")
-                    .font(.headline)
+                    .font(.system(.headline, design: .serif))
                     .foregroundStyle(AppTheme.ink)
 
                 DatePicker(
@@ -135,7 +190,7 @@ private struct TodayDateCard: View {
                 .labelsHidden()
                 .accessibilityIdentifier("today-date-picker")
 
-                Text("The guide stays offline and only shows bundled propers when the selected date is covered.")
+                Text("The app stays offline after install and only shows bundled propers when the selected date is covered.")
                     .font(.caption)
                     .foregroundStyle(AppTheme.mutedInk)
             }
@@ -150,7 +205,7 @@ private struct TodayCoverageCard: View {
         TodayCard {
             VStack(alignment: .leading, spacing: 12) {
                 Text(appModel.coverageWindowTitle)
-                    .font(.headline)
+                    .font(.system(.headline, design: .serif))
                     .foregroundStyle(AppTheme.ink)
 
                 if !appModel.coverageWindowDateText.isEmpty {
@@ -168,6 +223,34 @@ private struct TodayCoverageCard: View {
                         .font(.caption)
                         .foregroundStyle(AppTheme.mutedInk)
                 }
+            }
+        }
+    }
+}
+
+private struct TodayExpectationCard: View {
+    let appModel: AppModel
+
+    var body: some View {
+        TodayCard {
+            VStack(alignment: .leading, spacing: 12) {
+                Text("What to Expect Today")
+                    .font(.system(.headline, design: .serif))
+                    .foregroundStyle(AppTheme.ink)
+
+                Text(appModel.expectationSummary)
+                    .font(.body)
+                    .foregroundStyle(AppTheme.mutedInk)
+
+                Text(
+                    """
+                    The guide is meant to keep you recollected and oriented.
+                    It is not trying to replace a full hand missal or claim
+                    coverage beyond the bundled year.
+                    """
+                )
+                .font(.subheadline)
+                .foregroundStyle(AppTheme.mutedInk)
             }
         }
     }
@@ -210,7 +293,7 @@ private struct ResumeMassCard: View {
         TodayCard {
             VStack(alignment: .leading, spacing: 12) {
                 Text("Resume Mass")
-                    .font(.headline)
+                    .font(.system(.headline, design: .serif))
                     .foregroundStyle(AppTheme.ink)
 
                 Text(preview.partTitle)
@@ -222,7 +305,7 @@ private struct ResumeMassCard: View {
                     .font(.subheadline)
                     .foregroundStyle(AppTheme.mutedInk)
 
-                Text("Last opened \(preview.lastOpenedText).")
+                Text("\(preview.massFormTitle) • last opened \(preview.lastOpenedText).")
                     .font(.caption)
                     .foregroundStyle(AppTheme.mutedInk)
 
@@ -235,31 +318,44 @@ private struct ResumeMassCard: View {
 }
 
 private struct TodayAboutCard: View {
-    let openLearn: () -> Void
+    let openFirstVisit: () -> Void
+    let openChangesGuide: () -> Void
 
     var body: some View {
         TodayCard {
             VStack(alignment: .leading, spacing: 12) {
-                Text("About This App")
-                    .font(.headline)
+                Text("Start Here")
+                    .font(.system(.headline, design: .serif))
                     .foregroundStyle(AppTheme.ink)
 
                 Text(
-                    "Use Today to pick a date, Guide to follow the Mass section by section, "
-                        + "Library to search the text, and Learn for pronunciation and participation help."
+                    """
+                    This app is a bounded companion for the 1962 Mass.
+                    It is designed to help you follow the fixed Ordinary,
+                    recognize the principal day-specific propers,
+                    and stay calm when you lose your place.
+                    """
                 )
                 .font(.body)
                 .foregroundStyle(AppTheme.mutedInk)
 
                 Text(
-                    "When a selected date has no bundled propers, the app falls back to the fixed Ordinary without guessing missing texts."
+                    """
+                    Posture, spoken responses, and Sung-versus-Low customs can vary locally.
+                    The app aims to orient you without overclaiming certainty
+                    where local practice differs.
+                    """
                 )
                 .font(.body)
                 .foregroundStyle(AppTheme.mutedInk)
 
-                Button("How to Participate", action: openLearn)
+                Button("First Time Here?", action: openFirstVisit)
                     .buttonStyle(TodaySecondaryButtonStyle())
-                    .accessibilityIdentifier("open-participation-guide-button")
+                    .accessibilityIdentifier("open-first-visit-guide-button")
+
+                Button("What Changes by Day?", action: openChangesGuide)
+                    .buttonStyle(TodaySecondaryButtonStyle())
+                    .accessibilityIdentifier("open-what-changes-button")
             }
         }
     }
@@ -274,12 +370,15 @@ private struct TodaySourcesCard: View {
         TodayCard {
             VStack(alignment: .leading, spacing: 10) {
                 Text("Sources and Rights")
-                    .font(.headline)
+                    .font(.system(.headline, design: .serif))
                     .foregroundStyle(AppTheme.ink)
 
                 Text(
-                    "The app keeps its content bundled on-device and shows the source references "
-                        + "that support the guide and learning material."
+                    """
+                    The app keeps its content bundled on-device and surfaces
+                    the source references behind the guide, learning material,
+                    and chant introductions.
+                    """
                 )
                 .font(.body)
                 .foregroundStyle(AppTheme.mutedInk)
@@ -312,15 +411,7 @@ private struct TodayCard<Content: View>: View {
         VStack(alignment: .leading, spacing: 12) {
             content
         }
-        .padding(18)
-        .background(
-            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .fill(AppTheme.surface)
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .stroke(AppTheme.border, lineWidth: 1)
-        )
+        .prayerbookPanel()
     }
 }
 
@@ -329,10 +420,10 @@ private struct TodayPrimaryButtonStyle: ButtonStyle {
         configuration.label
             .frame(maxWidth: .infinity)
             .padding(.vertical, 13)
-            .font(.headline)
+            .font(.system(.headline, design: .serif))
             .foregroundStyle(.white)
             .background(
-                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                RoundedRectangle(cornerRadius: 12, style: .continuous)
                     .fill(AppTheme.burgundy.opacity(configuration.isPressed ? 0.82 : 1.0))
             )
     }
@@ -343,14 +434,14 @@ private struct TodaySecondaryButtonStyle: ButtonStyle {
         configuration.label
             .frame(maxWidth: .infinity)
             .padding(.vertical, 13)
-            .font(.headline)
+            .font(.system(.headline, design: .serif))
             .foregroundStyle(AppTheme.ink)
             .background(
-                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    .fill(AppTheme.surface.opacity(configuration.isPressed ? 0.82 : 1.0))
+                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    .fill(AppTheme.secondarySurface.opacity(configuration.isPressed ? 0.82 : 1.0))
             )
             .overlay(
-                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                RoundedRectangle(cornerRadius: 12, style: .continuous)
                     .stroke(AppTheme.border, lineWidth: 1)
             )
     }
