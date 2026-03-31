@@ -87,6 +87,7 @@ final class SupportTipJar {
     private let storefront: any SupportTipStorefront
 
     private(set) var pricesByID: [String: String] = [:]
+    private(set) var availableProductIDs: Set<String> = []
     private(set) var hasLoadedProducts = false
     private(set) var isLoadingProducts = false
     private(set) var purchaseInFlightID: String?
@@ -118,25 +119,42 @@ final class SupportTipJar {
     }
 
     func loadProductsIfNeeded() async {
-        guard !hasLoadedProducts, !isLoadingProducts else {
+        guard !hasLoadedProducts else {
+            return
+        }
+
+        await reloadProducts()
+    }
+
+    func reloadProducts() async {
+        guard !isLoadingProducts else {
             return
         }
 
         isLoadingProducts = true
         errorMessage = nil
+        statusMessage = nil
 
         do {
             let products = try await storefront.fetchProducts(for: options.map(\.id))
             pricesByID = Dictionary(uniqueKeysWithValues: products.map { ($0.id, $0.displayPrice) })
+            availableProductIDs = Set(products.map(\.id))
             hasLoadedProducts = true
         } catch {
-            errorMessage = "Support tips are unavailable right now."
+            pricesByID = [:]
+            availableProductIDs = []
+            errorMessage = "Support options are unavailable right now. App Store pricing could not be loaded."
         }
 
         isLoadingProducts = false
     }
 
     func purchase(_ option: SupportTipOption) async {
+        guard canPurchase(option) else {
+            errorMessage = "Support options are unavailable right now. App Store pricing could not be loaded."
+            return
+        }
+
         purchaseInFlightID = option.id
         errorMessage = nil
         statusMessage = nil
@@ -161,6 +179,10 @@ final class SupportTipJar {
 
     func displayPrice(for option: SupportTipOption) -> String {
         pricesByID[option.id] ?? option.fallbackDisplayPrice
+    }
+
+    func canPurchase(_ option: SupportTipOption) -> Bool {
+        availableProductIDs.contains(option.id)
     }
 
     func isPurchasing(_ option: SupportTipOption) -> Bool {

@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 77;
+	objectVersion = 63;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -78,7 +78,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		016CDCC37F93480490146446 /* LatinMassCompanion.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = LatinMassCompanion.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		016CDCC37F93480490146446 /* LatinMassCompanion.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LatinMassCompanion.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		063BECFCFAC505A5D82F2DBE /* LatinMassCompanionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatinMassCompanionApp.swift; sourceTree = "<group>"; };
 		09A0AD6B6018FE2C31DC77E0 /* ContentServicesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentServicesTests.swift; sourceTree = "<group>"; };
 		0D4D2AAD25599AE0BFFB03DB /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
@@ -383,6 +383,9 @@
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
+					CF9A5162F55FF25175490B07 = {
+						ProvisioningStyle = Automatic;
+					};
 					DE8CD52575FDDF41A81C62BC = {
 						TestTargetID = CF9A5162F55FF25175490B07;
 					};
@@ -398,7 +401,6 @@
 			);
 			mainGroup = AFAF8F7D6F587DAE51DC7617;
 			minimizedProjectReferenceProxies = 1;
-			preferredProjectObjectVersion = 77;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -682,7 +684,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 22L6MB4Z6V;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Latin Mass";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -705,7 +709,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 22L6MB4Z6V;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Latin Mass";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

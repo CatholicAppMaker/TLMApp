@@ -13,8 +13,9 @@ The app does not include:
 - analytics SDKs
 - advertising SDKs
 - third-party trackers
-- in-app purchases
 - user-generated content uploads
+
+The app may offer optional in-app tips through Apple's In-App Purchase system. Those transactions are processed by Apple. Latin Mass Companion does not use them to create user accounts or to build its own analytics profiles.
 
 ## Data Stored On Device
 
@@ -34,6 +35,8 @@ Latin Mass Companion is intended to function offline after installation. The bun
 We do not sell your data.
 
 We do not share personal data with third parties through the app because the app is not designed to collect that data in the first place.
+
+If you choose to make an optional in-app purchase, Apple may process payment and transaction information under Apple's own terms and privacy policies.
 
 ## Children
 

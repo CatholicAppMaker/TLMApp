@@ -50,11 +50,12 @@ struct LearnView: View {
     private var supportSection: some View {
         LearnSectionCard(
             title: "Support the App",
-            subtitle: "If this companion has helped you, you can leave a simple in-app tip to support its continued development."
+            subtitle: "If this companion has been useful, you can leave a simple in-app tip to support its continued development."
         ) {
             Text(
                 """
                 Tips are entirely optional. They do not unlock content, and the app remains fully usable without them.
+                Pricing appears only when the App Store returns the live product information.
                 """
             )
             .font(.body)
@@ -70,7 +71,7 @@ struct LearnView: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .accessibilityIdentifier("support-tip-loading")
-            } else {
+            } else if supportTipJar.hasLoadedProducts {
                 ForEach(supportTipJar.options) { option in
                     Button {
                         Task {
@@ -102,9 +103,23 @@ struct LearnView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                     }
                     .buttonStyle(LearnOutlineButtonStyle())
-                    .disabled(supportTipJar.purchaseInFlightID != nil)
+                    .disabled(supportTipJar.purchaseInFlightID != nil || !supportTipJar.canPurchase(option))
                     .accessibilityIdentifier("support-tip-\(option.id)")
                     .accessibilityLabel("\(option.title), \(supportTipJar.displayPrice(for: option))")
+                }
+            } else {
+                VStack(alignment: .leading, spacing: 10) {
+                    Text("Support options will appear here once live App Store pricing is available.")
+                        .font(.subheadline)
+                        .foregroundStyle(AppTheme.mutedInk)
+
+                    Button("Try Loading Support Options Again") {
+                        Task {
+                            await supportTipJar.reloadProducts()
+                        }
+                    }
+                    .buttonStyle(LearnOutlineButtonStyle())
+                    .accessibilityIdentifier("support-tip-retry")
                 }
             }
 
@@ -118,7 +133,7 @@ struct LearnView: View {
             if let errorMessage = supportTipJar.errorMessage {
                 Text(errorMessage)
                     .font(.subheadline)
-                    .foregroundStyle(.red.opacity(0.85))
+                    .foregroundStyle(AppTheme.burgundy)
                     .accessibilityIdentifier("support-tip-error")
             }
         }

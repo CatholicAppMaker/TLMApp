@@ -15,6 +15,20 @@ Core launch promise:
 ### Subtitle
 Offline 1962 Mass companion
 
+### Keywords
+Latin Mass, 1962 Missal, Tridentine Mass, Catholic, missal, chant, prayer
+
+### Support URL
+Publish a simple support page that includes:
+- support email
+- scope summary
+- privacy policy link
+
+Suggested page title: `Latin Mass Companion Support`
+
+### Privacy policy URL
+Publish the privacy policy from `docs/privacy-policy.md` at a public URL before submission.
+
 ### Promotional text
 Follow the 1962 Mass with a calm, offline companion built around clear scope, bundled yearly coverage, and practical guidance for both Low and Sung Mass.
 
@@ -37,6 +51,32 @@ What the app does not claim:
 
 Latin Mass Companion is built to help you stay oriented, recollected, and honest about what the app can actually support.
 
+## App Store Connect Answers
+
+### App Privacy
+- Data collection: `No, this app does not collect data from the app for tracking or from users`
+- Notes:
+  - the app stores bookmarks, mass progress, and Mass form locally on-device
+  - optional in-app purchases are processed by Apple
+
+### Age Rating
+- Recommended baseline: `4+`
+- No user-generated content, web browsing, gambling, or mature themes beyond general religious content
+
+### Export Compliance
+- Expected answer: no custom encryption beyond Apple's standard platform encryption
+
+## In-App Purchase Setup
+- Create three `Consumable` products with these exact IDs:
+  - `com.kevpierce.LatinMassCompanion.tip.small`
+  - `com.kevpierce.LatinMassCompanion.tip.medium`
+  - `com.kevpierce.LatinMassCompanion.tip.large`
+- Keep the customer-facing titles calm and simple:
+  - `Small Tip`
+  - `Medium Tip`
+  - `Large Tip`
+- Do not attach perks, unlocks, or feature promises to the tips
+
 ## Screenshot Direction
 - Screenshot 1: `Today`
   - show covered date, Mass form, and clear scope language
@@ -48,7 +88,7 @@ Latin Mass Companion is built to help you stay oriented, recollected, and honest
   - show proper-backed search result plus separate learning result
   - headline idea: `Find prayers, propers, and explanations fast`
 - Screenshot 4: `Learn`
-  - show first-time guidance and chant/pronunciation support
+  - show first-time guidance, chant/pronunciation support, and the optional support section
   - headline idea: `Build confidence before or after Mass`
 
 ## Manual Launch Checklist
@@ -57,5 +97,7 @@ Latin Mass Companion is built to help you stay oriented, recollected, and honest
 - Verify a covered feast, an uncovered in-window date, and an outside-window date all read clearly
 - Verify bookmark, resume, and search behavior from a fresh install state
 - Verify Dynamic Type and VoiceOver on the core tabs
+- Verify the support section loads live App Store pricing before showing tip buttons
+- Verify tip purchase cancellation returns cleanly without leaving a stuck loading state
 - Re-read source and rights text for overclaiming or vague provenance
 - Confirm final screenshots match the actual shipped UI
