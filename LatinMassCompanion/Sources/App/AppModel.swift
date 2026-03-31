@@ -163,11 +163,10 @@ final class AppModel {
     }
 
     func resumeMass() {
-        guard let progress, let date = Self.storageDateFormatter.date(from: progress.dateKey) else {
+        guard let progress else {
             return
         }
 
-        selectedDate = date
         selectedMassForm = progress.massForm
         massFormStore.saveMassForm(progress.massForm)
         pendingGuideSectionID = progress.sectionID

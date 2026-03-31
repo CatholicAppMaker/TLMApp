@@ -1,7 +1,6 @@
 import SwiftUI
 
 enum AppTab: Hashable {
-    case today
     case guide
     case library
     case learn
@@ -11,18 +10,10 @@ struct RootTabView: View {
     let appModel: AppModel
     let supportTipJar: SupportTipJar
 
-    @State private var selectedTab: AppTab = .today
+    @State private var selectedTab: AppTab = .guide
 
     var body: some View {
         TabView(selection: $selectedTab) {
-            NavigationStack {
-                TodayView(appModel: appModel, selectedTab: $selectedTab)
-            }
-            .tabItem {
-                Label("Today", systemImage: "calendar")
-            }
-            .tag(AppTab.today)
-
             NavigationStack {
                 GuideView(appModel: appModel, selectedTab: $selectedTab)
             }

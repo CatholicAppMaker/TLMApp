@@ -159,27 +159,6 @@ struct AppModelBehaviorTests {
 
     @MainActor
     @Test
-    func resetToTodayUsesInjectedClock() {
-        let intro = TestFixtures.makePart(id: "intro", order: 1, title: "Intro")
-        let model = AppModel(
-            repository: StubMassContentRepository {
-                TestFixtures.makeCatalog(parts: [intro])
-            },
-            searchService: SpySearchService(),
-            bookmarkStore: SpyBookmarkStore(),
-            progressStore: SpyMassModeProgressStore(),
-            now: { TestFixtures.date("2026-06-29") }
-        )
-
-        model.selectDate(TestFixtures.date("2026-12-25"))
-        #expect(model.selectedDateKey == "2026-12-25")
-
-        model.resetToToday()
-        #expect(model.selectedDateKey == "2026-06-29")
-    }
-
-    @MainActor
-    @Test
     func learningGuidesAreGroupedByKindForLearnScreen() {
         let intro = TestFixtures.makePart(id: "intro", order: 1, title: "Intro")
         let model = AppModel(

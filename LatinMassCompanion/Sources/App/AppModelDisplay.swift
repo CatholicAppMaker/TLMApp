@@ -14,7 +14,7 @@ extension AppModel {
     }
 
     var selectedDateTitle: String {
-        Self.displayDateFormatter.string(from: selectedDate)
+        "Today"
     }
 
     var selectedMassFormTitle: String {

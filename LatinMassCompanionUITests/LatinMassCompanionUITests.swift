@@ -6,14 +6,14 @@ final class LatinMassCompanionUITests: XCTestCase {
         continueAfterFailure = false
     }
 
-    func testAppOpensOnTodayForCoveredDate() {
+    func testAppOpensOnGuideWithSimplifiedNavigation() {
         let app = XCUIApplication()
         app.launchApp(resetState: true, todayOverride: "2026-04-05")
 
-        XCTAssertTrue(app.tabBars.buttons["Today"].exists)
-        XCTAssertTrue(app.staticTexts["today-celebration-title"].waitForExistence(timeout: 5))
-        XCTAssertEqual(app.staticTexts["today-celebration-title"].label, "Easter Sunday")
-        XCTAssertTrue(app.staticTexts["today-availability-summary"].label.contains("Bundled propers"))
+        XCTAssertTrue(app.tabBars.buttons["Guide"].exists)
+        XCTAssertTrue(app.tabBars.buttons["Library"].exists)
+        XCTAssertTrue(app.tabBars.buttons["Learn"].exists)
+        XCTAssertTrue(app.staticTexts["mass-part-title"].waitForExistence(timeout: 5))
     }
 
     func testBookmarkAppearsInLibraryBookmarks() {
@@ -57,20 +57,20 @@ final class LatinMassCompanionUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["How to Participate at a Low Mass"].waitForExistence(timeout: 5))
     }
 
-    func testTodayWhatChangesButtonOpensChangesGuide() {
+    func testLearnShowsWhatChangesGuide() {
         let app = XCUIApplication()
         app.launchApp(resetState: true, todayOverride: "2026-03-30")
 
-        app.buttons["open-what-changes-button"].tap()
+        app.tabBars.buttons["Learn"].tap()
 
         XCTAssertTrue(app.staticTexts["learn-participation-what-changes-by-day"].waitForExistence(timeout: 5))
     }
 
-    func testTodayFirstTimeButtonOpensOrientationGuide() {
+    func testLearnShowsFirstTimeOrientationGuide() {
         let app = XCUIApplication()
         app.launchApp(resetState: true, todayOverride: "2026-03-30")
 
-        app.buttons["open-first-visit-guide-button"].tap()
+        app.tabBars.buttons["Learn"].tap()
 
         XCTAssertTrue(app.staticTexts["learn-participation-first-time-at-the-1962-mass"].waitForExistence(timeout: 5))
     }
@@ -93,15 +93,14 @@ final class LatinMassCompanionUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["learn-pronunciation-domine-non-sum-dignus"].waitForExistence(timeout: 5))
     }
 
-    func testSelectingSungMassUpdatesGuideContextAndResumeState() {
+    func testSelectingSungMassUpdatesGuideContextAndPersistsAcrossRelaunch() {
         let firstLaunch = XCUIApplication()
         firstLaunch.launchApp(resetState: true, todayOverride: "2026-12-25")
 
-        let sungButton = firstLaunch.segmentedControls.buttons["Sung Mass"]
-        XCTAssertTrue(sungButton.waitForExistence(timeout: 5))
-        sungButton.tap()
+        let massFormToggle = firstLaunch.segmentedControls["guide-mass-form-toggle"]
+        XCTAssertTrue(massFormToggle.waitForExistence(timeout: 5))
+        massFormToggle.buttons["Sung Mass"].tap()
 
-        firstLaunch.openGuide()
         XCTAssertTrue(firstLaunch.staticTexts["guide-form-pill"].waitForExistence(timeout: 5))
         XCTAssertEqual(firstLaunch.staticTexts["guide-form-pill"].label, "Sung Mass")
         firstLaunch.terminate()
@@ -109,20 +108,34 @@ final class LatinMassCompanionUITests: XCTestCase {
         let resumedLaunch = XCUIApplication()
         resumedLaunch.launchApp(resetState: false, todayOverride: "2026-12-25")
 
-        XCTAssertTrue(resumedLaunch.staticTexts["resume-mass-part-title"].waitForExistence(timeout: 5))
-
-        resumedLaunch.buttons["resume-mass-button"].tap()
         XCTAssertTrue(resumedLaunch.staticTexts["guide-form-pill"].waitForExistence(timeout: 5))
         XCTAssertEqual(resumedLaunch.staticTexts["guide-form-pill"].label, "Sung Mass")
     }
 
-    func testSourcesViewRemainsReachableFromToday() {
+    func testLibraryMassFormToggleUpdatesGuideContext() {
         let app = XCUIApplication()
         app.launchApp(resetState: true, todayOverride: "2026-03-30")
 
-        app.buttons["view-sources-button"].tap()
+        app.openLibrary()
 
-        XCTAssertTrue(app.staticTexts["Missale Romanum (1962), Ordinary of the Mass"].waitForExistence(timeout: 5))
+        let libraryMassFormToggle = app.segmentedControls["library-mass-form-toggle"]
+        XCTAssertTrue(libraryMassFormToggle.waitForExistence(timeout: 5))
+        libraryMassFormToggle.buttons["Sung Mass"].tap()
+
+        app.openGuide()
+
+        XCTAssertTrue(app.staticTexts["guide-form-pill"].waitForExistence(timeout: 5))
+        XCTAssertEqual(app.staticTexts["guide-form-pill"].label, "Sung Mass")
+    }
+
+    func testLearnTabStillShowsSourceAnchoredGuidance() {
+        let app = XCUIApplication()
+        app.launchApp(resetState: true, todayOverride: "2026-03-30")
+
+        app.tabBars.buttons["Learn"].tap()
+
+        XCTAssertTrue(app.staticTexts["Learn the Rite, Keep the Prayer"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["Gregorian Chant"].exists)
     }
 }
 
@@ -140,7 +153,9 @@ private extension XCUIApplication {
     }
 
     func openGuide() {
-        buttons["open-guide-button"].tap()
+        if tabBars.buttons["Guide"].exists {
+            tabBars.buttons["Guide"].tap()
+        }
     }
 
     func openLibrary() {

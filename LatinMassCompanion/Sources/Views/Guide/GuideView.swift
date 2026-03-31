@@ -7,6 +7,13 @@ struct GuideView: View {
     @State private var selectedPartID: String?
     @State private var isShowingJumpList = false
 
+    private var selectedMassFormBinding: Binding<MassForm> {
+        Binding(
+            get: { appModel.selectedMassForm },
+            set: { appModel.selectMassForm($0) }
+        )
+    }
+
     private var currentPart: ResolvedMassPart? {
         appModel.part(withID: selectedPartID)
     }
@@ -96,6 +103,12 @@ struct GuideView: View {
                 )
             }
         }
+        .safeAreaInset(edge: .top) {
+            GuideMassFormSwitcher(selectedMassFormBinding: selectedMassFormBinding)
+                .padding(.horizontal, 20)
+                .padding(.top, 8)
+                .background(AppTheme.backgroundWash.opacity(0.96))
+        }
     }
 
     private func syncSelection() {
@@ -118,6 +131,35 @@ struct GuideView: View {
         }
 
         appModel.recordMassProgress(for: part)
+    }
+}
+
+private struct GuideMassFormSwitcher: View {
+    let selectedMassFormBinding: Binding<MassForm>
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("Mass Form")
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(AppTheme.mutedInk)
+
+            Picker("Mass Form", selection: selectedMassFormBinding) {
+                ForEach(MassForm.allCases) { massForm in
+                    Text(massForm.title).tag(massForm)
+                }
+            }
+            .pickerStyle(.segmented)
+            .accessibilityIdentifier("guide-mass-form-toggle")
+        }
+        .padding(12)
+        .background(
+            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                .fill(AppTheme.surface)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                .stroke(AppTheme.border, lineWidth: 1)
+        )
     }
 }
 

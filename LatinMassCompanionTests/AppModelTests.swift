@@ -4,7 +4,7 @@ import Testing
 struct AppModelTests {
     @MainActor
     @Test
-    func resumeMassRestoresSavedDateAndSection() {
+    func resumeMassKeepsTodayDateWhileRestoringSavedSectionAndForm() {
         let intro = TestFixtures.makePart(id: "intro", order: 1, title: "Intro")
         let collect = TestFixtures.makePart(
             id: "collect-readings",
@@ -32,6 +32,7 @@ struct AppModelTests {
             dateKey: "2026-04-05",
             sectionID: "collect-readings",
             celebrationID: "easter-sunday",
+            massForm: .sung,
             lastOpenedAt: TestFixtures.date("2026-04-05")
         )
 
@@ -47,10 +48,11 @@ struct AppModelTests {
 
         model.resumeMass()
 
-        #expect(model.selectedDateKey == "2026-04-05")
+        #expect(model.selectedDateKey == "2026-03-30")
+        #expect(model.selectedMassForm == .sung)
         #expect(model.consumePendingGuideSectionID() == "collect-readings")
         #expect(model.consumePendingGuideSectionID() == nil)
-        #expect(model.selectedCelebrationTitle == "Easter Sunday")
+        #expect(model.selectedCelebrationTitle == "Ordinary of the Mass")
     }
 
     @MainActor

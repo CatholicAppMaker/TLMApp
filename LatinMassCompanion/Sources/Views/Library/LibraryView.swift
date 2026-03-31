@@ -7,6 +7,13 @@ struct LibraryView: View {
     @State private var searchText = ""
     @State private var scope: LibraryScope = .allSections
 
+    private var selectedMassFormBinding: Binding<MassForm> {
+        Binding(
+            get: { appModel.selectedMassForm },
+            set: { appModel.selectMassForm($0) }
+        )
+    }
+
     private var results: LibrarySearchResults {
         appModel.search(query: searchText, scope: scope)
     }
@@ -67,6 +74,14 @@ struct LibraryView: View {
                 Text(appModel.availabilitySummary)
                     .font(.caption)
                     .foregroundStyle(appModel.isShowingOrdinaryOnly ? AppTheme.mutedInk : AppTheme.burgundy)
+
+                Picker("Mass Form", selection: selectedMassFormBinding) {
+                    ForEach(MassForm.allCases) { massForm in
+                        Text(massForm.title).tag(massForm)
+                    }
+                }
+                .pickerStyle(.segmented)
+                .accessibilityIdentifier("library-mass-form-toggle")
 
                 Picker("Scope", selection: $scope) {
                     ForEach(LibraryScope.allCases) { scope in

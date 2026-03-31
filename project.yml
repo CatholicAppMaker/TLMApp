@@ -30,7 +30,6 @@ targets:
     settings:
       base:
         CODE_SIGN_STYLE: Automatic
-        DEVELOPMENT_TEAM: PUB4X386LH
         PRODUCT_BUNDLE_IDENTIFIER: com.kevpierce.LatinMassCompanion
         PRODUCT_NAME: LatinMassCompanion
         GENERATE_INFOPLIST_FILE: YES
