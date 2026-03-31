@@ -1,0 +1,832 @@
+[
+  {
+    "id": "prayers-foot-altar",
+    "order": 1,
+    "title": "Prayers at the Foot of the Altar",
+    "summary": "Mass begins with prayers of humility and purification before the priest ascends the altar.",
+    "tags": [
+      "beginning",
+      "preparation",
+      "psalm 42"
+    ],
+    "gestureCues": [
+      {
+        "id": "stand-beginning",
+        "label": "Stand or kneel according to local custom",
+        "detail": "Many faithful begin quietly recollected, joining the priest interiorly as Mass starts.",
+        "systemImage": "figure.stand"
+      }
+    ],
+    "textBlocks": [
+      {
+        "id": "introibo",
+        "speaker": "Priest",
+        "latin": "Introibo ad altare Dei.",
+        "english": "I will go unto the altar of God.",
+        "rubric": "Opening exchange"
+      },
+      {
+        "id": "ad-deum",
+        "speaker": "Server",
+        "latin": "Ad Deum qui laetificat juventutem meam.",
+        "english": "To God, who giveth joy to my youth.",
+        "rubric": "Response"
+      },
+      {
+        "id": "adjutorium",
+        "speaker": "Priest and Server",
+        "latin": "Adjutorium nostrum in nomine Domini.",
+        "english": "Our help is in the name of the Lord.",
+        "rubric": "Psalm 123:8"
+      }
+    ],
+    "explanationNotes": [
+      {
+        "id": "foot-altar-meaning",
+        "title": "Why the priest does not begin on the altar",
+        "body": "The Church begins with a spiritual preparation. Before the sacrifice is offered, priest and faithful ask God for mercy, purity, and recollection.",
+        "sourceID": "ordinary"
+      },
+      {
+        "id": "foot-altar-newcomer",
+        "title": "How to participate if you are new",
+        "body": "You do not need to catch every word immediately. Follow the overall movement: preparation, listening, offering, consecration, communion, and thanksgiving.",
+        "sourceID": "translation"
+      }
+    ],
+    "phase": "preparation",
+    "liveNote": "Mass begins quietly here. If you lose your place early, rejoin the prayerful preparation and follow the posture of the faithful.",
+    "searchAliases": [
+      "psalm 42",
+      "introibo",
+      "beginning prayers"
+    ],
+    "sourceIDs": [
+      "ordinary"
+    ],
+    "glossaryIDs": [],
+    "pronunciationIDs": []
+  },
+  {
+    "id": "confiteor",
+    "order": 2,
+    "title": "Confiteor and Absolution Prayers",
+    "summary": "The Confiteor expresses repentance before entering more deeply into the sacred mysteries.",
+    "tags": [
+      "confiteor",
+      "penitence",
+      "humility"
+    ],
+    "gestureCues": [
+      {
+        "id": "bow-confiteor",
+        "label": "Bow at the mea culpa",
+        "detail": "Many strike the breast lightly three times at the repeated confession of fault.",
+        "systemImage": "figure.bow"
+      }
+    ],
+    "textBlocks": [
+      {
+        "id": "confiteor-text",
+        "speaker": "Priest or Server",
+        "latin": "Confiteor Deo omnipotenti, beatae Mariae semper Virgini, beato Michaeli Archangelo... quia peccavi nimis cogitatione, verbo et opere: mea culpa, mea culpa, mea maxima culpa.",
+        "english": "I confess to almighty God, to blessed Mary ever Virgin, to blessed Michael the Archangel... that I have sinned exceedingly in thought, word, and deed: through my fault, through my fault, through my most grievous fault.",
+        "rubric": "Public confession of sin"
+      },
+      {
+        "id": "misereatur",
+        "speaker": "Priest",
+        "latin": "Misereatur tui omnipotens Deus, et dimissis peccatis tuis, perducat te ad vitam aeternam.",
+        "english": "May almighty God have mercy upon thee, forgive thee thy sins, and bring thee to life everlasting.",
+        "rubric": "Prayer for mercy"
+      }
+    ],
+    "explanationNotes": [
+      {
+        "id": "confiteor-communal",
+        "title": "Why this prayer is said twice",
+        "body": "The priest first confesses his own sinfulness; the ministers then answer and make the same confession. The repetition highlights that everyone needs mercy before the holy sacrifice.",
+        "sourceID": "ordinary"
+      }
+    ],
+    "phase": "preparation",
+    "liveNote": "This is still preparation for sacrifice. The repeated confession teaches recollection before the sacred action deepens.",
+    "searchAliases": [],
+    "sourceIDs": [
+      "ordinary"
+    ],
+    "glossaryIDs": [],
+    "pronunciationIDs": []
+  },
+  {
+    "id": "kyrie-gloria",
+    "order": 3,
+    "title": "Kyrie and Gloria",
+    "summary": "After the preparation, Mass turns toward praise and petition.",
+    "tags": [
+      "kyrie",
+      "gloria",
+      "mercy",
+      "praise"
+    ],
+    "gestureCues": [
+      {
+        "id": "stand-gloria",
+        "label": "Stand if the Gloria is said",
+        "detail": "On some penitential days the Gloria is omitted, but the Kyrie remains.",
+        "systemImage": "figure.stand"
+      }
+    ],
+    "textBlocks": [
+      {
+        "id": "kyrie",
+        "speaker": "Priest and Server",
+        "latin": "Kyrie, eleison. Christe, eleison. Kyrie, eleison.",
+        "english": "Lord, have mercy. Christ, have mercy. Lord, have mercy.",
+        "rubric": "Repeated invocations"
+      },
+      {
+        "id": "gloria",
+        "speaker": "Priest",
+        "latin": "Gloria in excelsis Deo, et in terra pax hominibus bonae voluntatis.",
+        "english": "Glory be to God on high, and on earth peace to men of good will.",
+        "rubric": "The great hymn of praise"
+      }
+    ],
+    "explanationNotes": [
+      {
+        "id": "kyrie-greek",
+        "title": "Why the Kyrie is in Greek",
+        "body": "The Roman liturgy retains this ancient Greek acclamation as a sign of the Church's continuity with early Christian worship.",
+        "sourceID": "translation"
+      },
+      {
+        "id": "gloria-character",
+        "title": "What the Gloria changes in the mood of Mass",
+        "body": "The Gloria moves from repentance into joyful praise. Its omission on certain days also teaches that the liturgy has seasons and varying tones.",
+        "sourceID": "ordinary"
+      }
+    ],
+    "phase": "preparation",
+    "liveNote": "The entrance prayers are giving way to the public praise of the Mass. Listen for the movement from mercy to worship.",
+    "searchAliases": [],
+    "sourceIDs": [
+      "ordinary"
+    ],
+    "glossaryIDs": [],
+    "pronunciationIDs": []
+  },
+  {
+    "id": "collect-readings",
+    "order": 4,
+    "title": "Collect, Epistle, and Gradual",
+    "summary": "The Church gathers the prayers of the faithful and then proclaims the first readings of the day.",
+    "tags": [
+      "collect",
+      "epistle",
+      "gradual",
+      "readings"
+    ],
+    "glossaryIDs": [
+      "collect"
+    ],
+    "pronunciationIDs": [
+      "et-cum-spiritu-tuo"
+    ],
+    "gestureCues": [
+      {
+        "id": "sit-readings",
+        "label": "Sit for the readings if local custom permits",
+        "detail": "The proper texts of the Collect and Epistle change according to the day.",
+        "systemImage": "figure.seated.side"
+      }
+    ],
+    "textBlocks": [
+      {
+        "id": "dominus-vobiscum",
+        "speaker": "Priest",
+        "latin": "Dominus vobiscum.",
+        "english": "The Lord be with you.",
+        "rubric": "Liturgical greeting"
+      },
+      {
+        "id": "et-cum-spiritu",
+        "speaker": "Server",
+        "latin": "Et cum spiritu tuo.",
+        "english": "And with thy spirit.",
+        "rubric": "Response"
+      },
+      {
+        "id": "oremus",
+        "speaker": "Priest",
+        "latin": "Oremus.",
+        "english": "Let us pray.",
+        "rubric": "Invitation to prayer"
+      }
+    ],
+    "explanationNotes": [
+      {
+        "id": "collect-purpose",
+        "title": "What the Collect does",
+        "body": "The Collect gathers the prayers of the Church into one brief petition that expresses the grace sought on that day. It tells you what the liturgy is asking from God before the readings unfold that same mystery more fully.",
+        "sourceID": "ordinary"
+      },
+      {
+        "id": "propers-note",
+        "title": "Why some texts are not identical every day",
+        "body": "The readings and many prayers belong to the proper of the Mass and therefore vary with the feast, season, or saint being commemorated. This is one of the safest places to confirm the day without trying to decode every smaller variation at once.",
+        "sourceID": "translation"
+      }
+    ],
+    "phase": "instruction",
+    "liveNote": "This is one of the clearest places where the day changes. Proper texts often appear here first.",
+    "searchAliases": [
+      "collect",
+      "epistle",
+      "gradual",
+      "opening prayer"
+    ],
+    "sourceIDs": [
+      "ordinary"
+    ]
+  },
+  {
+    "id": "gospel",
+    "order": 5,
+    "title": "Gospel",
+    "summary": "The Gospel is proclaimed with special reverence as the words and deeds of Christ are set before the faithful.",
+    "tags": [
+      "gospel",
+      "christ",
+      "listen"
+    ],
+    "gestureCues": [
+      {
+        "id": "stand-gospel",
+        "label": "Stand for the Gospel",
+        "detail": "Many make small signs of the cross on forehead, lips, and heart at the announcement of the Gospel.",
+        "systemImage": "figure.stand"
+      }
+    ],
+    "textBlocks": [
+      {
+        "id": "sequentia",
+        "speaker": "Priest",
+        "latin": "Sequentia sancti Evangelii secundum Joannem.",
+        "english": "The continuation of the holy Gospel according to John.",
+        "rubric": "Announcement of the Gospel"
+      },
+      {
+        "id": "gloria-tibi",
+        "speaker": "Server",
+        "latin": "Gloria tibi, Domine.",
+        "english": "Glory be to Thee, O Lord.",
+        "rubric": "Response"
+      }
+    ],
+    "explanationNotes": [
+      {
+        "id": "gospel-honor",
+        "title": "Why the Gospel receives special signs of honor",
+        "body": "Standing, signing oneself, and attentive silence all express that Christ Himself teaches His people through the Gospel.",
+        "sourceID": "ordinary"
+      }
+    ],
+    "phase": "instruction",
+    "liveNote": "Stand with attention. The Gospel is a good point to rejoin the flow if you have lost your place.",
+    "searchAliases": [
+      "last gospel is later",
+      "reading"
+    ],
+    "sourceIDs": [
+      "ordinary"
+    ],
+    "glossaryIDs": [],
+    "pronunciationIDs": []
+  },
+  {
+    "id": "credo",
+    "order": 6,
+    "title": "Credo",
+    "summary": "On many Sundays and feasts, the congregation professes the faith before the sacrificial part of Mass begins.",
+    "tags": [
+      "credo",
+      "faith",
+      "profession"
+    ],
+    "gestureCues": [
+      {
+        "id": "bow-incarnatus",
+        "label": "Bow at Et incarnatus est",
+        "detail": "This gesture honors the mystery of the Incarnation.",
+        "systemImage": "figure.bow"
+      }
+    ],
+    "textBlocks": [
+      {
+        "id": "credo-opening",
+        "speaker": "Priest",
+        "latin": "Credo in unum Deum.",
+        "english": "I believe in one God.",
+        "rubric": "Nicene Creed"
+      },
+      {
+        "id": "incarnatus",
+        "speaker": "Priest",
+        "latin": "Et incarnatus est de Spiritu Sancto ex Maria Virgine: et homo factus est.",
+        "english": "And was incarnate by the Holy Ghost of the Virgin Mary: and was made man.",
+        "rubric": "Incarnation line"
+      }
+    ],
+    "explanationNotes": [
+      {
+        "id": "credo-before-offertory",
+        "title": "Why the Creed comes here",
+        "body": "Before moving to the offering and sacrifice, the Church openly confesses the faith that gives meaning to the entire liturgy.",
+        "sourceID": "translation"
+      }
+    ],
+    "phase": "instruction",
+    "liveNote": "When the Creed is said, the guide has moved through the teaching phase and toward the offering.",
+    "searchAliases": [],
+    "sourceIDs": [
+      "ordinary"
+    ],
+    "glossaryIDs": [],
+    "pronunciationIDs": []
+  },
+  {
+    "id": "offertory",
+    "order": 7,
+    "title": "Offertory",
+    "summary": "Bread and wine are set apart for sacrifice while the Church begins the offering of herself to God.",
+    "tags": [
+      "offertory",
+      "offering",
+      "bread",
+      "wine"
+    ],
+    "gestureCues": [
+      {
+        "id": "sit-offertory",
+        "label": "Sit or kneel according to local custom",
+        "detail": "The Offertory is quieter and often accompanied by the server's responses.",
+        "systemImage": "figure.seated.side"
+      }
+    ],
+    "textBlocks": [
+      {
+        "id": "suscipe-sancte",
+        "speaker": "Priest",
+        "latin": "Suscipe, sancte Pater, omnipotens aeterne Deus, hanc immaculatam hostiam...",
+        "english": "Receive, O holy Father, almighty and eternal God, this spotless host...",
+        "rubric": "Offering of the host"
+      },
+      {
+        "id": "offerimus",
+        "speaker": "Priest",
+        "latin": "Offerimus tibi, Domine, calicem salutaris...",
+        "english": "We offer unto Thee, O Lord, the chalice of salvation...",
+        "rubric": "Offering of the chalice"
+      }
+    ],
+    "explanationNotes": [
+      {
+        "id": "offertory-not-yet-consecration",
+        "title": "What is happening at the Offertory",
+        "body": "The gifts are not yet consecrated. The Church is preparing matter for sacrifice and already uniting the faithful to Christ's coming self-offering. This is the moment to move from listening toward offering, not to confuse preparation with the consecration itself.",
+        "sourceID": "ordinary"
+      }
+    ],
+    "phase": "offertory",
+    "liveNote": "The gifts are being prepared. The app keeps the movement calm here so you can follow the offering without rushing.",
+    "searchAliases": [
+      "offering",
+      "oblations"
+    ],
+    "sourceIDs": [
+      "ordinary"
+    ],
+    "glossaryIDs": [],
+    "pronunciationIDs": []
+  },
+  {
+    "id": "lavabo-orate-fratres",
+    "order": 8,
+    "title": "Lavabo and Orate, Fratres",
+    "summary": "The priest washes his fingers and then turns to ask the people to pray that the sacrifice be acceptable.",
+    "tags": [
+      "lavabo",
+      "orate fratres",
+      "purity",
+      "pray brethren"
+    ],
+    "gestureCues": [
+      {
+        "id": "stand-orate",
+        "label": "Stand for Orate, fratres if local custom follows it",
+        "detail": "The people remain united to the priest's offering through prayer, even when the server speaks aloud on their behalf.",
+        "systemImage": "figure.stand"
+      }
+    ],
+    "textBlocks": [
+      {
+        "id": "lavabo",
+        "speaker": "Priest",
+        "latin": "Lavabo inter innocentes manus meas: et circumdabo altare tuum, Domine.",
+        "english": "I will wash my hands among the innocent: and will compass Thine altar, O Lord.",
+        "rubric": "Psalm 25"
+      },
+      {
+        "id": "orate-fratres",
+        "speaker": "Priest",
+        "latin": "Orate, fratres: ut meum ac vestrum sacrificium acceptabile fiat apud Deum Patrem omnipotentem.",
+        "english": "Pray, brethren, that my sacrifice and yours may be acceptable to God the Father almighty.",
+        "rubric": "Invitation to prayer"
+      },
+      {
+        "id": "suscipiat",
+        "speaker": "Server",
+        "latin": "Suscipiat Dominus sacrificium de manibus tuis...",
+        "english": "May the Lord receive the sacrifice from thy hands...",
+        "rubric": "Response"
+      }
+    ],
+    "explanationNotes": [
+      {
+        "id": "lavabo-symbolism",
+        "title": "Why the priest washes his hands",
+        "body": "The washing symbolizes interior purity. The Church asks that the one who approaches the holy mysteries do so with a clean heart.",
+        "sourceID": "translation"
+      }
+    ],
+    "phase": "offertory",
+    "liveNote": "This transition prepares the sacrifice more intensely. Watch for posture changes and the invitation to prayer.",
+    "searchAliases": [],
+    "sourceIDs": [
+      "ordinary"
+    ],
+    "glossaryIDs": [],
+    "pronunciationIDs": []
+  },
+  {
+    "id": "preface-sanctus",
+    "order": 9,
+    "title": "Preface and Sanctus",
+    "summary": "The dialogue of thanksgiving leads into the Sanctus, where earth joins the worship of heaven.",
+    "tags": [
+      "preface",
+      "sanctus",
+      "holy holy holy"
+    ],
+    "gestureCues": [
+      {
+        "id": "kneel-after-sanctus",
+        "label": "Kneel after the Sanctus",
+        "detail": "The Canon begins in a spirit of adoration and recollection.",
+        "systemImage": "figure.kneel"
+      }
+    ],
+    "textBlocks": [
+      {
+        "id": "sursum-corda",
+        "speaker": "Priest",
+        "latin": "Sursum corda.",
+        "english": "Lift up your hearts.",
+        "rubric": "Preface dialogue"
+      },
+      {
+        "id": "habemus",
+        "speaker": "Server",
+        "latin": "Habemus ad Dominum.",
+        "english": "We have them lifted up to the Lord.",
+        "rubric": "Response"
+      },
+      {
+        "id": "sanctus",
+        "speaker": "Priest and Server",
+        "latin": "Sanctus, Sanctus, Sanctus, Dominus Deus Sabaoth.",
+        "english": "Holy, Holy, Holy, Lord God of Hosts.",
+        "rubric": "Song of the angels"
+      }
+    ],
+    "explanationNotes": [
+      {
+        "id": "preface-thanksgiving",
+        "title": "What the Preface is doing",
+        "body": "The Preface names reasons for thanksgiving and prepares the faithful to enter the Canon. The Sanctus then joins earthly worship to the praise of the angels.",
+        "sourceID": "ordinary"
+      }
+    ],
+    "phase": "offertory",
+    "liveNote": "The Preface gathers the whole church toward the Canon. If bells or a deeper silence begin, the most sacred part is close.",
+    "searchAliases": [],
+    "sourceIDs": [
+      "ordinary"
+    ],
+    "glossaryIDs": [],
+    "pronunciationIDs": []
+  },
+  {
+    "id": "canon",
+    "order": 10,
+    "title": "Canon of the Mass",
+    "summary": "The Roman Canon is prayed in a low voice as the Church remembers Christ's command and offers the spotless victim to the Father.",
+    "tags": [
+      "canon",
+      "roman canon",
+      "silent prayer"
+    ],
+    "glossaryIDs": [
+      "canon"
+    ],
+    "gestureCues": [
+      {
+        "id": "kneel-canon",
+        "label": "Remain kneeling in silence",
+        "detail": "This part is marked by reverence and prayerful attention even when the words are not heard aloud.",
+        "systemImage": "figure.kneel"
+      }
+    ],
+    "textBlocks": [
+      {
+        "id": "te-igitur",
+        "speaker": "Priest",
+        "latin": "Te igitur, clementissime Pater, per Jesum Christum Filium tuum Dominum nostrum supplices rogamus ac petimus...",
+        "english": "Thee therefore, most merciful Father, through Jesus Christ Thy Son our Lord, we humbly pray and beseech...",
+        "rubric": "Opening of the Canon"
+      },
+      {
+        "id": "quam-oblationem",
+        "speaker": "Priest",
+        "latin": "Quam oblationem tu, Deus, in omnibus, quaesumus, benedictam, adscriptam, ratam, rationabilem, acceptabilemque facere digneris...",
+        "english": "Which offering do Thou, O God, vouchsafe in all things to make blessed, approved, ratified, reasonable, and acceptable...",
+        "rubric": "Prayer before consecration"
+      }
+    ],
+    "explanationNotes": [
+      {
+        "id": "canon-silence",
+        "title": "Why so much of the Canon is silent",
+        "body": "The hushed voice emphasizes awe before the sacred action. Silence is not emptiness here; it is a sign of mystery, adoration, and concentrated prayer. The faithful are meant to stay with the altar action and the sacrificial moment rather than force every prayer into audible form.",
+        "sourceID": "translation"
+      }
+    ],
+    "phase": "canon",
+    "liveNote": "The Canon is the still center of the Mass. Stay with the altar action even when the priest speaks quietly.",
+    "searchAliases": [
+      "roman canon",
+      "te igitur",
+      "eucharistic prayer"
+    ],
+    "sourceIDs": [
+      "ordinary"
+    ],
+    "pronunciationIDs": []
+  },
+  {
+    "id": "consecration",
+    "order": 11,
+    "title": "Consecration and Elevation",
+    "summary": "At the words of Christ, bread and wine become the Body and Blood of the Lord, and the Sacred Species are elevated for adoration.",
+    "tags": [
+      "consecration",
+      "elevation",
+      "adoration",
+      "real presence"
+    ],
+    "gestureCues": [
+      {
+        "id": "adore-elevation",
+        "label": "Adore in silence",
+        "detail": "Many look up at the Host and Chalice and make a quiet act of faith such as 'My Lord and my God.'",
+        "systemImage": "sparkles"
+      }
+    ],
+    "textBlocks": [
+      {
+        "id": "hoc-est",
+        "speaker": "Priest",
+        "latin": "Hoc est enim Corpus meum.",
+        "english": "For this is My Body.",
+        "rubric": "Words of consecration over the host"
+      },
+      {
+        "id": "hic-est",
+        "speaker": "Priest",
+        "latin": "Hic est enim Calix Sanguinis mei, novi et aeterni testamenti...",
+        "english": "For this is the Chalice of My Blood, of the new and eternal testament...",
+        "rubric": "Words of consecration over the chalice"
+      }
+    ],
+    "explanationNotes": [
+      {
+        "id": "real-presence",
+        "title": "What Catholics believe happens here",
+        "body": "By the power of Christ working through the priest, the substance of bread and wine is changed into the Body and Blood of Christ. This is the heart of the Mass.",
+        "sourceID": "ordinary"
+      },
+      {
+        "id": "elevation-history",
+        "title": "Why the Sacred Species are elevated",
+        "body": "The elevation allows the faithful to adore Christ truly present and to unite themselves to the sacrifice made sacramentally present on the altar.",
+        "sourceID": "translation"
+      }
+    ],
+    "phase": "canon",
+    "liveNote": "This is the heart of the sacrificial action. If you have lost the line, simply return to adoration here.",
+    "searchAliases": [
+      "elevation",
+      "hoc est enim corpus meum"
+    ],
+    "sourceIDs": [
+      "ordinary"
+    ],
+    "glossaryIDs": [],
+    "pronunciationIDs": []
+  },
+  {
+    "id": "pater-agnus",
+    "order": 12,
+    "title": "Pater Noster and Agnus Dei",
+    "summary": "The Lord's Prayer prepares for communion, and the Agnus Dei asks the Lamb of God for mercy and peace.",
+    "tags": [
+      "our father",
+      "agnus dei",
+      "peace",
+      "communion"
+    ],
+    "glossaryIDs": [
+      "agnus-dei"
+    ],
+    "pronunciationIDs": [
+      "domine-non-sum-dignus"
+    ],
+    "gestureCues": [
+      {
+        "id": "strike-breast-agnus",
+        "label": "Strike the breast at the Agnus Dei",
+        "detail": "This gesture expresses humility before receiving the Lord.",
+        "systemImage": "heart"
+      }
+    ],
+    "textBlocks": [
+      {
+        "id": "pater-noster",
+        "speaker": "Priest",
+        "latin": "Pater noster, qui es in caelis, sanctificetur nomen tuum...",
+        "english": "Our Father, who art in heaven, hallowed be Thy name...",
+        "rubric": "The Lord's Prayer"
+      },
+      {
+        "id": "agnus-dei",
+        "speaker": "Priest and Server",
+        "latin": "Agnus Dei, qui tollis peccata mundi, miserere nobis.",
+        "english": "Lamb of God, who takest away the sins of the world, have mercy on us.",
+        "rubric": "Threefold invocation"
+      },
+      {
+        "id": "domine-non-sum",
+        "speaker": "Priest and Faithful",
+        "latin": "Domine, non sum dignus ut intres sub tectum meum: sed tantum dic verbo, et sanabitur anima mea.",
+        "english": "Lord, I am not worthy that Thou shouldst enter under my roof: but only say the word, and my soul shall be healed.",
+        "rubric": "Said three times"
+      }
+    ],
+    "explanationNotes": [
+      {
+        "id": "our-father-place",
+        "title": "Why the Our Father is placed here",
+        "body": "Having entered the sacrificial mystery, the Church now asks the Father for daily bread in the deepest sense and for deliverance from evil before communion.",
+        "sourceID": "ordinary"
+      }
+    ],
+    "phase": "communion",
+    "liveNote": "The Mass is turning from consecration toward Communion. Familiar congregational responses often help users rejoin here.",
+    "searchAliases": [
+      "our father",
+      "agnus dei",
+      "lamb of god"
+    ],
+    "sourceIDs": [
+      "ordinary"
+    ]
+  },
+  {
+    "id": "communion",
+    "order": 13,
+    "title": "Communion",
+    "summary": "The priest communicates first, then distributes Holy Communion to the faithful when it is given during Mass.",
+    "tags": [
+      "communion",
+      "sacrament",
+      "reception"
+    ],
+    "gestureCues": [
+      {
+        "id": "kneel-communion",
+        "label": "Kneel and receive reverently if you are prepared to receive",
+        "detail": "Non-Catholics or those not prepared for sacramental Communion may remain in prayer and make a spiritual communion.",
+        "systemImage": "figure.kneel"
+      }
+    ],
+    "textBlocks": [
+      {
+        "id": "corpus-domini",
+        "speaker": "Priest",
+        "latin": "Corpus Domini nostri Jesu Christi custodiat animam tuam in vitam aeternam. Amen.",
+        "english": "May the Body of our Lord Jesus Christ preserve thy soul unto life everlasting. Amen.",
+        "rubric": "Formula at Communion"
+      },
+      {
+        "id": "communion-antiphon",
+        "speaker": "Choir or Priest",
+        "latin": "Communio.",
+        "english": "Communion antiphon.",
+        "rubric": "Varies by day"
+      }
+    ],
+    "explanationNotes": [
+      {
+        "id": "communion-disposition",
+        "title": "Why reception is surrounded by humility",
+        "body": "Holy Communion is intimate union with Christ. The prayers before and after it teach wonder, gratitude, and the need to receive with faith and proper disposition. Even when you are not receiving sacramentally, this moment still invites humility, thanksgiving, and spiritual desire.",
+        "sourceID": "translation"
+      }
+    ],
+    "phase": "communion",
+    "liveNote": "Communion texts and posture changes make this an easy place to find your bearings again.",
+    "searchAliases": [
+      "communion of the faithful",
+      "domine non sum dignus"
+    ],
+    "sourceIDs": [
+      "ordinary"
+    ],
+    "glossaryIDs": [],
+    "pronunciationIDs": []
+  },
+  {
+    "id": "dismissal-last-gospel",
+    "order": 14,
+    "title": "Postcommunion, Dismissal, and Last Gospel",
+    "summary": "Mass closes with thanksgiving, dismissal, blessing, and the Last Gospel, usually the opening of Saint John's Gospel.",
+    "tags": [
+      "postcommunion",
+      "ite missa est",
+      "blessing",
+      "last gospel"
+    ],
+    "gestureCues": [
+      {
+        "id": "stand-dismissal",
+        "label": "Stand for the blessing and Last Gospel",
+        "detail": "Many make the sign of the cross at the final blessing and small crosses at the beginning of the Last Gospel.",
+        "systemImage": "figure.stand"
+      }
+    ],
+    "textBlocks": [
+      {
+        "id": "ite-missa-est",
+        "speaker": "Priest",
+        "latin": "Ite, missa est.",
+        "english": "Go, the Mass is ended.",
+        "rubric": "Dismissal"
+      },
+      {
+        "id": "benedicat-vos",
+        "speaker": "Priest",
+        "latin": "Benedicat vos omnipotens Deus, Pater, et Filius, et Spiritus Sanctus.",
+        "english": "May almighty God bless you, the Father, and the Son, and the Holy Ghost.",
+        "rubric": "Final blessing"
+      },
+      {
+        "id": "in-principio",
+        "speaker": "Priest",
+        "latin": "In principio erat Verbum, et Verbum erat apud Deum, et Deus erat Verbum.",
+        "english": "In the beginning was the Word, and the Word was with God, and the Word was God.",
+        "rubric": "Last Gospel"
+      }
+    ],
+    "explanationNotes": [
+      {
+        "id": "dismissal-mission",
+        "title": "Why Mass ends with a sending",
+        "body": "The faithful are not dismissed from grace but sent with it. The Last Gospel leaves the mystery of the Incarnation ringing in the heart as one returns to daily life, so the rite closes with thanksgiving rather than with a merely practical ending.",
+        "sourceID": "ordinary"
+      }
+    ],
+    "phase": "conclusion",
+    "liveNote": "The rite is concluding, but thanksgiving still matters. The guide keeps the final prayers visible instead of ending abruptly.",
+    "searchAliases": [
+      "ite missa est",
+      "last gospel",
+      "john 1"
+    ],
+    "sourceIDs": [
+      "ordinary"
+    ],
+    "glossaryIDs": [],
+    "pronunciationIDs": []
+  }
+]

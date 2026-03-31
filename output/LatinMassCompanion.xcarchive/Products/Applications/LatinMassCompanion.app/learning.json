@@ -1,0 +1,415 @@
+{
+  "glossaryEntries": [
+    {
+      "id": "ordinary",
+      "term": "Ordinary of the Mass",
+      "definition": "The fixed prayers and ceremonies that stay substantially the same from day to day, even when the feast and propers change.",
+      "keywords": [
+        "fixed texts",
+        "order of mass",
+        "unchanging"
+      ],
+      "relatedTerms": [
+        "propers",
+        "collect"
+      ],
+      "sourceIDs": [
+        "ordinary",
+        "translation"
+      ],
+      "searchAliases": [
+        "fixed parts",
+        "ordinary parts"
+      ]
+    },
+    {
+      "id": "propers",
+      "term": "Propers of the Mass",
+      "definition": "The prayers and chants that change according to the day, season, or feast, especially around the readings, offertory, and Communion.",
+      "keywords": [
+        "changing texts",
+        "feast day",
+        "seasonal prayers"
+      ],
+      "relatedTerms": [
+        "ordinary",
+        "collect"
+      ],
+      "sourceIDs": [
+        "calendar-1962",
+        "translation"
+      ],
+      "searchAliases": [
+        "what changes by day",
+        "proper texts"
+      ]
+    },
+    {
+      "id": "collect",
+      "term": "Collect",
+      "definition": "A brief prayer that gathers the petitions of the Church into one focused plea proper to the day or feast.",
+      "keywords": [
+        "oration",
+        "opening prayer",
+        "proper"
+      ],
+      "relatedTerms": [
+        "propers",
+        "epistle"
+      ],
+      "sourceIDs": [
+        "ordinary",
+        "translation"
+      ],
+      "searchAliases": [
+        "opening collect",
+        "day prayer"
+      ]
+    },
+    {
+      "id": "canon",
+      "term": "Roman Canon",
+      "definition": "The central Eucharistic prayer of the traditional Roman rite, prayed quietly as the sacrifice moves toward consecration.",
+      "keywords": [
+        "silent prayer",
+        "eucharistic prayer",
+        "te igitur"
+      ],
+      "relatedTerms": [
+        "consecration",
+        "sanctus"
+      ],
+      "sourceIDs": [
+        "ordinary",
+        "translation"
+      ],
+      "searchAliases": [
+        "te igitur",
+        "silent canon"
+      ]
+    },
+    {
+      "id": "agnus-dei",
+      "term": "Agnus Dei",
+      "definition": "The invocation 'Lamb of God' said before Communion to ask Christ for mercy and peace.",
+      "keywords": [
+        "lamb of god",
+        "peace",
+        "communion"
+      ],
+      "relatedTerms": [
+        "Domine, non sum dignus",
+        "Pater noster"
+      ],
+      "sourceIDs": [
+        "ordinary",
+        "translation"
+      ],
+      "searchAliases": [
+        "lamb of god",
+        "agnus"
+      ]
+    }
+  ],
+  "pronunciationGuides": [
+    {
+      "id": "et-cum-spiritu-tuo",
+      "title": "Et cum spiritu tuo",
+      "latin": "Et cum spiritu tuo.",
+      "phonetic": "Et koom spee-ree-too TOO-oh.",
+      "note": "Keep the vowels clean and the phrase even. In church Latin, the final 'u-o' is usually heard as two light syllables.",
+      "keywords": [
+        "response",
+        "lord be with you",
+        "greeting"
+      ],
+      "sourceIDs": [
+        "translation"
+      ],
+      "searchAliases": [
+        "and with thy spirit"
+      ]
+    },
+    {
+      "id": "mea-culpa",
+      "title": "Mea culpa, mea culpa, mea maxima culpa",
+      "latin": "Mea culpa, mea culpa, mea maxima culpa.",
+      "phonetic": "MEH-ah KOOL-pah, MEH-ah KOOL-pah, MEH-ah MAX-ee-mah KOOL-pah.",
+      "note": "This is said with humility in the Confiteor. Keep the stress gentle rather than dramatic.",
+      "keywords": [
+        "confiteor",
+        "penitence",
+        "through my fault"
+      ],
+      "sourceIDs": [
+        "translation"
+      ],
+      "searchAliases": [
+        "through my fault"
+      ]
+    },
+    {
+      "id": "sanctus",
+      "title": "Sanctus, Sanctus, Sanctus",
+      "latin": "Sanctus, Sanctus, Sanctus Dominus Deus Sabaoth.",
+      "phonetic": "SAHNK-toos, SAHNK-toos, SAHNK-toos DOH-mee-noos DEH-oos SAH-bah-oht.",
+      "note": "If you are following a Sung Mass, this is one of the most recognizable chant landmarks. Keep the consonants light and the vowels steady.",
+      "keywords": [
+        "chant",
+        "holy holy holy",
+        "preface"
+      ],
+      "sourceIDs": [
+        "translation",
+        "chant"
+      ],
+      "searchAliases": [
+        "holy holy holy"
+      ]
+    },
+    {
+      "id": "domine-non-sum-dignus",
+      "title": "Domine, non sum dignus",
+      "latin": "Domine, non sum dignus ut intres sub tectum meum.",
+      "phonetic": "DOH-mee-neh, non soom DEEN-yoos oot EEN-tres soob TEHK-toom MEH-oom.",
+      "note": "This is a humble Communion prayer. Say it slowly enough that the sense of reverence is not lost.",
+      "keywords": [
+        "communion",
+        "worthy",
+        "humility"
+      ],
+      "sourceIDs": [
+        "translation"
+      ],
+      "searchAliases": [
+        "lord i am not worthy"
+      ]
+    }
+  ],
+  "participationGuides": [
+    {
+      "id": "first-time-at-the-1962-mass",
+      "kind": "orientation",
+      "title": "First Time at the 1962 Mass",
+      "body": "Do not try to master every word at once. Learn the broad movement of the Mass first: preparation, instruction, offering, canon, communion, and thanksgiving. The guide is meant to help you stay recollected, not to turn prayer into a race. If you can recognize what is happening, why the rite is turning there, and where the altar action is leading, you are already using the app well.",
+      "keywords": [
+        "newcomer",
+        "first time",
+        "what to expect"
+      ],
+      "sourceIDs": [
+        "translation"
+      ],
+      "searchAliases": [
+        "where do i start",
+        "new to latin mass"
+      ]
+    },
+    {
+      "id": "how-to-use-this-app-well",
+      "kind": "orientation",
+      "title": "How to Use This App Well",
+      "body": "Treat the app as a companion, not a scoreboard. Use Today to confirm the date, coverage, and Mass form. Use Guide when you need to follow the movement of the rite. Use Library when you know what you want to find. Use Learn before or after Mass so the liturgy itself can remain primary while you are in church. If the phone begins to pull more attention than the altar, set it down and return by landmarks later.",
+      "keywords": [
+        "app guide",
+        "how to use",
+        "companion"
+      ],
+      "sourceIDs": [
+        "translation"
+      ],
+      "searchAliases": [
+        "using the app",
+        "how do i use this app"
+      ]
+    },
+    {
+      "id": "customs-vary-locally",
+      "kind": "orientation",
+      "title": "Local Customs May Vary",
+      "body": "Posture, spoken responses, and the exact rhythm of congregation participation can vary from place to place. Follow the local custom calmly when you can. When in doubt, pray quietly and let the liturgy teach you over time. The app is designed to orient you inside the traditional rite, not to overrule a parish's lawful custom from the pew.",
+      "keywords": [
+        "posture",
+        "local custom",
+        "responses"
+      ],
+      "sourceIDs": [
+        "translation"
+      ],
+      "searchAliases": [
+        "what if people do something different",
+        "customs"
+      ]
+    },
+    {
+      "id": "when-you-lose-your-place",
+      "kind": "orientation",
+      "title": "When You Lose Your Place",
+      "body": "Do not panic and do not sprint through the page. Rejoin by landmarks: the current posture, the broad phase of the rite, a familiar heading such as Gospel, Offertory, Sanctus, or Communion, and the altar action in front of you. Missing a line is not the same as missing the Mass. Recollection matters more than recovery speed.",
+      "keywords": [
+        "lost",
+        "rejoin",
+        "follow along"
+      ],
+      "sourceIDs": [
+        "translation"
+      ],
+      "searchAliases": [
+        "lost my place",
+        "how do i rejoin"
+      ]
+    },
+    {
+      "id": "what-changes-by-day",
+      "kind": "changes",
+      "title": "What Changes by Day",
+      "body": "The Ordinary stays substantially fixed, while the propers change according to the feast, season, or Sunday. In this app, the clearest day-specific landmarks usually appear around the entrance proper, the collect and readings, the offertory, and Communion. When no bundled proper is available, the app keeps the Ordinary visible rather than guessing missing texts. That restraint is part of the app's trust promise, not a hidden failure.",
+      "keywords": [
+        "ordinary",
+        "propers",
+        "what changes"
+      ],
+      "sourceIDs": [
+        "translation",
+        "calendar-1962"
+      ],
+      "searchAliases": [
+        "ordinary versus propers",
+        "what changes by date"
+      ]
+    },
+    {
+      "id": "low-mass-and-sung-mass",
+      "kind": "changes",
+      "title": "Low Mass and Sung Mass",
+      "body": "The structure of the rite remains recognizable in both forms, but Sung Mass is often slower, more ceremonial, and more chant-led. Low Mass usually leaves more of the audible response to the servers and asks the faithful to stay recollected amid quieter movement. The app lets you choose the form on Today so the guide can emphasize either quieter landmarks or sung ones without pretending every parish does things identically.",
+      "keywords": [
+        "mass form",
+        "sung mass",
+        "low mass"
+      ],
+      "sourceIDs": [
+        "translation",
+        "chant"
+      ],
+      "searchAliases": [
+        "difference between low and sung mass",
+        "mass form"
+      ]
+    },
+    {
+      "id": "participating-at-low-mass",
+      "kind": "participation",
+      "title": "How to Participate at a Low Mass",
+      "body": "Follow the overall shape first: preparation, readings, offering, consecration, communion, thanksgiving. You do not need to catch every word on the first visit. If you lose your place, return to the current posture, then find the nearest section title in the guide. Quiet attention often serves better here than constant page-checking. At Low Mass especially, the silence itself is part of the rite's teaching.",
+      "keywords": [
+        "newcomer",
+        "participation",
+        "first time"
+      ],
+      "sourceIDs": [
+        "translation"
+      ],
+      "searchAliases": [
+        "how to follow mass",
+        "first visit"
+      ]
+    },
+    {
+      "id": "participating-at-sung-mass",
+      "kind": "participation",
+      "title": "How to Participate at a Sung Mass",
+      "body": "At a Sung Mass, the ceremonial pacing is slower and the chant often carries the liturgical action. Let the chant teach you where you are. Watch the altar, listen for major sung Ordinary parts, and use the guide to rejoin at the next stable landmark instead of chasing every line in real time. The goal is reverent orientation, not constant synchronized reading, and not treating the schola like a stopwatch.",
+      "keywords": [
+        "sung mass",
+        "chant",
+        "how to follow"
+      ],
+      "sourceIDs": [
+        "translation",
+        "chant"
+      ],
+      "searchAliases": [
+        "how to follow sung mass",
+        "high mass"
+      ]
+    },
+    {
+      "id": "when-not-receiving-communion",
+      "kind": "participation",
+      "title": "When You Are Not Receiving Communion",
+      "body": "Remain prayerful and recollected. Many visitors stay kneeling, follow the Communion prayers in the guide, and make a spiritual communion while the faithful receive sacramentally. You do not need to imitate external actions that do not belong to your state in order to participate fruitfully. The rite still invites thanksgiving, humility, and desire for union with Christ.",
+      "keywords": [
+        "spiritual communion",
+        "visitor",
+        "communion"
+      ],
+      "sourceIDs": [
+        "translation"
+      ],
+      "searchAliases": [
+        "spiritual communion",
+        "not receiving"
+      ]
+    }
+  ],
+  "chantGuides": [
+    {
+      "id": "chant-what-is-it",
+      "title": "What Gregorian Chant Is",
+      "summary": "Gregorian chant is the Church's traditional sung prayer: free in rhythm, text-led, and ordered toward worship rather than performance.",
+      "body": "Gregorian chant is meant to clothe the sacred text, not distract from it. Even when you do not know every chant, it can still help you pray by slowing your attention and keeping the liturgy's pace reverent. In this app, the chant notes are intentionally small and practical: enough to orient you, not to turn the app into a chant encyclopedia or a substitute for the rite itself.",
+      "keywords": [
+        "gregorian chant",
+        "what is chant",
+        "sacred music"
+      ],
+      "sourceIDs": [
+        "chant",
+        "translation"
+      ],
+      "searchAliases": [
+        "what is gregorian chant",
+        "chant basics"
+      ]
+    },
+    {
+      "id": "chant-where-to-listen",
+      "title": "Where Chant Appears in the Mass",
+      "summary": "In Sung Masses, chant often marks the entrance, Ordinary parts such as Kyrie and Sanctus, the proper chants, and other major transitions.",
+      "body": "If you are new, do not worry about naming every chant. Use it as a landmark. The entrance, Gradual or Alleluia, Offertory, Sanctus, Agnus Dei, and Communion chant often tell you where the liturgy is moving even before you find the line on the page. The app’s Sung Mass profile leans on these landmarks more heavily than the Low Mass profile does.",
+      "keywords": [
+        "where is chant",
+        "ordinary chants",
+        "proper chants"
+      ],
+      "sourceIDs": [
+        "chant",
+        "translation"
+      ],
+      "searchAliases": [
+        "where chant appears",
+        "what parts are sung"
+      ]
+    },
+    {
+      "id": "chant-how-to-listen",
+      "title": "How to Listen and Follow",
+      "summary": "At a Sung Mass, you can participate fruitfully by listening, watching the altar, and rejoining at stable textual landmarks rather than forcing constant page-turning.",
+      "body": "The schola and ministers may move at a different pace from a hand missal. That is normal. Use the guide to hold the larger structure of the rite in mind, and let chant carry the atmosphere of prayer without anxiety about matching every syllable in real time. If you drift, wait for the next strong landmark instead of trying to recover every lost line. The point is attentive worship, not perfect synchronization.",
+      "keywords": [
+        "listen",
+        "follow along",
+        "sung mass"
+      ],
+      "sourceIDs": [
+        "chant",
+        "translation"
+      ],
+      "searchAliases": [
+        "how to follow chant",
+        "listen at sung mass"
+      ]
+    }
+  ]
+}

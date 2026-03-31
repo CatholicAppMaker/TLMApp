@@ -1,0 +1,757 @@
+{
+  "entries": [
+    {
+      "date": "2026-01-01",
+      "id": "octave-day-of-christmas",
+      "title": "Octave Day of Christmas",
+      "subtitle": "The Circumcision and Name of the Lord within Christmastide.",
+      "summary": "The year opens under the mystery of the Incarnation and the saving obedience of the Lord.",
+      "rank": "First Class",
+      "kind": "feast",
+      "season": "christmas",
+      "searchAliases": [
+        "new year mass"
+      ]
+    },
+    {
+      "date": "2026-01-04",
+      "id": "holy-name-sunday",
+      "title": "Feast of the Holy Name of Jesus",
+      "subtitle": "Christmastide Sunday",
+      "summary": "The first covered Sunday of the year turns the faithful toward the saving Name of the Incarnate Lord.",
+      "rank": "Second Class",
+      "kind": "sunday",
+      "season": "christmas",
+      "searchAliases": [
+        "january sunday",
+        "holy name"
+      ]
+    },
+    {
+      "date": "2026-01-06",
+      "id": "epiphany",
+      "title": "Epiphany of the Lord",
+      "subtitle": "The Lord is made manifest to the nations.",
+      "summary": "The Mass celebrates the manifestation of Christ and the widening of His light to the Gentiles.",
+      "rank": "First Class",
+      "kind": "feast",
+      "season": "christmas",
+      "searchAliases": [
+        "three kings"
+      ]
+    },
+    {
+      "date": "2026-01-11",
+      "id": "first-sunday-after-epiphany",
+      "title": "First Sunday after Epiphany",
+      "subtitle": "Christmastide continues after the Epiphany.",
+      "summary": "The liturgy keeps the gaze on the hidden life of Christ while the Church reflects on the manifestation of the Lord.",
+      "rank": "Second Class",
+      "kind": "sunday",
+      "season": "christmas",
+      "searchAliases": [
+        "epiphany season"
+      ]
+    },
+    {
+      "date": "2026-01-18",
+      "id": "second-sunday-after-epiphany",
+      "title": "Second Sunday after Epiphany",
+      "subtitle": "Epiphany season Sunday",
+      "summary": "The propers continue the Epiphany season emphasis on the Lord being made known to the nations.",
+      "rank": "Second Class",
+      "kind": "sunday",
+      "season": "christmas",
+      "searchAliases": []
+    },
+    {
+      "date": "2026-01-25",
+      "id": "third-sunday-after-epiphany",
+      "title": "Third Sunday after Epiphany",
+      "subtitle": "Epiphany season Sunday",
+      "summary": "The Church asks for deeper trust in Christ\u2019s authority and mercy as the Epiphany cycle continues.",
+      "rank": "Second Class",
+      "kind": "sunday",
+      "season": "christmas",
+      "searchAliases": []
+    },
+    {
+      "date": "2026-02-01",
+      "id": "septuagesima",
+      "title": "Septuagesima Sunday",
+      "subtitle": "Pre-Lent begins.",
+      "summary": "The liturgy begins to sober the faithful before Lent and turns the mind toward repentance and perseverance.",
+      "rank": "Second Class",
+      "kind": "sunday",
+      "season": "lent",
+      "searchAliases": [
+        "pre lent"
+      ]
+    },
+    {
+      "date": "2026-02-08",
+      "id": "sexagesima",
+      "title": "Sexagesima Sunday",
+      "subtitle": "Pre-Lent Sunday",
+      "summary": "The Church stays with pre-Lenten conversion and urges the faithful to receive the word fruitfully.",
+      "rank": "Second Class",
+      "kind": "sunday",
+      "season": "lent",
+      "searchAliases": [
+        "pre lent"
+      ]
+    },
+    {
+      "date": "2026-02-15",
+      "id": "quinquagesima",
+      "title": "Quinquagesima Sunday",
+      "subtitle": "The final Sunday before Lent.",
+      "summary": "The liturgy stands on the threshold of Lent and teaches charity, humility, and readiness to follow Christ.",
+      "rank": "Second Class",
+      "kind": "sunday",
+      "season": "lent",
+      "searchAliases": [
+        "before ash wednesday"
+      ]
+    },
+    {
+      "date": "2026-02-22",
+      "id": "first-sunday-of-lent",
+      "title": "First Sunday of Lent",
+      "subtitle": "Lent has begun.",
+      "summary": "The proper texts begin the Lenten contest with prayer, fasting, and a sharper call to conversion.",
+      "rank": "Second Class",
+      "kind": "sunday",
+      "season": "lent",
+      "searchAliases": []
+    },
+    {
+      "date": "2026-03-01",
+      "id": "second-sunday-of-lent",
+      "title": "Second Sunday of Lent",
+      "subtitle": "Lenten Sunday",
+      "summary": "The Church continues the Lenten ascent and teaches patience, recollection, and confidence in grace.",
+      "rank": "Second Class",
+      "kind": "sunday",
+      "season": "lent",
+      "searchAliases": []
+    },
+    {
+      "date": "2026-03-08",
+      "id": "third-sunday-of-lent",
+      "title": "Third Sunday of Lent",
+      "subtitle": "Lenten Sunday",
+      "summary": "The proper texts press the faithful toward deeper purification and steadier interior prayer.",
+      "rank": "Second Class",
+      "kind": "sunday",
+      "season": "lent",
+      "searchAliases": []
+    },
+    {
+      "date": "2026-03-15",
+      "id": "fourth-sunday-of-lent",
+      "title": "Fourth Sunday of Lent",
+      "subtitle": "Laetare Sunday",
+      "summary": "Even in penitential season, the liturgy gives a restrained note of joy and confidence in God\u2019s mercy.",
+      "rank": "Second Class",
+      "kind": "sunday",
+      "season": "lent",
+      "searchAliases": [
+        "laetare"
+      ]
+    },
+    {
+      "date": "2026-03-19",
+      "id": "saint-joseph",
+      "title": "Saint Joseph, Spouse of the Blessed Virgin Mary",
+      "subtitle": "A major March feast in the Lenten cycle.",
+      "summary": "The proper texts honor the guardian of the Redeemer and teach hidden fidelity.",
+      "rank": "First Class",
+      "kind": "feast",
+      "season": "lent",
+      "searchAliases": [
+        "st joseph"
+      ]
+    },
+    {
+      "date": "2026-03-22",
+      "id": "passion-sunday",
+      "title": "Passion Sunday",
+      "subtitle": "Passiontide begins.",
+      "summary": "The Church turns more directly toward the Passion and keeps the faithful close to the coming sacrifice.",
+      "rank": "First Class",
+      "kind": "sunday",
+      "season": "lent",
+      "searchAliases": [
+        "passiontide"
+      ]
+    },
+    {
+      "date": "2026-03-25",
+      "id": "annunciation",
+      "title": "Annunciation of the Blessed Virgin Mary",
+      "subtitle": "The Incarnation announced by the Angel.",
+      "summary": "The Church contemplates the beginning of the Incarnation and Our Lady\u2019s fiat.",
+      "rank": "First Class",
+      "kind": "feast",
+      "season": "lent",
+      "searchAliases": [
+        "lady day"
+      ]
+    },
+    {
+      "date": "2026-03-29",
+      "id": "palm-sunday",
+      "title": "Palm Sunday",
+      "subtitle": "Holy Week begins.",
+      "summary": "The Mass turns toward Christ\u2019s royal entry and His Passion, opening the most solemn week of the year.",
+      "rank": "First Class",
+      "kind": "sunday",
+      "season": "lent",
+      "searchAliases": [
+        "holy week"
+      ]
+    },
+    {
+      "date": "2026-04-05",
+      "id": "easter-sunday",
+      "title": "Easter Sunday",
+      "subtitle": "The Resurrection of the Lord.",
+      "summary": "The Paschal proper texts proclaim the Resurrection and fill the liturgy with victory and thanksgiving.",
+      "rank": "First Class",
+      "kind": "sunday",
+      "season": "easter",
+      "searchAliases": [
+        "pascha",
+        "resurrection"
+      ]
+    },
+    {
+      "date": "2026-04-12",
+      "id": "low-sunday",
+      "title": "Low Sunday",
+      "subtitle": "The Octave of Easter continues.",
+      "summary": "The second Sunday of Easter keeps the Church in the joy and wonder of the Resurrection.",
+      "rank": "Second Class",
+      "kind": "sunday",
+      "season": "easter",
+      "searchAliases": [
+        "quasimodo sunday"
+      ]
+    },
+    {
+      "date": "2026-04-19",
+      "id": "second-sunday-after-easter",
+      "title": "Second Sunday after Easter",
+      "subtitle": "Eastertide Sunday",
+      "summary": "The Paschal season continues with proper texts centered on the risen Christ and the care of the Good Shepherd.",
+      "rank": "Second Class",
+      "kind": "sunday",
+      "season": "easter",
+      "searchAliases": [
+        "good shepherd sunday"
+      ]
+    },
+    {
+      "date": "2026-04-26",
+      "id": "third-sunday-after-easter",
+      "title": "Third Sunday after Easter",
+      "subtitle": "Eastertide Sunday",
+      "summary": "The Church keeps the faithful steady in Easter joy while pointing them toward patience and prayer.",
+      "rank": "Second Class",
+      "kind": "sunday",
+      "season": "easter",
+      "searchAliases": []
+    },
+    {
+      "date": "2026-05-03",
+      "id": "fourth-sunday-after-easter",
+      "title": "Fourth Sunday after Easter",
+      "subtitle": "Eastertide Sunday",
+      "summary": "The Resurrection season continues, and the proper texts keep the Church attentive to Christ\u2019s promises.",
+      "rank": "Second Class",
+      "kind": "sunday",
+      "season": "easter",
+      "searchAliases": []
+    },
+    {
+      "date": "2026-05-10",
+      "id": "fifth-sunday-after-easter",
+      "title": "Fifth Sunday after Easter",
+      "subtitle": "Eastertide Sunday",
+      "summary": "The liturgy prepares the faithful for Ascension and Pentecost with themes of prayer and confidence.",
+      "rank": "Second Class",
+      "kind": "sunday",
+      "season": "easter",
+      "searchAliases": []
+    },
+    {
+      "date": "2026-05-14",
+      "id": "ascension",
+      "title": "Ascension of the Lord",
+      "subtitle": "Forty days after Easter.",
+      "summary": "The Lord ascends in glory, and the Church learns to long for heavenly things.",
+      "rank": "First Class",
+      "kind": "feast",
+      "season": "easter",
+      "searchAliases": [
+        "ascension thursday"
+      ]
+    },
+    {
+      "date": "2026-05-17",
+      "id": "sunday-after-ascension",
+      "title": "Sunday after Ascension",
+      "subtitle": "The Church waits prayerfully for Pentecost.",
+      "summary": "The proper texts hold the faithful between the Ascension and Pentecost in watchful expectation.",
+      "rank": "Second Class",
+      "kind": "sunday",
+      "season": "easter",
+      "searchAliases": [
+        "ascension sunday"
+      ]
+    },
+    {
+      "date": "2026-05-24",
+      "id": "pentecost-sunday",
+      "title": "Pentecost Sunday",
+      "subtitle": "The coming of the Holy Ghost.",
+      "summary": "The Church celebrates the outpouring of the Holy Ghost and the public strength of the apostolic Church.",
+      "rank": "First Class",
+      "kind": "sunday",
+      "season": "easter",
+      "searchAliases": [
+        "holy ghost"
+      ]
+    },
+    {
+      "date": "2026-05-31",
+      "id": "trinity-sunday",
+      "title": "Trinity Sunday",
+      "subtitle": "The mystery of the Blessed Trinity.",
+      "summary": "The Mass turns from Paschal fulfillment to adoration of the Most Holy Trinity.",
+      "rank": "First Class",
+      "kind": "sunday",
+      "season": "post-pentecost",
+      "searchAliases": [
+        "most holy trinity"
+      ]
+    },
+    {
+      "date": "2026-06-04",
+      "id": "corpus-christi",
+      "title": "Corpus Christi",
+      "subtitle": "The mystery of the Blessed Sacrament.",
+      "summary": "The Church dwells with special clarity on the gift of the Eucharistic Lord.",
+      "rank": "First Class",
+      "kind": "feast",
+      "season": "post-pentecost",
+      "searchAliases": [
+        "body of christ"
+      ]
+    },
+    {
+      "date": "2026-06-07",
+      "id": "sunday-after-pentecost-2",
+      "title": "2nd Sunday after Pentecost",
+      "subtitle": "Post-Pentecost Sunday",
+      "summary": "The Church continues the long green season with proper texts that teach perseverance, gratitude, and readiness for the Lord\u2019s return.",
+      "rank": "Second Class",
+      "kind": "sunday",
+      "season": "post-pentecost",
+      "searchAliases": []
+    },
+    {
+      "date": "2026-06-12",
+      "id": "sacred-heart",
+      "title": "Sacred Heart of Jesus",
+      "subtitle": "The love of Christ made visible in His Heart.",
+      "summary": "The proper texts turn the faithful toward reparation, love, and trust in the Heart of Christ.",
+      "rank": "First Class",
+      "kind": "feast",
+      "season": "post-pentecost",
+      "searchAliases": [
+        "most sacred heart"
+      ]
+    },
+    {
+      "date": "2026-06-14",
+      "id": "sunday-after-pentecost-3",
+      "title": "3rd Sunday after Pentecost",
+      "subtitle": "Post-Pentecost Sunday",
+      "summary": "The Church continues the long green season with proper texts that teach perseverance, gratitude, and readiness for the Lord\u2019s return.",
+      "rank": "Second Class",
+      "kind": "sunday",
+      "season": "post-pentecost",
+      "searchAliases": []
+    },
+    {
+      "date": "2026-06-21",
+      "id": "sunday-after-pentecost-4",
+      "title": "4th Sunday after Pentecost",
+      "subtitle": "Post-Pentecost Sunday",
+      "summary": "The Church continues the long green season with proper texts that teach perseverance, gratitude, and readiness for the Lord\u2019s return.",
+      "rank": "Second Class",
+      "kind": "sunday",
+      "season": "post-pentecost",
+      "searchAliases": []
+    },
+    {
+      "date": "2026-06-28",
+      "id": "sunday-after-pentecost-5",
+      "title": "5th Sunday after Pentecost",
+      "subtitle": "Post-Pentecost Sunday",
+      "summary": "The Church continues the long green season with proper texts that teach perseverance, gratitude, and readiness for the Lord\u2019s return.",
+      "rank": "Second Class",
+      "kind": "sunday",
+      "season": "post-pentecost",
+      "searchAliases": []
+    },
+    {
+      "date": "2026-07-05",
+      "id": "sunday-after-pentecost-6",
+      "title": "6th Sunday after Pentecost",
+      "subtitle": "Post-Pentecost Sunday",
+      "summary": "The Church continues the long green season with proper texts that teach perseverance, gratitude, and readiness for the Lord\u2019s return.",
+      "rank": "Second Class",
+      "kind": "sunday",
+      "season": "post-pentecost",
+      "searchAliases": []
+    },
+    {
+      "date": "2026-07-12",
+      "id": "sunday-after-pentecost-7",
+      "title": "7th Sunday after Pentecost",
+      "subtitle": "Post-Pentecost Sunday",
+      "summary": "The Church continues the long green season with proper texts that teach perseverance, gratitude, and readiness for the Lord\u2019s return.",
+      "rank": "Second Class",
+      "kind": "sunday",
+      "season": "post-pentecost",
+      "searchAliases": []
+    },
+    {
+      "date": "2026-07-19",
+      "id": "sunday-after-pentecost-8",
+      "title": "8th Sunday after Pentecost",
+      "subtitle": "Post-Pentecost Sunday",
+      "summary": "The Church continues the long green season with proper texts that teach perseverance, gratitude, and readiness for the Lord\u2019s return.",
+      "rank": "Second Class",
+      "kind": "sunday",
+      "season": "post-pentecost",
+      "searchAliases": []
+    },
+    {
+      "date": "2026-07-26",
+      "id": "sunday-after-pentecost-9",
+      "title": "9th Sunday after Pentecost",
+      "subtitle": "Post-Pentecost Sunday",
+      "summary": "The Church continues the long green season with proper texts that teach perseverance, gratitude, and readiness for the Lord\u2019s return.",
+      "rank": "Second Class",
+      "kind": "sunday",
+      "season": "post-pentecost",
+      "searchAliases": []
+    },
+    {
+      "date": "2026-08-02",
+      "id": "sunday-after-pentecost-10",
+      "title": "10th Sunday after Pentecost",
+      "subtitle": "Post-Pentecost Sunday",
+      "summary": "The Church continues the long green season with proper texts that teach perseverance, gratitude, and readiness for the Lord\u2019s return.",
+      "rank": "Second Class",
+      "kind": "sunday",
+      "season": "post-pentecost",
+      "searchAliases": []
+    },
+    {
+      "date": "2026-08-09",
+      "id": "sunday-after-pentecost-11",
+      "title": "11th Sunday after Pentecost",
+      "subtitle": "Post-Pentecost Sunday",
+      "summary": "The Church continues the long green season with proper texts that teach perseverance, gratitude, and readiness for the Lord\u2019s return.",
+      "rank": "Second Class",
+      "kind": "sunday",
+      "season": "post-pentecost",
+      "searchAliases": []
+    },
+    {
+      "date": "2026-08-15",
+      "id": "assumption",
+      "title": "Assumption of the Blessed Virgin Mary",
+      "subtitle": "The Blessed Virgin is taken into heavenly glory.",
+      "summary": "The liturgy contemplates Our Lady\u2019s triumph and the hope of bodily resurrection.",
+      "rank": "First Class",
+      "kind": "feast",
+      "season": "post-pentecost",
+      "searchAliases": [
+        "our lady"
+      ]
+    },
+    {
+      "date": "2026-08-16",
+      "id": "sunday-after-pentecost-12",
+      "title": "12th Sunday after Pentecost",
+      "subtitle": "Post-Pentecost Sunday",
+      "summary": "The Church continues the long green season with proper texts that teach perseverance, gratitude, and readiness for the Lord\u2019s return.",
+      "rank": "Second Class",
+      "kind": "sunday",
+      "season": "post-pentecost",
+      "searchAliases": []
+    },
+    {
+      "date": "2026-08-23",
+      "id": "sunday-after-pentecost-13",
+      "title": "13th Sunday after Pentecost",
+      "subtitle": "Post-Pentecost Sunday",
+      "summary": "The Church continues the long green season with proper texts that teach perseverance, gratitude, and readiness for the Lord\u2019s return.",
+      "rank": "Second Class",
+      "kind": "sunday",
+      "season": "post-pentecost",
+      "searchAliases": []
+    },
+    {
+      "date": "2026-08-30",
+      "id": "sunday-after-pentecost-14",
+      "title": "14th Sunday after Pentecost",
+      "subtitle": "Post-Pentecost Sunday",
+      "summary": "The Church continues the long green season with proper texts that teach perseverance, gratitude, and readiness for the Lord\u2019s return.",
+      "rank": "Second Class",
+      "kind": "sunday",
+      "season": "post-pentecost",
+      "searchAliases": []
+    },
+    {
+      "date": "2026-09-06",
+      "id": "sunday-after-pentecost-15",
+      "title": "15th Sunday after Pentecost",
+      "subtitle": "Post-Pentecost Sunday",
+      "summary": "The Church continues the long green season with proper texts that teach perseverance, gratitude, and readiness for the Lord\u2019s return.",
+      "rank": "Second Class",
+      "kind": "sunday",
+      "season": "post-pentecost",
+      "searchAliases": []
+    },
+    {
+      "date": "2026-09-13",
+      "id": "sunday-after-pentecost-16",
+      "title": "16th Sunday after Pentecost",
+      "subtitle": "Post-Pentecost Sunday",
+      "summary": "The Church continues the long green season with proper texts that teach perseverance, gratitude, and readiness for the Lord\u2019s return.",
+      "rank": "Second Class",
+      "kind": "sunday",
+      "season": "post-pentecost",
+      "searchAliases": []
+    },
+    {
+      "date": "2026-09-20",
+      "id": "sunday-after-pentecost-17",
+      "title": "17th Sunday after Pentecost",
+      "subtitle": "Post-Pentecost Sunday",
+      "summary": "The Church continues the long green season with proper texts that teach perseverance, gratitude, and readiness for the Lord\u2019s return.",
+      "rank": "Second Class",
+      "kind": "sunday",
+      "season": "post-pentecost",
+      "searchAliases": []
+    },
+    {
+      "date": "2026-09-27",
+      "id": "sunday-after-pentecost-18",
+      "title": "18th Sunday after Pentecost",
+      "subtitle": "Post-Pentecost Sunday",
+      "summary": "The Church continues the long green season with proper texts that teach perseverance, gratitude, and readiness for the Lord\u2019s return.",
+      "rank": "Second Class",
+      "kind": "sunday",
+      "season": "post-pentecost",
+      "searchAliases": []
+    },
+    {
+      "date": "2026-10-04",
+      "id": "sunday-after-pentecost-19",
+      "title": "19th Sunday after Pentecost",
+      "subtitle": "Post-Pentecost Sunday",
+      "summary": "The Church continues the long green season with proper texts that teach perseverance, gratitude, and readiness for the Lord\u2019s return.",
+      "rank": "Second Class",
+      "kind": "sunday",
+      "season": "post-pentecost",
+      "searchAliases": []
+    },
+    {
+      "date": "2026-10-11",
+      "id": "sunday-after-pentecost-20",
+      "title": "20th Sunday after Pentecost",
+      "subtitle": "Post-Pentecost Sunday",
+      "summary": "The Church continues the long green season with proper texts that teach perseverance, gratitude, and readiness for the Lord\u2019s return.",
+      "rank": "Second Class",
+      "kind": "sunday",
+      "season": "post-pentecost",
+      "searchAliases": []
+    },
+    {
+      "date": "2026-10-18",
+      "id": "sunday-after-pentecost-21",
+      "title": "21st Sunday after Pentecost",
+      "subtitle": "Post-Pentecost Sunday",
+      "summary": "The Church continues the long green season with proper texts that teach perseverance, gratitude, and readiness for the Lord\u2019s return.",
+      "rank": "Second Class",
+      "kind": "sunday",
+      "season": "post-pentecost",
+      "searchAliases": []
+    },
+    {
+      "date": "2026-10-25",
+      "id": "christ-the-king",
+      "title": "Feast of Christ the King",
+      "subtitle": "The kingship of Christ over souls and societies.",
+      "summary": "The liturgy proclaims the social reign of Christ and calls the faithful to ordered loyalty under His kingship.",
+      "rank": "First Class",
+      "kind": "feast",
+      "season": "post-pentecost",
+      "searchAliases": [
+        "christ the king"
+      ]
+    },
+    {
+      "date": "2026-11-01",
+      "id": "sunday-after-pentecost-23",
+      "title": "23rd Sunday after Pentecost",
+      "subtitle": "Post-Pentecost Sunday",
+      "summary": "The Church continues the long green season with proper texts that teach perseverance, gratitude, and readiness for the Lord\u2019s return.",
+      "rank": "Second Class",
+      "kind": "sunday",
+      "season": "post-pentecost",
+      "searchAliases": []
+    },
+    {
+      "date": "2026-11-01",
+      "id": "all-saints",
+      "title": "All Saints",
+      "subtitle": "The triumph of the whole heavenly court.",
+      "summary": "The Church honors the saints together and gives the faithful a vision of heavenly intercession.",
+      "rank": "First Class",
+      "kind": "feast",
+      "season": "post-pentecost",
+      "searchAliases": [
+        "all saints day"
+      ]
+    },
+    {
+      "date": "2026-11-08",
+      "id": "sunday-after-pentecost-24",
+      "title": "24th Sunday after Pentecost",
+      "subtitle": "Post-Pentecost Sunday",
+      "summary": "The Church continues the long green season with proper texts that teach perseverance, gratitude, and readiness for the Lord\u2019s return.",
+      "rank": "Second Class",
+      "kind": "sunday",
+      "season": "post-pentecost",
+      "searchAliases": []
+    },
+    {
+      "date": "2026-11-15",
+      "id": "sunday-after-pentecost-25",
+      "title": "25th Sunday after Pentecost",
+      "subtitle": "Post-Pentecost Sunday",
+      "summary": "The Church continues the long green season with proper texts that teach perseverance, gratitude, and readiness for the Lord\u2019s return.",
+      "rank": "Second Class",
+      "kind": "sunday",
+      "season": "post-pentecost",
+      "searchAliases": []
+    },
+    {
+      "date": "2026-11-22",
+      "id": "sunday-after-pentecost-26",
+      "title": "26th Sunday after Pentecost",
+      "subtitle": "Post-Pentecost Sunday",
+      "summary": "The Church continues the long green season with proper texts that teach perseverance, gratitude, and readiness for the Lord\u2019s return.",
+      "rank": "Second Class",
+      "kind": "sunday",
+      "season": "post-pentecost",
+      "searchAliases": []
+    },
+    {
+      "date": "2026-11-29",
+      "id": "first-sunday-of-advent",
+      "title": "First Sunday of Advent",
+      "subtitle": "The liturgical year turns toward the coming of the Lord.",
+      "summary": "Advent begins with sober hope and a call to vigilance as the Church prepares for Christmas.",
+      "rank": "First Class",
+      "kind": "sunday",
+      "season": "advent",
+      "searchAliases": [
+        "advent"
+      ]
+    },
+    {
+      "date": "2026-12-06",
+      "id": "second-sunday-of-advent",
+      "title": "Second Sunday of Advent",
+      "subtitle": "Advent Sunday",
+      "summary": "The Church continues her Advent watch with proper texts shaped by desire, repentance, and expectation.",
+      "rank": "Second Class",
+      "kind": "sunday",
+      "season": "advent",
+      "searchAliases": []
+    },
+    {
+      "date": "2026-12-08",
+      "id": "immaculate-conception",
+      "title": "Immaculate Conception",
+      "subtitle": "The sinless conception of the Blessed Virgin Mary.",
+      "summary": "The proper texts praise the prevenient grace that prepared the Mother of God.",
+      "rank": "First Class",
+      "kind": "feast",
+      "season": "advent",
+      "searchAliases": [
+        "immaculate conception"
+      ]
+    },
+    {
+      "date": "2026-12-13",
+      "id": "third-sunday-of-advent",
+      "title": "Third Sunday of Advent",
+      "subtitle": "Gaudete Sunday",
+      "summary": "Advent joy becomes more visible here, even while the season keeps its prayerful restraint.",
+      "rank": "Second Class",
+      "kind": "sunday",
+      "season": "advent",
+      "searchAliases": [
+        "gaudete"
+      ]
+    },
+    {
+      "date": "2026-12-20",
+      "id": "fourth-sunday-of-advent",
+      "title": "Fourth Sunday of Advent",
+      "subtitle": "The final Sunday before Christmas.",
+      "summary": "The liturgy stands close to the Nativity and keeps the faithful in reverent expectation.",
+      "rank": "Second Class",
+      "kind": "sunday",
+      "season": "advent",
+      "searchAliases": []
+    },
+    {
+      "date": "2026-12-25",
+      "id": "christmas",
+      "title": "Christmas Day",
+      "subtitle": "The Nativity of the Lord.",
+      "summary": "The Mass rejoices in the Word made flesh and the humility of the Savior\u2019s birth.",
+      "rank": "First Class",
+      "kind": "feast",
+      "season": "christmas",
+      "searchAliases": [
+        "nativity"
+      ]
+    },
+    {
+      "date": "2026-12-27",
+      "id": "sunday-within-octave-of-christmas",
+      "title": "Sunday within the Octave of Christmas",
+      "subtitle": "Christmastide Sunday",
+      "summary": "The Church remains close to the mystery of the Nativity and keeps Christmas thanksgiving alive.",
+      "rank": "Second Class",
+      "kind": "sunday",
+      "season": "christmas",
+      "searchAliases": [
+        "christmas octave"
+      ]
+    }
+  ]
+}
