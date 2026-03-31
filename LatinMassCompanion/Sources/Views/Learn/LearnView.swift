@@ -2,6 +2,7 @@ import SwiftUI
 
 struct LearnView: View {
     let appModel: AppModel
+    let supportTipJar: SupportTipJar
 
     var body: some View {
         ZStack {
@@ -14,6 +15,7 @@ struct LearnView: View {
                     LearnIntroCard(
                         sources: appModel.sourceReferences(for: ["ordinary", "translation", "chant"])
                     )
+                    supportSection
                     focusedSection
                     guideSection(
                         title: "Start Here",
@@ -40,6 +42,86 @@ struct LearnView: View {
         }
         .navigationTitle("Learn")
         .navigationBarTitleDisplayMode(.inline)
+        .task {
+            await supportTipJar.loadProductsIfNeeded()
+        }
+    }
+
+    private var supportSection: some View {
+        LearnSectionCard(
+            title: "Support the App",
+            subtitle: "If this companion has helped you, you can leave a simple in-app tip to support its continued development."
+        ) {
+            Text(
+                """
+                Tips are entirely optional. They do not unlock content, and the app remains fully usable without them.
+                """
+            )
+            .font(.body)
+            .foregroundStyle(AppTheme.mutedInk)
+            .fixedSize(horizontal: false, vertical: true)
+
+            if supportTipJar.isLoadingProducts, !supportTipJar.hasLoadedProducts {
+                HStack(spacing: 10) {
+                    ProgressView()
+                    Text("Loading support options…")
+                        .font(.subheadline)
+                        .foregroundStyle(AppTheme.mutedInk)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .accessibilityIdentifier("support-tip-loading")
+            } else {
+                ForEach(supportTipJar.options) { option in
+                    Button {
+                        Task {
+                            await supportTipJar.purchase(option)
+                        }
+                    } label: {
+                        HStack(alignment: .center, spacing: 12) {
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(option.title)
+                                    .font(.system(.headline, design: .serif))
+                                    .foregroundStyle(AppTheme.ink)
+
+                                Text(option.subtitle)
+                                    .font(.subheadline)
+                                    .foregroundStyle(AppTheme.mutedInk)
+                            }
+
+                            Spacer(minLength: 12)
+
+                            if supportTipJar.isPurchasing(option) {
+                                ProgressView()
+                                    .controlSize(.small)
+                            } else {
+                                Text(supportTipJar.displayPrice(for: option))
+                                    .font(.subheadline.weight(.semibold))
+                                    .foregroundStyle(AppTheme.burgundy)
+                            }
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                    .buttonStyle(LearnOutlineButtonStyle())
+                    .disabled(supportTipJar.purchaseInFlightID != nil)
+                    .accessibilityIdentifier("support-tip-\(option.id)")
+                    .accessibilityLabel("\(option.title), \(supportTipJar.displayPrice(for: option))")
+                }
+            }
+
+            if let statusMessage = supportTipJar.statusMessage {
+                Text(statusMessage)
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(AppTheme.burgundy)
+                    .accessibilityIdentifier("support-tip-status")
+            }
+
+            if let errorMessage = supportTipJar.errorMessage {
+                Text(errorMessage)
+                    .font(.subheadline)
+                    .foregroundStyle(.red.opacity(0.85))
+                    .accessibilityIdentifier("support-tip-error")
+            }
+        }
     }
 
     @ViewBuilder

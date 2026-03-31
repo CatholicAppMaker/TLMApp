@@ -93,11 +93,70 @@ final class SpyMassFormStore: MassFormStore {
     }
 }
 
+actor SpySupportTipStorefront: SupportTipStorefront {
+    var nextProducts: [SupportTipProduct] = []
+    var nextPurchaseOutcome: SupportTipPurchaseOutcome = .success
+    var fetchError: Error?
+    var purchaseError: Error?
+    private(set) var fetchedIDs: [[String]] = []
+    private(set) var purchasedIDs: [String] = []
+
+    func setNextProducts(_ products: [SupportTipProduct]) {
+        nextProducts = products
+    }
+
+    func setNextPurchaseOutcome(_ outcome: SupportTipPurchaseOutcome) {
+        nextPurchaseOutcome = outcome
+    }
+
+    func setFetchError(_ error: Error?) {
+        fetchError = error
+    }
+
+    func setPurchaseError(_ error: Error?) {
+        purchaseError = error
+    }
+
+    func fetchProducts(for ids: [String]) async throws -> [SupportTipProduct] {
+        fetchedIDs.append(ids)
+
+        if let fetchError {
+            throw fetchError
+        }
+
+        return nextProducts
+    }
+
+    func purchase(productID: String) async throws -> SupportTipPurchaseOutcome {
+        purchasedIDs.append(productID)
+
+        if let purchaseError {
+            throw purchaseError
+        }
+
+        return nextPurchaseOutcome
+    }
+
+    func fetchedRequestCount() -> Int {
+        fetchedIDs.count
+    }
+
+    func purchasedProductIDs() -> [String] {
+        purchasedIDs
+    }
+}
+
 enum SampleTestError: LocalizedError {
     case loadFailed
+    case purchaseFailed
 
     var errorDescription: String? {
-        "Sample load failure"
+        switch self {
+        case .loadFailed:
+            "Sample load failure"
+        case .purchaseFailed:
+            "Sample purchase failure"
+        }
     }
 }
 

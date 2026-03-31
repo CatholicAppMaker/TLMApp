@@ -9,6 +9,7 @@ enum AppTab: Hashable {
 
 struct RootTabView: View {
     let appModel: AppModel
+    let supportTipJar: SupportTipJar
 
     @State private var selectedTab: AppTab = .today
 
@@ -39,7 +40,7 @@ struct RootTabView: View {
             .tag(AppTab.library)
 
             NavigationStack {
-                LearnView(appModel: appModel)
+                LearnView(appModel: appModel, supportTipJar: supportTipJar)
             }
             .tabItem {
                 Label("Learn", systemImage: "character.book.closed")

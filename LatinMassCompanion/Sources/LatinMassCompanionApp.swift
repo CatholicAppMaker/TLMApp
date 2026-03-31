@@ -3,6 +3,7 @@ import SwiftUI
 @main
 struct LatinMassCompanionApp: App {
     @State private var appModel: AppModel
+    @State private var supportTipJar: SupportTipJar
 
     init() {
         let processInfo = ProcessInfo.processInfo
@@ -31,11 +32,12 @@ struct LatinMassCompanionApp: App {
                 now: nowProvider
             )
         )
+        _supportTipJar = State(initialValue: SupportTipJar())
     }
 
     var body: some Scene {
         WindowGroup {
-            RootTabView(appModel: appModel)
+            RootTabView(appModel: appModel, supportTipJar: supportTipJar)
         }
     }
 
