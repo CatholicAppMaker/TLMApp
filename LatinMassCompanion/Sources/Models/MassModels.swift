@@ -14,25 +14,6 @@ struct MassCatalog: Codable, Sendable {
     let chantGuides: [ChantGuide]
 }
 
-struct SourceReference: Codable, Identifiable, Hashable, Sendable {
-    let id: String
-    let title: String
-    let description: String
-    let note: String
-    let url: String?
-    let category: String?
-    let rights: String?
-    let attribution: String?
-    let coverageNote: String?
-}
-
-struct CoverageWindow: Codable, Hashable, Sendable {
-    let title: String
-    let startDate: String
-    let endDate: String
-    let description: String
-}
-
 enum MassForm: String, Codable, CaseIterable, Identifiable, Hashable, Sendable {
     case low
     case sung
@@ -100,6 +81,7 @@ struct MassFormProfile: Codable, Hashable, Sendable {
     let summary: String?
     let liveNote: String?
     let participationNote: String?
+    let quickGuidance: [QuickGuidance]?
     let gestureCues: [GestureCue]?
     let sourceIDs: [String]?
     let chantGuideIDs: [String]?
@@ -112,6 +94,10 @@ struct MassFormProfile: Codable, Hashable, Sendable {
         gestureCues ?? []
     }
 
+    var resolvedQuickGuidance: [QuickGuidance] {
+        quickGuidance ?? []
+    }
+
     var resolvedChantGuideIDs: [String] {
         chantGuideIDs ?? []
     }
@@ -119,6 +105,7 @@ struct MassFormProfile: Codable, Hashable, Sendable {
     var searchableText: String {
         let pieces =
             [summary ?? "", liveNote ?? "", participationNote ?? ""]
+                + resolvedQuickGuidance.flatMap { [$0.title, $0.body, $0.sourceID ?? ""] }
                 + profileSourceIDs
                 + resolvedChantGuideIDs
                 + resolvedGestureCues.flatMap { [$0.label, $0.detail] }
@@ -136,6 +123,7 @@ struct MassPart: Codable, Identifiable, Hashable, Sendable {
     let tags: [String]
     let gestureCues: [GestureCue]
     let textBlocks: [TextBlock]
+    let quickGuidance: [QuickGuidance]?
     let explanationNotes: [ExplanationNote]
     let liveNote: String?
     let searchAliases: [String]?
@@ -150,6 +138,10 @@ struct MassPart: Codable, Identifiable, Hashable, Sendable {
 
     var glossaryReferenceIDs: [String] {
         glossaryIDs ?? []
+    }
+
+    var directQuickGuidance: [QuickGuidance] {
+        quickGuidance ?? []
     }
 
     var pronunciationReferenceIDs: [String] {
@@ -179,6 +171,7 @@ struct MassPart: Codable, Identifiable, Hashable, Sendable {
                 + directSourceIDs
                 + gestureCues.flatMap { [$0.label, $0.detail] }
                 + textBlocks.flatMap { [$0.speaker, $0.latin, $0.english, $0.rubric ?? ""] }
+                + directQuickGuidance.flatMap { [$0.title, $0.body, $0.sourceID ?? ""] }
                 + explanationNotes.flatMap { [$0.title, $0.body, $0.sourceID ?? ""] }
                 + (formProfiles ?? []).map(\.searchableText)
                 + glossaryEntries.flatMap {
@@ -232,6 +225,7 @@ struct CelebrationSection: Codable, Identifiable, Hashable, Sendable {
     let tags: [String]
     let gestureCues: [GestureCue]
     let textBlocks: [TextBlock]
+    let quickGuidance: [QuickGuidance]
     let explanationNotes: [ExplanationNote]
     let liveNote: String?
     let searchAliases: [String]?
@@ -345,6 +339,7 @@ struct ResolvedMassPart: Identifiable, Hashable, Sendable {
     let tags: [String]
     let gestureCues: [GestureCue]
     let textBlocks: [TextBlock]
+    let quickGuidance: [QuickGuidance]
     let explanationNotes: [ExplanationNote]
     let liveNote: String?
     let participationNote: String?
@@ -370,6 +365,7 @@ struct ResolvedMassPart: Identifiable, Hashable, Sendable {
             $0.id < $1.id
         }
         textBlocks = part.textBlocks
+        quickGuidance = Self.mergeGuidance(part.directQuickGuidance, profile?.resolvedQuickGuidance ?? [])
         explanationNotes = part.explanationNotes
         liveNote = profile?.liveNote ?? part.liveNote
         participationNote = profile?.participationNote
@@ -402,6 +398,12 @@ struct ResolvedMassPart: Identifiable, Hashable, Sendable {
             )
         ).sorted { $0.id < $1.id }
         textBlocks = properSection.textBlocks
+        quickGuidance = Self.mergeGuidance(
+            basePart.directQuickGuidance,
+            baseProfile?.resolvedQuickGuidance ?? [],
+            properSection.quickGuidance,
+            properProfile?.resolvedQuickGuidance ?? []
+        )
         explanationNotes = properSection.explanationNotes
         liveNote = properProfile?.liveNote ?? properSection.liveNote ?? baseProfile?.liveNote ?? basePart.liveNote
         participationNote = properProfile?.participationNote ?? baseProfile?.participationNote
@@ -434,7 +436,8 @@ struct ResolvedMassPart: Identifiable, Hashable, Sendable {
 
     var sourceReferenceIDs: [String] {
         let noteSourceIDs = explanationNotes.compactMap(\.sourceID)
-        return Array(Set(sourceIDs + noteSourceIDs)).sorted()
+        let quickSourceIDs = quickGuidance.compactMap(\.sourceID)
+        return Array(Set(sourceIDs + noteSourceIDs + quickSourceIDs)).sorted()
     }
 
     var libraryCategoryTitle: String {
@@ -461,6 +464,7 @@ struct ResolvedMassPart: Identifiable, Hashable, Sendable {
             + chantGuideIDs
             + gestureCues.flatMap { [$0.label, $0.detail] }
             + textBlocks.flatMap { [$0.speaker, $0.latin, $0.english, $0.rubric ?? ""] }
+            + quickGuidance.flatMap { [$0.title, $0.body, $0.sourceID ?? ""] }
             + explanationNotes.flatMap { [$0.title, $0.body, $0.sourceID ?? ""] }
             + glossaryEntries.flatMap {
                 [$0.term, $0.definition] + $0.keywords + $0.relatedTerms + ($0.searchAliases ?? [])
@@ -471,92 +475,17 @@ struct ResolvedMassPart: Identifiable, Hashable, Sendable {
 
         return pieces.joined(separator: " ").lowercased()
     }
-}
 
-enum LearnDestination: Hashable, Sendable {
-    case glossary(String)
-    case pronunciation(String)
-    case participation(String)
-    case chant(String)
-}
+    private static func mergeGuidance(_ groups: [QuickGuidance]...) -> [QuickGuidance] {
+        var merged: [QuickGuidance] = []
+        var seenIDs = Set<String>()
 
-enum LearningSearchResult: Identifiable, Hashable, Sendable {
-    case glossary(GlossaryEntry)
-    case pronunciation(PronunciationGuide)
-    case participation(ParticipationGuide)
-    case chant(ChantGuide)
-
-    var id: String {
-        switch self {
-        case let .glossary(entry):
-            "glossary-\(entry.id)"
-        case let .pronunciation(guide):
-            "pronunciation-\(guide.id)"
-        case let .participation(guide):
-            "participation-\(guide.id)"
-        case let .chant(guide):
-            "chant-\(guide.id)"
+        for group in groups {
+            for item in group where seenIDs.insert(item.id).inserted {
+                merged.append(item)
+            }
         }
-    }
 
-    var title: String {
-        switch self {
-        case let .glossary(entry):
-            entry.term
-        case let .pronunciation(guide):
-            guide.title
-        case let .participation(guide):
-            guide.title
-        case let .chant(guide):
-            guide.title
-        }
-    }
-
-    var summary: String {
-        switch self {
-        case let .glossary(entry):
-            entry.definition
-        case let .pronunciation(guide):
-            guide.note
-        case let .participation(guide):
-            guide.body
-        case let .chant(guide):
-            guide.summary
-        }
-    }
-
-    var categoryTitle: String {
-        switch self {
-        case .glossary:
-            "Glossary"
-        case .pronunciation:
-            "Pronunciation"
-        case .participation:
-            "Guide"
-        case .chant:
-            "Gregorian Chant"
-        }
-    }
-
-    var destination: LearnDestination {
-        switch self {
-        case let .glossary(entry):
-            .glossary(entry.id)
-        case let .pronunciation(guide):
-            .pronunciation(guide.id)
-        case let .participation(guide):
-            .participation(guide.id)
-        case let .chant(guide):
-            .chant(guide.id)
-        }
-    }
-}
-
-struct LibrarySearchResults: Hashable, Sendable {
-    let parts: [ResolvedMassPart]
-    let learningItems: [LearningSearchResult]
-
-    var isEmpty: Bool {
-        parts.isEmpty && learningItems.isEmpty
+        return merged
     }
 }

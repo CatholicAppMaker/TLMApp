@@ -92,6 +92,7 @@ struct AppModelTests {
                     summary: nil,
                     liveNote: nil,
                     participationNote: "Listen for the sung opening.",
+                    quickGuidance: nil,
                     gestureCues: nil,
                     sourceIDs: ["chant"],
                     chantGuideIDs: ["chant-what-is-it"]
@@ -167,6 +168,39 @@ struct AppModelTests {
         #expect(orientation.liveNote == "Stay recollected at the start.")
         #expect(orientation.nextPartTitle == "Canon")
         #expect(orientation.nextPartSummary == "The central Eucharistic prayer.")
+    }
+
+    @MainActor
+    @Test
+    func sourceHelpersResolvePartAndLearningSources() throws {
+        let collect = TestFixtures.makePart(
+            id: "collect-readings",
+            order: 1,
+            title: "Collect",
+            quickGuidance: [
+                QuickGuidance(
+                    id: "collect-guidance",
+                    title: "Reconnect here",
+                    body: "Use the collect to recover calmly.",
+                    sourceID: "translation"
+                )
+            ],
+            sourceIDs: ["ordinary"]
+        )
+        let model = AppModel(
+            repository: StubMassContentRepository {
+                TestFixtures.makeCatalog(parts: [collect])
+            },
+            searchService: SpySearchService(),
+            bookmarkStore: SpyBookmarkStore(),
+            progressStore: SpyMassModeProgressStore(),
+            now: { TestFixtures.date("2026-03-30") }
+        )
+
+        let part = try #require(model.part(withID: "collect-readings"))
+        #expect(model.sourceReferences(for: part).map(\.id) == ["ordinary", "translation"])
+        #expect(model.sourceReferences(for: ["chant", "ordinary"]).map(\.id) == ["chant", "ordinary"])
+        #expect(model.sourceReference(withID: "ordinary")?.title == "Missale Romanum (1962), Ordinary of the Mass")
     }
 
     @MainActor

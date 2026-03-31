@@ -31,6 +31,7 @@ struct GuideView: View {
                     orientation: appModel.guideOrientation(for: part),
                     isBookmarked: appModel.isBookmarked(part),
                     sourceReferences: appModel.sourceReferences(for: part),
+                    quickGuidance: part.quickGuidance,
                     glossaryEntries: part.glossaryIDs.compactMap(appModel.glossaryEntry(withID:)),
                     pronunciationGuides: part.pronunciationIDs.compactMap(appModel.pronunciationGuide(withID:)),
                     chantGuides: appModel.chantGuides(for: part),

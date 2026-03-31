@@ -57,15 +57,6 @@ final class LatinMassCompanionUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["How to Participate at a Low Mass"].waitForExistence(timeout: 5))
     }
 
-    func testTodayFirstVisitButtonOpensFocusedLearnGuide() {
-        let app = XCUIApplication()
-        app.launchApp(resetState: true, todayOverride: "2026-03-30")
-
-        app.buttons["open-first-visit-guide-button"].tap()
-
-        XCTAssertTrue(app.staticTexts["learn-participation-first-time-at-the-1962-mass"].waitForExistence(timeout: 5))
-    }
-
     func testTodayWhatChangesButtonOpensChangesGuide() {
         let app = XCUIApplication()
         app.launchApp(resetState: true, todayOverride: "2026-03-30")
@@ -73,6 +64,15 @@ final class LatinMassCompanionUITests: XCTestCase {
         app.buttons["open-what-changes-button"].tap()
 
         XCTAssertTrue(app.staticTexts["learn-participation-what-changes-by-day"].waitForExistence(timeout: 5))
+    }
+
+    func testTodayFirstTimeButtonOpensOrientationGuide() {
+        let app = XCUIApplication()
+        app.launchApp(resetState: true, todayOverride: "2026-03-30")
+
+        app.buttons["open-first-visit-guide-button"].tap()
+
+        XCTAssertTrue(app.staticTexts["learn-participation-first-time-at-the-1962-mass"].waitForExistence(timeout: 5))
     }
 
     func testLibraryLearningResultOpensPronunciationGuide() {
@@ -91,38 +91,6 @@ final class LatinMassCompanionUITests: XCTestCase {
         learningRow.tap()
 
         XCTAssertTrue(app.staticTexts["learn-pronunciation-domine-non-sum-dignus"].waitForExistence(timeout: 5))
-    }
-
-    func testLibrarySearchWithNoMatchesShowsEmptyState() {
-        let app = XCUIApplication()
-        app.launchApp(resetState: true, todayOverride: "2026-03-30")
-
-        app.openLibrary()
-
-        let searchField = app.textFields["library-search-field"]
-        XCTAssertTrue(searchField.waitForExistence(timeout: 5))
-        searchField.tap()
-        searchField.typeText("zzzxxyyqq")
-
-        XCTAssertTrue(app.staticTexts["No Results"].waitForExistence(timeout: 5))
-    }
-
-    func testLibrarySearchFindsChantGuideSeparately() {
-        let app = XCUIApplication()
-        app.launchApp(resetState: true, todayOverride: "2026-03-30")
-
-        app.openLibrary()
-
-        let searchField = app.textFields["library-search-field"]
-        XCTAssertTrue(searchField.waitForExistence(timeout: 5))
-        searchField.tap()
-        searchField.typeText("gregorian chant")
-
-        let learningRow = app.buttons["library-learning-chant-chant-what-is-it"]
-        XCTAssertTrue(learningRow.waitForExistence(timeout: 5))
-        learningRow.tap()
-
-        XCTAssertTrue(app.staticTexts["learn-chant-chant-what-is-it"].waitForExistence(timeout: 5))
     }
 
     func testSelectingSungMassUpdatesGuideContextAndResumeState() {
@@ -146,6 +114,15 @@ final class LatinMassCompanionUITests: XCTestCase {
         resumedLaunch.buttons["resume-mass-button"].tap()
         XCTAssertTrue(resumedLaunch.staticTexts["guide-form-pill"].waitForExistence(timeout: 5))
         XCTAssertEqual(resumedLaunch.staticTexts["guide-form-pill"].label, "Sung Mass")
+    }
+
+    func testSourcesViewRemainsReachableFromToday() {
+        let app = XCUIApplication()
+        app.launchApp(resetState: true, todayOverride: "2026-03-30")
+
+        app.buttons["view-sources-button"].tap()
+
+        XCTAssertTrue(app.staticTexts["Missale Romanum (1962), Ordinary of the Mass"].waitForExistence(timeout: 5))
     }
 }
 

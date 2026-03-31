@@ -15,7 +15,7 @@ struct LatinMassCompanionTests {
         #expect(catalog.dateIndex.count == 63)
         #expect(catalog.glossaryEntries.count == 5)
         #expect(catalog.pronunciationGuides.count == 4)
-        #expect(catalog.participationGuides.count == 6)
+        #expect(catalog.participationGuides.count == 9)
         #expect(catalog.chantGuides.count == 3)
     }
 
@@ -31,26 +31,13 @@ struct LatinMassCompanionTests {
 
     @Test
     func bundledSearchMatchesOrdinaryProperExplanationAndLearningText() throws {
-        let repository = BundleMassContentRepository(bundle: Bundle.main)
-        let catalog = try repository.loadCatalog()
+        let catalog = try bundledCatalog()
         let searchService = LocalMassSearchService()
-        let ordinaryParts = catalog.parts
-            .sorted { $0.order < $1.order }
-            .map { ResolvedMassPart(part: $0, massForm: .low) }
-
-        _ = try #require(catalog.parts.first(where: { $0.id == "collect-readings" }))
-        let christmas = try #require(catalog.celebrations.first(where: { $0.id == "christmas" }))
-        let entranceProper = try #require(christmas.properSections.first)
-        let entrancePart = try #require(catalog.parts.first(where: { $0.id == entranceProper.replacesPartID }))
-        let christmasProper = ResolvedMassPart(
-            basePart: entrancePart,
-            properSection: entranceProper,
-            celebration: christmas,
-            massForm: .low
+        let ordinaryParts = resolvedOrdinaryParts(from: catalog)
+        let christmasParts = try resolvedChristmasParts(from: catalog)
+        let christmasProperPartID = try #require(
+            christmasParts.first(where: { $0.celebrationID == "christmas" })?.id
         )
-        let christmasParts = ordinaryParts.map { part in
-            part.id == christmasProper.id ? christmasProper : part
-        }
         let ordinaryResults = bundledSearch(
             "Et cum spiritu tuo",
             parts: ordinaryParts,
@@ -77,8 +64,8 @@ struct LatinMassCompanionTests {
         )
 
         #expect(ordinaryResults.parts.contains(where: { $0.id == "collect-readings" }))
-        #expect(properResults.parts.contains(where: { $0.id == entrancePart.id }))
-        #expect(explanationResults.parts.contains(where: { $0.id == entrancePart.id }))
+        #expect(properResults.parts.contains(where: { $0.id == christmasProperPartID }))
+        #expect(explanationResults.parts.contains(where: { $0.id == christmasProperPartID }))
         #expect(learningResults.learningItems.contains(where: {
             if case let .pronunciation(guide) = $0 {
                 return guide.id == "domine-non-sum-dignus"
@@ -145,10 +132,38 @@ private func bundledSearch(
     searchService.search(
         query: query,
         in: parts,
-        glossaryEntries: catalog.glossaryEntries,
-        pronunciationGuides: catalog.pronunciationGuides,
-        participationGuides: catalog.participationGuides,
-
-        chantGuides: catalog.chantGuides
+        learningContent: LearningContentIndex(
+            glossaryEntries: catalog.glossaryEntries,
+            pronunciationGuides: catalog.pronunciationGuides,
+            participationGuides: catalog.participationGuides,
+            chantGuides: catalog.chantGuides
+        )
     )
+}
+
+private func bundledCatalog() throws -> MassCatalog {
+    try BundleMassContentRepository(bundle: Bundle.main).loadCatalog()
+}
+
+private func resolvedOrdinaryParts(from catalog: MassCatalog) -> [ResolvedMassPart] {
+    catalog.parts
+        .sorted { $0.order < $1.order }
+        .map { ResolvedMassPart(part: $0, massForm: .low) }
+}
+
+private func resolvedChristmasParts(from catalog: MassCatalog) throws -> [ResolvedMassPart] {
+    let ordinaryParts = resolvedOrdinaryParts(from: catalog)
+    let christmas = try #require(catalog.celebrations.first(where: { $0.id == "christmas" }))
+    let entranceProper = try #require(christmas.properSections.first)
+    let entrancePart = try #require(catalog.parts.first(where: { $0.id == entranceProper.replacesPartID }))
+    let christmasProper = ResolvedMassPart(
+        basePart: entrancePart,
+        properSection: entranceProper,
+        celebration: christmas,
+        massForm: .low
+    )
+
+    return ordinaryParts.map { part in
+        part.id == christmasProper.id ? christmasProper : part
+    }
 }

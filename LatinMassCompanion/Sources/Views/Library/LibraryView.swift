@@ -11,6 +11,10 @@ struct LibraryView: View {
         appModel.search(query: searchText, scope: scope)
     }
 
+    private var shouldPrioritizeLearningResults: Bool {
+        !searchText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && !results.learningItems.isEmpty
+    }
+
     var body: some View {
         ZStack {
             Rectangle()
@@ -28,37 +32,12 @@ struct LibraryView: View {
                     )
                     .listRowBackground(Color.clear)
                 } else {
-                    Section("Mass Sections") {
-                        ForEach(results.parts) { part in
-                            NavigationLink {
-                                LibraryPartDetailView(
-                                    appModel: appModel,
-                                    selectedTab: $selectedTab,
-                                    part: part
-                                )
-                            } label: {
-                                LibraryRow(
-                                    part: part,
-                                    isBookmarked: appModel.isBookmarked(part)
-                                )
-                            }
-                            .listRowBackground(AppTheme.surface)
-                        }
-                    }
-
-                    if !results.learningItems.isEmpty {
-                        Section("Learning") {
-                            ForEach(results.learningItems) { item in
-                                Button {
-                                    openLearningItem(item)
-                                } label: {
-                                    LearningLibraryRow(item: item)
-                                }
-                                .buttonStyle(.plain)
-                                .accessibilityIdentifier("library-learning-\(item.id)")
-                                .listRowBackground(AppTheme.surface)
-                            }
-                        }
+                    if shouldPrioritizeLearningResults {
+                        learningSection
+                        massSections
+                    } else {
+                        massSections
+                        learningSection
                     }
                 }
             }
@@ -109,20 +88,64 @@ struct LibraryView: View {
                         RoundedRectangle(cornerRadius: 12, style: .continuous)
                             .stroke(AppTheme.border, lineWidth: 1)
                     )
+                    .submitLabel(.search)
                     .accessibilityIdentifier("library-search-field")
 
                 Text(
                     """
-                    Search across the resolved Mass text, bundled propers, glossary terms,
-                    participation guides, pronunciation help, and Gregorian chant notes.
-                    Learning matches appear separately.
+                    Search across the resolved Mass text for this date, the bundled propers,
+                    and the learning material that explains how to follow without anxiety.
+                    Learning matches stay in their own section on purpose so devotional reading
+                    and explanatory notes do not blur together.
                     """
                 )
                 .font(.caption)
                 .foregroundStyle(AppTheme.mutedInk)
+                .fixedSize(horizontal: false, vertical: true)
             }
             .padding(.vertical, 8)
             .listRowBackground(Color.clear)
+        }
+    }
+
+    @ViewBuilder
+    private var massSections: some View {
+        if !results.parts.isEmpty {
+            Section("Mass Sections") {
+                ForEach(results.parts) { part in
+                    NavigationLink {
+                        LibraryPartDetailView(
+                            appModel: appModel,
+                            selectedTab: $selectedTab,
+                            part: part
+                        )
+                    } label: {
+                        LibraryRow(
+                            part: part,
+                            isBookmarked: appModel.isBookmarked(part)
+                        )
+                    }
+                    .listRowBackground(AppTheme.surface)
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var learningSection: some View {
+        if !results.learningItems.isEmpty {
+            Section("Learning") {
+                ForEach(results.learningItems) { item in
+                    Button {
+                        openLearningItem(item)
+                    } label: {
+                        LearningLibraryRow(item: item)
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityIdentifier("library-learning-\(item.id)")
+                    .listRowBackground(AppTheme.surface)
+                }
+            }
         }
     }
 }
@@ -149,8 +172,11 @@ private struct LibraryRow: View {
                 Spacer()
 
                 VStack(alignment: .trailing, spacing: 6) {
-                    LibraryBadge(title: part.libraryCategoryTitle, highlighted: part.isProper)
-                    LibraryBadge(title: part.massForm.libraryBadge, highlighted: false)
+                    PrayerbookBadge(
+                        title: part.libraryCategoryTitle,
+                        tone: part.isProper ? .accent : .neutral
+                    )
+                    PrayerbookBadge(title: part.massForm.libraryBadge, tone: .neutral)
 
                     if isBookmarked {
                         Image(systemName: "bookmark.fill")
@@ -159,15 +185,23 @@ private struct LibraryRow: View {
                 }
             }
 
+            Text("\(part.phase.title) • \(part.libraryCategoryTitle) • \(part.massForm.title)")
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(AppTheme.burgundy)
+
             Text(part.tags.joined(separator: "  •  "))
                 .font(.caption)
-                .foregroundStyle(AppTheme.burgundy)
+                .foregroundStyle(AppTheme.mutedInk)
 
             if let celebrationTitle = part.celebrationTitle {
                 Text(celebrationTitle)
                     .font(.caption)
                     .foregroundStyle(AppTheme.mutedInk)
             }
+
+            Text(part.isProper ? "Proper-backed for the selected day." : "Ordinary text available across covered and fallback dates.")
+                .font(.caption)
+                .foregroundStyle(AppTheme.mutedInk)
         }
         .padding(.vertical, 6)
     }
@@ -183,6 +217,7 @@ private struct LearningLibraryRow: View {
                     Text(item.title)
                         .font(.system(.headline, design: .serif))
                         .foregroundStyle(AppTheme.ink)
+                        .accessibilityIdentifier("library-learning-title-\(item.id)")
 
                     Text(item.summary)
                         .font(.subheadline)
@@ -192,31 +227,14 @@ private struct LearningLibraryRow: View {
 
                 Spacer()
 
-                LibraryBadge(title: item.categoryTitle, highlighted: true)
+                PrayerbookBadge(title: item.categoryTitle, tone: .accent)
             }
+
+            Text("Learning material remains separate from the Mass text so explanation never pretends to be the rite itself.")
+                .font(.caption)
+                .foregroundStyle(AppTheme.mutedInk)
         }
         .padding(.vertical, 6)
-    }
-}
-
-private struct LibraryBadge: View {
-    let title: String
-    let highlighted: Bool
-
-    var body: some View {
-        Text(title)
-            .font(.caption.weight(.semibold))
-            .foregroundStyle(highlighted ? AppTheme.gold : AppTheme.ink)
-            .padding(.horizontal, 8)
-            .padding(.vertical, 5)
-            .background(
-                Capsule(style: .continuous)
-                    .fill(highlighted ? AppTheme.burgundy : AppTheme.secondarySurface)
-            )
-            .overlay(
-                Capsule(style: .continuous)
-                    .stroke(AppTheme.border, lineWidth: highlighted ? 0 : 1)
-            )
     }
 }
 
@@ -238,6 +256,7 @@ private struct LibraryPartDetailView: View {
                 orientation: appModel.guideOrientation(for: part),
                 isBookmarked: appModel.isBookmarked(part),
                 sourceReferences: appModel.sourceReferences(for: part),
+                quickGuidance: part.quickGuidance,
                 glossaryEntries: part.glossaryIDs.compactMap(appModel.glossaryEntry(withID:)),
                 pronunciationGuides: part.pronunciationIDs.compactMap(appModel.pronunciationGuide(withID:)),
                 chantGuides: appModel.chantGuides(for: part),

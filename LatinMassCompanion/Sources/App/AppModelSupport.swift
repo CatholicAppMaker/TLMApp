@@ -24,7 +24,7 @@ struct ResolvedDay {
         case .properAvailable:
             celebration?.subtitle ?? "Bundled propers and Ordinary guidance are available."
         case .ordinaryOnlyWithinSupportedWindow:
-            "This date stays inside the bundled year, but the app only promises the fixed Ordinary."
+            "This date stays inside the bundled year, but the app only promises the fixed Ordinary and refuses to guess missing propers."
         case .outsideSupportedWindow:
             "Outside the bundled year of date-specific propers."
         }
@@ -37,7 +37,7 @@ struct ResolvedDay {
         case .ordinaryOnlyWithinSupportedWindow:
             """
             The app keeps the fixed Ordinary available even when a selected date inside
-            the supported year has no bundled proper texts.
+            the supported year has no bundled proper texts. That restraint is deliberate.
             """
         case .outsideSupportedWindow:
             """

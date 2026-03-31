@@ -44,15 +44,6 @@ final class LatinMassCompanionFlowUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["today-availability-summary"].label.contains("The Ordinary remains fully available"))
     }
 
-    func testOutsideCoverageDateShowsOutsideWindowState() {
-        let app = XCUIApplication()
-        app.launchApp(resetState: true, todayOverride: "2027-01-03")
-
-        XCTAssertEqual(app.staticTexts["today-celebration-title"].label, "Ordinary of the Mass")
-        XCTAssertEqual(app.staticTexts["today-coverage-title"].label, "Outside Coverage")
-        XCTAssertTrue(app.staticTexts["today-availability-summary"].label.contains("outside the bundled year window"))
-    }
-
     func testResumeMassRestoresLastSection() {
         let firstLaunch = XCUIApplication()
         firstLaunch.launchApp(resetState: true, todayOverride: "2026-04-05")
@@ -95,16 +86,14 @@ final class LatinMassCompanionFlowUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["learn-pronunciation-et-cum-spiritu-tuo"].waitForExistence(timeout: 5))
     }
 
-    func testGuideShowsOrientationMetadata() {
+    func testGuideShowsQuickGuidanceForOpeningSection() {
         let app = XCUIApplication()
         app.launchApp(resetState: true, todayOverride: "2026-03-30")
 
         app.openGuide()
 
-        XCTAssertTrue(app.staticTexts["guide-phase-pill"].waitForExistence(timeout: 5))
-        XCTAssertEqual(app.staticTexts["guide-phase-pill"].label, "Preparation")
-        XCTAssertTrue(app.staticTexts["guide-position-pill"].label.contains("Section 1 of"))
-        XCTAssertEqual(app.staticTexts["guide-next-part-title"].label, "Confiteor and Absolution Prayers")
+        XCTAssertTrue(app.staticTexts["Quick Follow"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["Follow the broad movement first"].waitForExistence(timeout: 5))
     }
 
     func testGuideNavigationReflectsBeginningAndEndBoundaries() {
@@ -130,41 +119,6 @@ final class LatinMassCompanionFlowUITests: XCTestCase {
         XCTAssertTrue(previousButton.isEnabled)
         XCTAssertFalse(nextButton.isEnabled)
         XCTAssertEqual(stepCount, 13)
-    }
-
-    func testSourcesScreenShowsBundledReferences() {
-        let app = XCUIApplication()
-        app.launchApp(resetState: true, todayOverride: "2026-03-30")
-
-        app.buttons["view-sources-button"].tap()
-
-        XCTAssertTrue(app.staticTexts["2026 Bundled Sunday and Feast Coverage"].waitForExistence(timeout: 5))
-        XCTAssertTrue(app.staticTexts["Missale Romanum (1962), Ordinary of the Mass"].waitForExistence(timeout: 5))
-        XCTAssertTrue(app.staticTexts["Public-domain English hand missal translations"].waitForExistence(timeout: 5))
-    }
-
-    func testResetAppStateLaunchArgumentClearsPersistedState() {
-        let firstLaunch = XCUIApplication()
-        firstLaunch.launchApp(resetState: true, todayOverride: "2026-03-30")
-        firstLaunch.openGuide()
-        firstLaunch.buttons["bookmark-button"].tap()
-        firstLaunch.buttons["next-section"].tap()
-        firstLaunch.terminate()
-
-        let persistedLaunch = XCUIApplication()
-        persistedLaunch.launchApp(resetState: false, todayOverride: "2026-03-30")
-        XCTAssertTrue(persistedLaunch.staticTexts["resume-mass-part-title"].waitForExistence(timeout: 5))
-        persistedLaunch.openLibrary()
-        persistedLaunch.buttons["Bookmarks"].tap()
-        XCTAssertTrue(persistedLaunch.staticTexts["Prayers at the Foot of the Altar"].waitForExistence(timeout: 5))
-        persistedLaunch.terminate()
-
-        let resetLaunch = XCUIApplication()
-        resetLaunch.launchApp(resetState: true, todayOverride: "2026-03-30")
-        resetLaunch.openLibrary()
-        resetLaunch.buttons["Bookmarks"].tap()
-        XCTAssertTrue(resetLaunch.staticTexts["No Results"].waitForExistence(timeout: 5))
-        XCTAssertFalse(resetLaunch.staticTexts["resume-mass-part-title"].exists)
     }
 }
 

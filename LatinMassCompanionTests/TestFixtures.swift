@@ -243,6 +243,7 @@ extension TestFixtures {
                 sourceID: "ordinary"
             )
         ],
+        quickGuidance: [QuickGuidance]? = nil,
         liveNote: String? = "Stay with the guide calmly.",
         searchAliases: [String]? = [],
         sourceIDs: [String]? = ["ordinary"],
@@ -259,6 +260,7 @@ extension TestFixtures {
             tags: tags,
             gestureCues: gestureCues,
             textBlocks: textBlocks,
+            quickGuidance: quickGuidance,
             explanationNotes: explanationNotes,
             liveNote: liveNote,
             searchAliases: searchAliases,
@@ -283,6 +285,7 @@ extension TestFixtures {
         properTags: [String] = ["proper"],
         properLiveNote: String? = "This is where the day changes most clearly.",
         properSearchAliases: [String] = [],
+        properQuickGuidance: [QuickGuidance] = [],
         properGlossaryIDs: [String] = [],
         properPronunciationIDs: [String] = [],
         properFormProfiles: [MassFormProfile]? = nil,
@@ -319,6 +322,7 @@ extension TestFixtures {
                             rubric: "Proper"
                         )
                     ],
+                    quickGuidance: properQuickGuidance,
                     explanationNotes: [
                         ExplanationNote(
                             id: "\(id)-note",

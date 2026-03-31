@@ -11,9 +11,10 @@ structure, interaction patterns, rights decisions, and future roadmap work.
 ### Apple navigation guidance
 - Apple WWDC: Explore navigation design for iOS
   - https://developer.apple.com/videos/play/wwdc2022/10001/
-  - Use this to sanity-check our three-mode app structure: `Intro`, `Guide`, and `Library`.
-  - Especially relevant for tab-based information architecture, modality, and keeping
-    navigation predictable for first-time users.
+  - Use this to sanity-check our current four-tab structure: `Today`, `Guide`, `Library`,
+    and `Learn`.
+  - Especially relevant for keeping the top-level modes distinct without adding extra tabs
+    or secondary navigation that confuses first-time users.
 
 ### SwiftUI tab architecture
 - Apple `TabView` documentation
@@ -95,6 +96,8 @@ structure, interaction patterns, rights decisions, and future roadmap work.
 - Use Apple references to shape navigation, accessibility, and native interaction patterns.
 - Use liturgical sites to understand content organization, variant handling, and user needs.
 - Use clearly public-domain scans to inform editorial structure and terminology.
+- Treat the Fr. Lasance missal as the primary editorial anchor when we need stronger authority
+  for explanatory copy or devotional phrasing.
 
 ### Avoid
 - Copying modern missal translations into the app without checking rights.
@@ -105,9 +108,9 @@ structure, interaction patterns, rights decisions, and future roadmap work.
 
 ### Adopt Now
 - Apple WWDC navigation guidance:
-  - Treat our current three-tab shell as the durable top-level structure.
-  - Keep `Guide` as the primary task flow, `Library` as lookup/reference, and `Intro` as
-    onboarding and orientation.
+  - Treat our current four-tab shell as the durable top-level structure.
+  - Keep `Today` as orientation and daily context, `Guide` as the primary live-follow flow,
+    `Library` as lookup/reference, and `Learn` as the before/after-Mass teaching layer.
   - Avoid adding new top-level tabs unless a feature cannot naturally fit one of those modes.
 - Apple accessibility documentation:
   - Treat Dynamic Type, VoiceOver labels, contrast, and touch target sizing as baseline
@@ -133,6 +136,8 @@ structure, interaction patterns, rights decisions, and future roadmap work.
   - Treat public-domain scans as the preferred baseline for future source expansion until we
     establish a stronger editorial and provenance workflow.
   - Record provenance before importing or adapting any new text.
+  - Prefer Fr. Lasance first, then other public-domain hand missal or chant references as
+    supporting material.
 
 ### Do Not Adopt Yet
 - Apple design resource files as shipped product assets
@@ -143,8 +148,8 @@ structure, interaction patterns, rights decisions, and future roadmap work.
 - Uncodixfy as a hard visual identity replacement for platform conventions
 
 ### Near term
-- Use Apple navigation and accessibility docs to refine our current `Intro`, `Guide`, and
-  `Library` flows.
+- Use Apple navigation and accessibility docs to refine our current `Today`, `Guide`,
+  `Library`, and `Learn` flows.
 - Use Uncodixfy as a quick review checklist when redesigning cards, navigation chrome, or
   future educational/reference surfaces.
 - Use Missale Meum as a roadmap reference for:
@@ -161,5 +166,5 @@ structure, interaction patterns, rights decisions, and future roadmap work.
 ### V2 planning
 - Use Divinum Officium and Missale Meum as reference points for handling:
   - liturgical-calendar-driven content
-  - Low Mass vs Sung/High Mass differences
+  - Low Mass vs Sung/High Mass differences beyond the current two-profile approach
   - deeper educational/reference layers without losing the guided core experience

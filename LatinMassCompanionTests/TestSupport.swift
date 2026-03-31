@@ -21,17 +21,14 @@ final class SpySearchService: SearchService {
     func search(
         query: String,
         in parts: [ResolvedMassPart],
-        glossaryEntries: [GlossaryEntry],
-        pronunciationGuides: [PronunciationGuide],
-        participationGuides: [ParticipationGuide],
-        chantGuides: [ChantGuide]
+        learningContent: LearningContentIndex
     ) -> LibrarySearchResults {
         capturedQuery = query
         capturedPartIDs = parts.map(\.id)
-        capturedGlossaryIDs = glossaryEntries.map(\.id)
-        capturedPronunciationIDs = pronunciationGuides.map(\.id)
-        capturedParticipationIDs = participationGuides.map(\.id)
-        capturedChantIDs = chantGuides.map(\.id)
+        capturedGlossaryIDs = learningContent.glossaryEntries.map(\.id)
+        capturedPronunciationIDs = learningContent.pronunciationGuides.map(\.id)
+        capturedParticipationIDs = learningContent.participationGuides.map(\.id)
+        capturedChantIDs = learningContent.chantGuides.map(\.id)
         return nextResults
     }
 }
@@ -112,8 +109,7 @@ extension AppModel {
         searchService: any SearchService,
         bookmarkStore: any BookmarkStore,
         progressStore: any MassModeProgressStore,
-        now: @escaping () -> Date = Date.init,
-        calendar: Calendar = .current
+        now: @escaping () -> Date = Date.init
     ) {
         self.init(
             repository: repository,
@@ -121,8 +117,7 @@ extension AppModel {
             bookmarkStore: bookmarkStore,
             progressStore: progressStore,
             massFormStore: SpyMassFormStore(),
-            now: now,
-            calendar: calendar
+            now: now
         )
     }
 }

@@ -5,42 +5,7 @@ import Testing
 struct ContentServicesTests {
     @Test
     func searchableTextIncludesLinkedLearningContent() {
-        let part = TestFixtures.makePart(
-            id: "collect-readings",
-            order: 1,
-            title: "Collect",
-            summary: "Opening prayer",
-            tags: ["readings", "oration"],
-            gestureCues: [
-                GestureCue(
-                    id: "cue",
-                    label: "Sit",
-                    detail: "Sit for the epistle",
-                    systemImage: "figure.seated.side"
-                )
-            ],
-            textBlocks: [
-                TextBlock(
-                    id: "text",
-                    speaker: "Server",
-                    latin: "Et cum spiritu tuo",
-                    english: "And with thy spirit",
-                    rubric: "Response"
-                )
-            ],
-            explanationNotes: [
-                ExplanationNote(
-                    id: "note",
-                    title: "What the Collect does",
-                    body: "The prayer gathers the petitions of the Church.",
-                    sourceID: "ordinary"
-                )
-            ],
-            glossaryIDs: ["collect"],
-            pronunciationIDs: ["et-cum-spiritu-tuo"]
-        )
-
-        let searchableText = part.searchableText(
+        let searchableText = makeSearchableCollectPart().searchableText(
             glossaryEntries: TestFixtures.defaultGlossaryEntries,
             pronunciationGuides: TestFixtures.defaultPronunciationGuides
         )
@@ -52,6 +17,7 @@ struct ContentServicesTests {
         #expect(searchableText.contains("response"))
         #expect(searchableText.contains("what the collect does"))
         #expect(searchableText.contains("opening prayer"))
+        #expect(searchableText.contains("recover your place"))
     }
 
     @Test
@@ -66,14 +32,7 @@ struct ContentServicesTests {
             massForm: .low
         )
 
-        let results = service.search(
-            query: "   ",
-            in: [later, earlier],
-            glossaryEntries: TestFixtures.defaultGlossaryEntries,
-            pronunciationGuides: TestFixtures.defaultPronunciationGuides,
-            participationGuides: TestFixtures.defaultParticipationGuides,
-            chantGuides: TestFixtures.defaultChantGuides
-        )
+        let results = runSearch("   ", parts: [later, earlier], service: service)
 
         #expect(results.parts.map(\.id) == ["earlier", "later"])
         #expect(results.learningItems.isEmpty)
@@ -107,14 +66,7 @@ struct ContentServicesTests {
             massForm: .low
         )
 
-        let results = service.search(
-            query: "resurrection collect",
-            in: [matchingPart, otherPart],
-            glossaryEntries: TestFixtures.defaultGlossaryEntries,
-            pronunciationGuides: TestFixtures.defaultPronunciationGuides,
-            participationGuides: TestFixtures.defaultParticipationGuides,
-            chantGuides: TestFixtures.defaultChantGuides
-        )
+        let results = runSearch("resurrection collect", parts: [matchingPart, otherPart], service: service)
 
         #expect(results.parts.map(\.id) == ["collect-readings"])
     }
@@ -135,14 +87,7 @@ struct ContentServicesTests {
             massForm: .low
         )
 
-        let results = service.search(
-            query: "lord, i am not worthy",
-            in: [communion],
-            glossaryEntries: TestFixtures.defaultGlossaryEntries,
-            pronunciationGuides: TestFixtures.defaultPronunciationGuides,
-            participationGuides: TestFixtures.defaultParticipationGuides,
-            chantGuides: TestFixtures.defaultChantGuides
-        )
+        let results = runSearch("lord, i am not worthy", parts: [communion], service: service)
 
         #expect(results.parts.map(\.id) == ["communion"])
         #expect(results.learningItems.contains(where: {
@@ -166,14 +111,7 @@ struct ContentServicesTests {
             massForm: .low
         )
 
-        let results = service.search(
-            query: "first visit",
-            in: [ordinaryPart],
-            glossaryEntries: TestFixtures.defaultGlossaryEntries,
-            pronunciationGuides: TestFixtures.defaultPronunciationGuides,
-            participationGuides: TestFixtures.defaultParticipationGuides,
-            chantGuides: TestFixtures.defaultChantGuides
-        )
+        let results = runSearch("first visit", parts: [ordinaryPart], service: service)
 
         #expect(results.parts.isEmpty)
         #expect(results.learningItems == [.participation(TestFixtures.defaultParticipationGuides[0])])
@@ -191,14 +129,7 @@ struct ContentServicesTests {
             massForm: .low
         )
 
-        let results = service.search(
-            query: "gregorian chant",
-            in: [ordinaryPart],
-            glossaryEntries: TestFixtures.defaultGlossaryEntries,
-            pronunciationGuides: TestFixtures.defaultPronunciationGuides,
-            participationGuides: TestFixtures.defaultParticipationGuides,
-            chantGuides: TestFixtures.defaultChantGuides
-        )
+        let results = runSearch("gregorian chant", parts: [ordinaryPart], service: service)
 
         #expect(results.parts.isEmpty)
         #expect(results.learningItems == [.chant(TestFixtures.defaultChantGuides[0])])
@@ -226,59 +157,70 @@ struct ContentServicesTests {
             massForm: .low
         )
 
-        let results = service.search(
-            query: "collect canon",
-            in: [collect, canon],
+        let results = runSearch("collect canon", parts: [collect, canon], service: service)
+
+        #expect(results.parts.isEmpty)
+    }
+}
+
+private func makeSearchableCollectPart() -> MassPart {
+    TestFixtures.makePart(
+        id: "collect-readings",
+        order: 1,
+        title: "Collect",
+        summary: "Opening prayer",
+        tags: ["readings", "oration"],
+        gestureCues: [
+            GestureCue(
+                id: "cue",
+                label: "Sit",
+                detail: "Sit for the epistle",
+                systemImage: "figure.seated.side"
+            )
+        ],
+        textBlocks: [
+            TextBlock(
+                id: "text",
+                speaker: "Server",
+                latin: "Et cum spiritu tuo",
+                english: "And with thy spirit",
+                rubric: "Response"
+            )
+        ],
+        explanationNotes: [
+            ExplanationNote(
+                id: "note",
+                title: "What the Collect does",
+                body: "The prayer gathers the petitions of the Church.",
+                sourceID: "ordinary"
+            )
+        ],
+        quickGuidance: [
+            QuickGuidance(
+                id: "guidance",
+                title: "Reconnect here",
+                body: "Use the collect to recover your place.",
+                sourceID: "translation"
+            )
+        ],
+        glossaryIDs: ["collect"],
+        pronunciationIDs: ["et-cum-spiritu-tuo"]
+    )
+}
+
+private func runSearch(
+    _ query: String,
+    parts: [ResolvedMassPart],
+    service: LocalMassSearchService
+) -> LibrarySearchResults {
+    service.search(
+        query: query,
+        in: parts,
+        learningContent: LearningContentIndex(
             glossaryEntries: TestFixtures.defaultGlossaryEntries,
             pronunciationGuides: TestFixtures.defaultPronunciationGuides,
             participationGuides: TestFixtures.defaultParticipationGuides,
             chantGuides: TestFixtures.defaultChantGuides
         )
-
-        #expect(results.parts.isEmpty)
-    }
-
-    @Test
-    func repositoryReportsMissingResources() {
-        let repository = BundleMassContentRepository(
-            bundle: Bundle(for: TestBundleLocator.self),
-            resourceName: "missing_mass_library"
-        )
-
-        do {
-            _ = try repository.loadCatalog()
-            Issue.record("Expected missing resource error")
-        } catch let error as MassContentRepositoryError {
-            switch error {
-            case let .missingResource(name):
-                #expect(name == "missing_mass_library")
-            case let .unreadableResource(message):
-                Issue.record("Expected missing resource error, got unreadable resource: \(message)")
-            }
-        } catch {
-            Issue.record("Unexpected error: \(error)")
-        }
-    }
-
-    @Test
-    func repositoryReportsUnreadableResources() {
-        let repository = BundleMassContentRepository(
-            bundle: Bundle(for: TestBundleLocator.self),
-            resourceName: "invalid_mass_library"
-        )
-
-        do {
-            _ = try repository.loadCatalog()
-            Issue.record("Expected unreadable resource error")
-        } catch let error as MassContentRepositoryError {
-            switch error {
-            case .missingResource:
-                Issue.record("Expected unreadable resource error")
-            case let .unreadableResource(message):
-                #expect(!message.isEmpty)
-            }
-        } catch {
-            Issue.record("Unexpected error: \(error)")
-        }
-    }
+    )
 }

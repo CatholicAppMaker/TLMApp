@@ -192,6 +192,142 @@ ORDINARY_FORM_PROFILES = {
     ],
 }
 
+ORDINARY_QUICK_GUIDANCE = {
+    "prayers-foot-altar": [
+        {
+            "id": "foot-follow-structure",
+            "title": "Follow the broad movement first",
+            "body": "Let this opening teach the shape of the rite: preparation before sacrifice. You do not need every line before you can pray well.",
+            "sourceID": "translation",
+        },
+        {
+            "id": "foot-local-customs",
+            "title": "Local custom may differ",
+            "body": "Whether people stand or kneel here can vary. Calmly follow the congregation when you can and remain recollected when you cannot.",
+            "sourceID": "translation",
+        },
+    ],
+    "collect-readings": [
+        {
+            "id": "collect-watch-day-change",
+            "title": "Watch for what changes today",
+            "body": "This is one of the first places where the feast, season, or Sunday becomes obvious. If you arrived late, reconnect here.",
+            "sourceID": "translation",
+        },
+        {
+            "id": "collect-ordinary-propers",
+            "title": "Ordinary and Propers meet here",
+            "body": "The greeting and shape stay familiar, but the collect and readings belong to the day. This is why the app treats this section as a major landmark and one of the safest places to reconnect calmly.",
+            "sourceID": "calendar-1962",
+        },
+    ],
+    "offertory": [
+        {
+            "id": "offertory-offer-intentions",
+            "title": "Offer your intentions quietly",
+            "body": "The Church prepares the sacrificial gifts here. It is a fitting time to place your own intentions within the offering being made on the altar.",
+            "sourceID": "translation",
+        }
+    ],
+    "preface-sanctus": [
+        {
+            "id": "preface-threshold",
+            "title": "This is the last public threshold before the Canon",
+            "body": "The Preface gathers thanksgiving; the Sanctus prepares you for the stillness and adoration that follow.",
+            "sourceID": "ordinary",
+        }
+    ],
+    "canon": [
+        {
+            "id": "canon-dont-chase-text",
+            "title": "Do not chase every silent prayer",
+            "body": "The Canon is best followed by reverent attention to the altar action, not by anxious page-turning. Let the silence itself teach you what kind of moment this is, and let adoration outrun analysis.",
+            "sourceID": "translation",
+        },
+        {
+            "id": "canon-stay-with-altar",
+            "title": "Stay with the altar action",
+            "body": "Watch the priest’s gestures, bows, and signs of the cross. They help you remain united to the sacrifice even when the words are inaudible.",
+            "sourceID": "ordinary",
+        },
+    ],
+    "consecration": [
+        {
+            "id": "consecration-adoration",
+            "title": "Adore rather than analyze",
+            "body": "At the elevations, a short act of faith is often more fitting than trying to keep pace with the page.",
+            "sourceID": "translation",
+        }
+    ],
+    "pater-agnus": [
+        {
+            "id": "agnus-reentry",
+            "title": "Use the Agnus Dei as a re-entry point",
+            "body": "If the Canon felt hidden or difficult to follow, this is a natural place to regain your bearings before Communion.",
+            "sourceID": "translation",
+        }
+    ],
+    "communion": [
+        {
+            "id": "communion-recollection",
+            "title": "Remain recollected even if you are not receiving",
+            "body": "The guide can help you pray the Communion rite whether you approach the altar rail or remain in your place for a spiritual communion. You are not outside the rite simply because you are remaining in prayer.",
+            "sourceID": "translation",
+        }
+    ],
+    "dismissal-last-gospel": [
+        {
+            "id": "last-gospel-thanksgiving",
+            "title": "Do not leave Mass interiorly too early",
+            "body": "The concluding prayers and Last Gospel keep the thanksgiving of the Mass from ending abruptly. Stay with them before turning to the day’s duties.",
+            "sourceID": "translation",
+        }
+    ],
+}
+
+ORDINARY_EXTRA_EXPLANATIONS = {
+    "prayers-foot-altar": [
+        {
+            "id": "foot-altar-threshold",
+            "title": "Why the rite begins below the altar",
+            "body": "The prayers at the foot of the altar underline that the sacrifice is approached, not assumed. The liturgy teaches humility before it teaches confidence.",
+            "sourceID": "translation",
+        }
+    ],
+    "collect-readings": [
+        {
+            "id": "collect-day-specific-landmark",
+            "title": "Why newcomers can trust this section",
+            "body": "Even when the chants or ceremonial details vary locally, the collect and readings remain one of the clearest places to recognize what day the Church is celebrating and what grace the liturgy is asking for.",
+            "sourceID": "calendar-1962",
+        }
+    ],
+    "offertory": [
+        {
+            "id": "offertory-self-offering",
+            "title": "The offertory prepares more than bread and wine",
+            "body": "Traditional missals often explain the Offertory as the Church’s first explicit drawing of the faithful into Christ’s self-offering. The gifts are prepared, and the people are prepared with them.",
+            "sourceID": "translation",
+        }
+    ],
+    "canon": [
+        {
+            "id": "canon-trustworthy-silence",
+            "title": "Silence here is a theological sign, not a gap",
+            "body": "The hush of the Canon is part of the rite’s meaning. It marks the sacred action as something received in adoration, not treated like ordinary speech or instruction, and it keeps the center of the Mass from being reduced to explanation.",
+            "sourceID": "ordinary",
+        }
+    ],
+    "communion": [
+        {
+            "id": "communion-spiritual-communion",
+            "title": "Communion remains prayerful even when you stay in place",
+            "body": "Older hand missals regularly help the faithful remain united to the sacrifice through desire, thanksgiving, and spiritual communion when they are not receiving sacramentally. The point is union with Christ, not visible activity.",
+            "sourceID": "translation",
+        }
+    ],
+}
+
 
 def load_json(path: Path):
     return json.loads(path.read_text())
@@ -218,6 +354,16 @@ def make_form_profiles(
             "chantGuideIDs": chant_guide_ids,
         },
     ]
+
+
+def extend_unique(existing: list[dict], additions: list[dict]) -> list[dict]:
+    seen = {item["id"] for item in existing}
+    merged = list(existing)
+    for item in additions:
+        if item["id"] not in seen:
+            merged.append(item)
+            seen.add(item["id"])
+    return merged
 
 
 def make_entrance_section(entry: dict, season_source: str) -> dict:
@@ -254,12 +400,32 @@ def make_entrance_section(entry: dict, season_source: str) -> dict:
                 "rubric": "How this day changes the opening",
             },
         ],
+        "quickGuidance": [
+            {
+                "id": f"{entry['id']}-entrance-follow",
+                "title": "Let the day announce itself",
+                "body": "The Introit is one of the clearest early signals that this Mass has its own accent. Hear the character of the day before trying to master the page.",
+                "sourceID": season_source,
+            },
+            {
+                "id": f"{entry['id']}-entrance-trust",
+                "title": "You can follow by landmarks",
+                "body": "Even if the opening feels unfamiliar, the entrance proper, Kyrie, and Gloria together form one dependable opening unit in the app.",
+                "sourceID": "translation",
+            },
+        ],
         "explanationNotes": [
             {
                 "id": f"{entry['id']}-entrance-note",
                 "title": "Why the opening proper matters",
                 "body": "The Introit is one of the first places where the day announces itself. Even when you do not know every word, it helps fix the feast or season in your mind before the liturgy continues.",
                 "sourceID": "translation",
+            },
+            {
+                "id": f"{entry['id']}-entrance-season-note",
+                "title": "What changes here from the fixed Ordinary",
+                "body": f"For {entry['title']}, the opening proper keeps the stable shape of the rite but gives it a distinct seasonal voice at the very beginning of Mass.",
+                "sourceID": season_source,
             }
         ],
         "liveNote": "The day-specific character is already visible here. This is an early place to confirm that you are on the right feast or Sunday.",
@@ -317,12 +483,32 @@ def make_collect_section(entry: dict, season_source: str) -> dict:
                 "rubric": "Gradual / Alleluia",
             },
         ],
+        "quickGuidance": [
+            {
+                "id": f"{entry['id']}-collect-follow",
+                "title": "Use this section to verify the day",
+                "body": "The collect and readings are among the safest points to reconnect if you are unsure what celebration is being observed.",
+                "sourceID": "calendar-1962",
+            },
+            {
+                "id": f"{entry['id']}-collect-propers",
+                "title": "This is where the day-specific texts become concrete",
+                "body": "The app marks this section carefully because the collect, readings, and chant usually reveal the feast more clearly than the quieter opening prayers do.",
+                "sourceID": season_source,
+            },
+        ],
         "explanationNotes": [
             {
                 "id": f"{entry['id']}-collect-note",
                 "title": "How this day changes the guide",
                 "body": f"{entry['summary']} This section carries one of the most visible day-specific shifts in the app's live guide.",
                 "sourceID": "translation",
+            },
+            {
+                "id": f"{entry['id']}-collect-depth",
+                "title": "Why this proper matters pastorally",
+                "body": "Traditional hand missals often teach newcomers to anchor themselves in the collect and readings because these are the moments when the Church says most plainly what grace she is asking for on that day.",
+                "sourceID": season_source,
             }
         ],
         "liveNote": "Proper texts usually become most obvious here. If you are following live, this is a reliable place to rejoin the day's celebration.",
@@ -373,12 +559,32 @@ def make_offertory_section(entry: dict, season_source: str) -> dict:
                 "rubric": "Day-specific emphasis",
             },
         ],
+        "quickGuidance": [
+            {
+                "id": f"{entry['id']}-offertory-follow",
+                "title": "Offer the day with the sacrifice",
+                "body": "This is a strong place to unite your own petitions to the offering being prepared, especially if you want to move from watching into prayer.",
+                "sourceID": "translation",
+            },
+            {
+                "id": f"{entry['id']}-offertory-proper",
+                "title": "Notice how the day’s emphasis returns",
+                "body": "The offertory proper gives the celebration another recognizable voice before the Canon begins.",
+                "sourceID": season_source,
+            },
+        ],
         "explanationNotes": [
             {
                 "id": f"{entry['id']}-offertory-note",
                 "title": "Why the offertory proper helps orient you",
                 "body": "The Offertory gives the faithful another dependable landmark between the readings and the Canon, especially on stronger feasts and Sundays.",
                 "sourceID": "translation",
+            },
+            {
+                "id": f"{entry['id']}-offertory-depth",
+                "title": "Why the offertory prepares the sacrifice",
+                "body": "The traditional offertory prayers and chant together shift the faithful from listening to offering. The day-specific proper keeps the feast in view as the rite turns toward the Canon.",
+                "sourceID": season_source,
             }
         ],
         "liveNote": "This proper-backed Offertory is a stable place to recover your bearings before the Canon begins.",
@@ -429,12 +635,32 @@ def make_communion_section(entry: dict, season_source: str) -> dict:
                 "rubric": "Day-specific meditation",
             },
         ],
+        "quickGuidance": [
+            {
+                "id": f"{entry['id']}-communion-follow",
+                "title": "Rejoin here without rushing",
+                "body": "Communion is one of the gentlest points to recover your place. Let the movement of the rite orient you before worrying about every line.",
+                "sourceID": "translation",
+            },
+            {
+                "id": f"{entry['id']}-communion-day-theme",
+                "title": "The day’s focus returns at Communion",
+                "body": "The Communion proper keeps the celebration from fading after the Canon by bringing the feast’s central theme back into prayer.",
+                "sourceID": season_source,
+            },
+        ],
         "explanationNotes": [
             {
                 "id": f"{entry['id']}-communion-note",
                 "title": "Why the app marks Communion separately",
                 "body": "A second proper-backed section gives the user another obvious liturgical landmark after the Canon, especially on feast days and strong seasonal Sundays.",
                 "sourceID": "translation",
+            },
+            {
+                "id": f"{entry['id']}-communion-depth",
+                "title": "Why the Communion proper matters",
+                "body": "The Communion antiphon and its surrounding prayers remind the faithful that reception and thanksgiving belong to the same mystery. The feast’s voice remains present here, not only at the readings.",
+                "sourceID": season_source,
             }
         ],
         "liveNote": "Communion is one of the calmest ways to regain your place in the app without rushing ahead of the liturgy.",
@@ -458,6 +684,18 @@ def attach_ordinary_profiles(parts: list[dict]) -> list[dict]:
         profiles = ORDINARY_FORM_PROFILES.get(part["id"])
         if profiles:
             enriched_part["formProfiles"] = profiles
+        quick_guidance = ORDINARY_QUICK_GUIDANCE.get(part["id"], [])
+        if quick_guidance:
+            enriched_part["quickGuidance"] = extend_unique(
+                part.get("quickGuidance", []),
+                quick_guidance,
+            )
+        explanation_notes = ORDINARY_EXTRA_EXPLANATIONS.get(part["id"], [])
+        if explanation_notes:
+            enriched_part["explanationNotes"] = extend_unique(
+                part["explanationNotes"],
+                explanation_notes,
+            )
         enriched.append(enriched_part)
     return enriched
 

@@ -7,6 +7,7 @@ struct MassPartDetailView: View {
     let orientation: GuideOrientation
     let isBookmarked: Bool
     let sourceReferences: [SourceReference]
+    let quickGuidance: [QuickGuidance]
     let glossaryEntries: [GlossaryEntry]
     let pronunciationGuides: [PronunciationGuide]
     let chantGuides: [ChantGuide]
@@ -15,6 +16,10 @@ struct MassPartDetailView: View {
     let onOpenLearn: (LearnDestination) -> Void
 
     @State private var expandedNotes: Set<String> = []
+
+    private var sourceLookup: [String: SourceReference] {
+        Dictionary(uniqueKeysWithValues: sourceReferences.map { ($0.id, $0) })
+    }
 
     var body: some View {
         ScrollView {
@@ -33,6 +38,22 @@ struct MassPartDetailView: View {
                     position: position,
                     totalCount: totalCount
                 )
+
+                if !quickGuidance.isEmpty {
+                    SectionCard(
+                        title: "Quick Follow",
+                        subtitle: "Short in-Mass guidance for staying calm and keeping your place."
+                    ) {
+                        VStack(spacing: 12) {
+                            ForEach(quickGuidance) { guidance in
+                                QuickGuidanceCard(
+                                    guidance: guidance,
+                                    sourceReference: sourceLookup[guidance.sourceID ?? ""]
+                                )
+                            }
+                        }
+                    }
+                }
 
                 if !part.gestureCues.isEmpty {
                     SectionCard(title: "Posture and Gesture") {
@@ -76,33 +97,79 @@ struct MassPartDetailView: View {
                     }
                 }
 
-                SectionCard(title: "Why This Happens") {
-                    VStack(spacing: 14) {
-                        ForEach(part.explanationNotes) { note in
-                            ExplanationCard(
-                                note: note,
-                                isExpanded: expandedNotes.contains(note.id),
-                                toggle: {
-                                    toggleNote(note.id)
-                                }
-                            )
+                if !part.explanationNotes.isEmpty {
+                    SectionCard(
+                        title: "Deeper Context",
+                        subtitle: "Longer explanation for why this moment matters and how the tradition understands it."
+                    ) {
+                        VStack(spacing: 14) {
+                            ForEach(part.explanationNotes) { note in
+                                ExplanationCard(
+                                    note: note,
+                                    sourceReference: sourceLookup[note.sourceID ?? ""],
+                                    isExpanded: expandedNotes.contains(note.id),
+                                    toggle: {
+                                        toggleNote(note.id)
+                                    }
+                                )
+                            }
                         }
                     }
                 }
 
                 if !sourceReferences.isEmpty {
-                    SectionCard(title: "Sources") {
+                    SectionCard(
+                        title: "Sources",
+                        subtitle: "Bundled references that anchor this section's texts and explanatory notes."
+                    ) {
                         VStack(alignment: .leading, spacing: 12) {
                             ForEach(sourceReferences) { source in
                                 VStack(alignment: .leading, spacing: 4) {
-                                    Text(source.title)
-                                        .font(.subheadline.weight(.semibold))
-                                        .foregroundStyle(AppTheme.ink)
+                                    HStack(alignment: .top) {
+                                        VStack(alignment: .leading, spacing: 4) {
+                                            Text(source.title)
+                                                .font(.subheadline.weight(.semibold))
+                                                .foregroundStyle(AppTheme.ink)
 
-                                    Text(source.note)
-                                        .font(.caption)
-                                        .foregroundStyle(AppTheme.mutedInk)
+                                            Text(source.note)
+                                                .font(.caption)
+                                                .foregroundStyle(AppTheme.mutedInk)
+                                        }
+
+                                        Spacer(minLength: 12)
+
+                                        if let category = source.category {
+                                            PrayerbookBadge(title: category.capitalized, tone: .neutral)
+                                        }
+                                    }
+
+                                    if let attribution = source.attribution {
+                                        Text(attribution)
+                                            .font(.caption)
+                                            .foregroundStyle(AppTheme.ink)
+                                    }
+
+                                    if let coverageNote = source.coverageNote {
+                                        Text(coverageNote)
+                                            .font(.caption)
+                                            .foregroundStyle(AppTheme.mutedInk)
+                                    }
+
+                                    if let rights = source.rights {
+                                        Text(rights)
+                                            .font(.caption)
+                                            .foregroundStyle(AppTheme.burgundy)
+                                    }
                                 }
+                                .padding(14)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                        .fill(AppTheme.insetPanelFill)
+                                )
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                        .stroke(AppTheme.border.opacity(0.85), lineWidth: 1)
+                                )
                             }
                         }
                     }
@@ -215,29 +282,8 @@ private struct HeroCard: View {
                         .foregroundStyle(AppTheme.mutedInk)
 
                     HStack(spacing: 8) {
-                        Text(part.libraryCategoryTitle)
-                            .font(.caption.weight(.semibold))
-                            .foregroundStyle(AppTheme.gold)
-                            .padding(.horizontal, 8)
-                            .padding(.vertical, 5)
-                            .background(
-                                Capsule(style: .continuous)
-                                    .fill(AppTheme.burgundy)
-                            )
-
-                        Text(part.massForm.title)
-                            .font(.caption.weight(.semibold))
-                            .foregroundStyle(AppTheme.ink)
-                            .padding(.horizontal, 8)
-                            .padding(.vertical, 5)
-                            .background(
-                                Capsule(style: .continuous)
-                                    .fill(AppTheme.secondarySurface)
-                            )
-                            .overlay(
-                                Capsule(style: .continuous)
-                                    .stroke(AppTheme.border, lineWidth: 1)
-                            )
+                        PrayerbookBadge(title: part.libraryCategoryTitle, tone: .accent)
+                        PrayerbookBadge(title: part.massForm.title, tone: .neutral)
                     }
 
                     if let celebrationTitle = part.celebrationTitle {
@@ -268,19 +314,7 @@ private struct HeroCard: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 8) {
                         ForEach(part.tags, id: \.self) { tag in
-                            Text(tag)
-                                .font(.caption.weight(.medium))
-                                .foregroundStyle(AppTheme.burgundy)
-                                .padding(.horizontal, 10)
-                                .padding(.vertical, 6)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 8, style: .continuous)
-                                        .fill(AppTheme.secondarySurface)
-                                )
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 8, style: .continuous)
-                                        .stroke(AppTheme.border, lineWidth: 1)
-                                )
+                            PrayerbookBadge(title: tag, tone: .neutral)
                         }
                     }
                 }
@@ -329,160 +363,37 @@ private struct OrientationPill: View {
 
 private struct SectionCard<Content: View>: View {
     let title: String
+    let subtitle: String?
     @ViewBuilder let content: Content
+
+    init(
+        title: String,
+        subtitle: String? = nil,
+        @ViewBuilder content: () -> Content
+    ) {
+        self.title = title
+        self.subtitle = subtitle
+        self.content = content()
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
-            Text(title)
-                .font(.system(.headline, design: .serif))
-                .foregroundStyle(AppTheme.ink)
+            VStack(alignment: .leading, spacing: 6) {
+                Text(title)
+                    .font(.system(.headline, design: .serif))
+                    .foregroundStyle(AppTheme.ink)
+
+                if let subtitle {
+                    Text(subtitle)
+                        .font(.subheadline)
+                        .foregroundStyle(AppTheme.mutedInk)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+            }
 
             LiturgicalRule()
             content
         }
         .prayerbookPanel()
-    }
-}
-
-private struct GestureCueRow: View {
-    let cue: GestureCue
-
-    var body: some View {
-        HStack(alignment: .top, spacing: 12) {
-            Image(systemName: cue.systemImage)
-                .foregroundStyle(AppTheme.burgundy)
-                .font(.headline)
-                .frame(width: 24)
-
-            VStack(alignment: .leading, spacing: 4) {
-                Text(cue.label)
-                    .font(.system(.headline, design: .serif))
-                    .foregroundStyle(AppTheme.ink)
-                Text(cue.detail)
-                    .font(.subheadline)
-                    .foregroundStyle(AppTheme.mutedInk)
-            }
-        }
-    }
-}
-
-private struct TextBlockCard: View {
-    let block: TextBlock
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            HStack {
-                Text(block.speaker)
-                    .font(.caption.weight(.bold))
-                    .foregroundStyle(AppTheme.burgundy)
-
-                Spacer()
-
-                if let rubric = block.rubric {
-                    Text(rubric)
-                        .font(.caption)
-                        .foregroundStyle(AppTheme.mutedInk)
-                        .multilineTextAlignment(.trailing)
-                }
-            }
-
-            Text(block.latin)
-                .font(.system(.body, design: .serif))
-                .foregroundStyle(AppTheme.ink)
-
-            LiturgicalRule()
-
-            Text(block.english)
-                .font(.body)
-                .foregroundStyle(AppTheme.mutedInk)
-        }
-        .padding(16)
-        .background(
-            RoundedRectangle(cornerRadius: 10, style: .continuous)
-                .fill(AppTheme.secondarySurface)
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: 10, style: .continuous)
-                .stroke(AppTheme.border.opacity(0.85), lineWidth: 1)
-        )
-    }
-}
-
-private struct LearnLinkButton: View {
-    let title: String
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            HStack {
-                Text(title)
-                    .font(.subheadline.weight(.semibold))
-                Spacer()
-                Image(systemName: "arrow.up.right")
-                    .font(.caption.weight(.semibold))
-            }
-            .foregroundStyle(AppTheme.ink)
-            .padding(.horizontal, 12)
-            .padding(.vertical, 10)
-            .background(
-                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    .fill(AppTheme.secondarySurface)
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    .stroke(AppTheme.border.opacity(0.85), lineWidth: 1)
-            )
-        }
-        .buttonStyle(.plain)
-        .accessibilityLabel("Open learning note for \(title)")
-    }
-}
-
-private struct ExplanationCard: View {
-    let note: ExplanationNote
-    let isExpanded: Bool
-    let toggle: () -> Void
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Button(action: toggle) {
-                HStack(alignment: .top) {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(note.title)
-                            .font(.system(.headline, design: .serif))
-                            .foregroundStyle(AppTheme.ink)
-                        if let sourceID = note.sourceID {
-                            Text("Source: \(sourceID)")
-                                .font(.caption)
-                                .foregroundStyle(AppTheme.mutedInk)
-                        }
-                    }
-
-                    Spacer()
-
-                    Image(systemName: isExpanded ? "chevron.up" : "chevron.down")
-                        .foregroundStyle(AppTheme.burgundy)
-                        .font(.subheadline.weight(.semibold))
-                }
-            }
-            .buttonStyle(.plain)
-            .accessibilityLabel(note.title)
-            .accessibilityValue(isExpanded ? "Expanded" : "Collapsed")
-
-            if isExpanded {
-                Text(note.body)
-                    .font(.body)
-                    .foregroundStyle(AppTheme.mutedInk)
-            }
-        }
-        .padding(16)
-        .background(
-            RoundedRectangle(cornerRadius: 10, style: .continuous)
-                .fill(AppTheme.secondarySurface)
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: 10, style: .continuous)
-                .stroke(AppTheme.border.opacity(0.85), lineWidth: 1)
-        )
     }
 }

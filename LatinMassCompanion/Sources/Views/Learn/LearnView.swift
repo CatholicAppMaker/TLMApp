@@ -9,76 +9,69 @@ struct LearnView: View {
                 .fill(AppTheme.backgroundWash)
                 .ignoresSafeArea()
 
-            List {
-                introSection
-                focusSection
-                participationSection(kind: .orientation)
-                participationSection(kind: .changes)
-                participationSection(kind: .participation)
-                chantSection
-                pronunciationSection
-                glossarySection
+            ScrollView {
+                VStack(alignment: .leading, spacing: 18) {
+                    LearnIntroCard(
+                        sources: appModel.sourceReferences(for: ["ordinary", "translation", "chant"])
+                    )
+                    focusedSection
+                    guideSection(
+                        title: "Start Here",
+                        subtitle: "Practical orientation for newcomers and returning visitors.",
+                        guides: appModel.orientationGuides
+                    )
+                    guideSection(
+                        title: "What Changes",
+                        subtitle: "How the Ordinary, Propers, and Mass form selection affect what you see.",
+                        guides: appModel.changeGuides
+                    )
+                    guideSection(
+                        title: "Participate Calmly",
+                        subtitle: "Follow the rite without turning prayer into a race.",
+                        guides: appModel.participationHelpGuides
+                    )
+                    chantSection
+                    pronunciationSection
+                    glossarySection
+                }
+                .padding(.horizontal, 20)
+                .padding(.vertical, 24)
             }
-            .scrollContentBackground(.hidden)
         }
         .navigationTitle("Learn")
         .navigationBarTitleDisplayMode(.inline)
     }
 
-    private var introSection: some View {
-        Section {
-            VStack(alignment: .leading, spacing: 10) {
-                Text(
-                    """
-                    Use this area to learn the shape of the 1962 Mass,
-                    understand what changes by day, and follow chant or
-                    pronunciation without needing a network connection.
-                    """
-                )
-                .font(.body)
-                .foregroundStyle(AppTheme.mutedInk)
-
-                Text(
-                    """
-                    The goal is practical confidence, not information overload.
-                    You do not need to master every line in order to pray fruitfully.
-                    """
-                )
-                .font(.subheadline)
-                .foregroundStyle(AppTheme.mutedInk)
-            }
-            .padding(.vertical, 8)
-            .listRowBackground(AppTheme.surface)
-        }
-    }
-
     @ViewBuilder
-    private var focusSection: some View {
-        if let focusedItem = focusedContent {
-            Section("From the Guide") {
-                VStack(alignment: .leading, spacing: 10) {
-                    focusedItem
+    private var focusedSection: some View {
+        if let destination = appModel.focusedLearningDestination {
+            LearnSectionCard(
+                title: "From the Guide",
+                subtitle: "This note was opened from the guide or library so you can stay oriented without hunting for it again."
+            ) {
+                focusedRow(for: destination)
 
-                    Button("Clear Highlight") {
-                        appModel.clearLearnFocus()
-                    }
-                    .font(.caption.weight(.semibold))
-                    .foregroundStyle(AppTheme.burgundy)
+                Button("Clear Highlight") {
+                    appModel.clearLearnFocus()
                 }
-                .padding(.vertical, 8)
-                .listRowBackground(AppTheme.surface)
+                .buttonStyle(LearnOutlineButtonStyle())
             }
         }
     }
 
     @ViewBuilder
-    private func participationSection(kind: ParticipationGuideKind) -> some View {
-        let items = appModel.participationGuides.filter { $0.kind == kind }
-        if !items.isEmpty {
-            Section(kind.title) {
-                ForEach(items) { guide in
-                    ParticipationGuideRow(guide: guide)
-                        .listRowBackground(AppTheme.surface)
+    private func guideSection(
+        title: String,
+        subtitle: String,
+        guides: [ParticipationGuide]
+    ) -> some View {
+        if !guides.isEmpty {
+            LearnSectionCard(title: title, subtitle: subtitle) {
+                ForEach(guides) { guide in
+                    ParticipationGuideRow(
+                        guide: guide,
+                        sources: appModel.sourceReferences(for: guide.sourceIDs)
+                    )
                 }
             }
         }
@@ -87,10 +80,15 @@ struct LearnView: View {
     @ViewBuilder
     private var chantSection: some View {
         if !appModel.chantGuides.isEmpty {
-            Section("Gregorian Chant") {
+            LearnSectionCard(
+                title: "Gregorian Chant",
+                subtitle: "A small, text-only primer for understanding what chant is and how it helps you follow a Sung Mass."
+            ) {
                 ForEach(appModel.chantGuides) { guide in
-                    ChantGuideRow(guide: guide)
-                        .listRowBackground(AppTheme.surface)
+                    ChantGuideRow(
+                        guide: guide,
+                        sources: appModel.sourceReferences(for: guide.sourceIDs)
+                    )
                 }
             }
         }
@@ -99,10 +97,15 @@ struct LearnView: View {
     @ViewBuilder
     private var pronunciationSection: some View {
         if !appModel.pronunciationGuides.isEmpty {
-            Section("Pronunciation") {
+            LearnSectionCard(
+                title: "Pronunciation",
+                subtitle: "Short helps for common responses and major prayer landmarks."
+            ) {
                 ForEach(appModel.pronunciationGuides) { guide in
-                    PronunciationGuideRow(guide: guide)
-                        .listRowBackground(AppTheme.surface)
+                    PronunciationGuideRow(
+                        guide: guide,
+                        sources: appModel.sourceReferences(for: guide.sourceIDs)
+                    )
                 }
             }
         }
@@ -111,46 +114,120 @@ struct LearnView: View {
     @ViewBuilder
     private var glossarySection: some View {
         if !appModel.glossaryEntries.isEmpty {
-            Section("Glossary") {
+            LearnSectionCard(
+                title: "Glossary",
+                subtitle: "Key terms that make the guide easier to understand at a glance."
+            ) {
                 ForEach(appModel.glossaryEntries) { entry in
-                    GlossaryEntryRow(entry: entry)
-                        .listRowBackground(AppTheme.surface)
+                    GlossaryEntryRow(
+                        entry: entry,
+                        sources: appModel.sourceReferences(for: entry.sourceIDs)
+                    )
                 }
             }
         }
     }
 
-    private var focusedContent: AnyView? {
-        switch appModel.focusedLearningDestination {
+    @ViewBuilder
+    private func focusedRow(for destination: LearnDestination) -> some View {
+        switch destination {
         case let .glossary(id):
             if let entry = appModel.glossaryEntry(withID: id) {
-                return AnyView(GlossaryEntryRow(entry: entry))
+                GlossaryEntryRow(
+                    entry: entry,
+                    sources: appModel.sourceReferences(for: entry.sourceIDs)
+                )
             }
         case let .pronunciation(id):
             if let guide = appModel.pronunciationGuide(withID: id) {
-                return AnyView(PronunciationGuideRow(guide: guide))
+                PronunciationGuideRow(
+                    guide: guide,
+                    sources: appModel.sourceReferences(for: guide.sourceIDs)
+                )
             }
         case let .participation(id):
             if let guide = appModel.participationGuide(withID: id) {
-                return AnyView(ParticipationGuideRow(guide: guide))
+                ParticipationGuideRow(
+                    guide: guide,
+                    sources: appModel.sourceReferences(for: guide.sourceIDs)
+                )
             }
         case let .chant(id):
             if let guide = appModel.chantGuide(withID: id) {
-                return AnyView(ChantGuideRow(guide: guide))
+                ChantGuideRow(
+                    guide: guide,
+                    sources: appModel.sourceReferences(for: guide.sourceIDs)
+                )
             }
-        case nil:
-            return nil
         }
+    }
+}
 
-        return nil
+private struct LearnIntroCard: View {
+    let sources: [SourceReference]
+
+    var body: some View {
+        LearnSectionCard(
+            title: "Learn the Rite, Keep the Prayer",
+            subtitle: "Use this area before or after Mass to build confidence without overloading the live guide."
+        ) {
+            Text(
+                """
+                The app is a bounded companion for the 1962 Mass. It helps you understand what changes by day,
+                what may vary locally, and how to follow Low or Sung Mass without expecting the phone to replace
+                a hand missal or to catch every line for you.
+                """
+            )
+            .font(.body)
+            .foregroundStyle(AppTheme.mutedInk)
+            .fixedSize(horizontal: false, vertical: true)
+
+            Text(
+                """
+                Practical confidence is the goal here. If you can recognize the broad movement of the rite,
+                recover by landmarks when you lose your place, and let the liturgy remain primary, you are
+                already using the app well.
+                """
+            )
+            .font(.subheadline)
+            .foregroundStyle(AppTheme.mutedInk)
+            .fixedSize(horizontal: false, vertical: true)
+
+            SourceAttributionLine(references: sources)
+        }
+    }
+}
+
+private struct LearnSectionCard<Content: View>: View {
+    let title: String
+    let subtitle: String
+    @ViewBuilder let content: Content
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 14) {
+            VStack(alignment: .leading, spacing: 6) {
+                Text(title)
+                    .font(.system(.headline, design: .serif))
+                    .foregroundStyle(AppTheme.ink)
+
+                Text(subtitle)
+                    .font(.subheadline)
+                    .foregroundStyle(AppTheme.mutedInk)
+            }
+
+            LiturgicalRule()
+            content
+        }
+        .prayerbookPanel()
     }
 }
 
 private struct GlossaryEntryRow: View {
     let entry: GlossaryEntry
+    let sources: [SourceReference]
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        LearnRowContainer {
             Text(entry.term)
                 .font(.system(.headline, design: .serif))
                 .foregroundStyle(AppTheme.ink)
@@ -165,16 +242,18 @@ private struct GlossaryEntryRow: View {
                     .font(.caption)
                     .foregroundStyle(AppTheme.burgundy)
             }
+
+            SourceAttributionLine(references: sources)
         }
-        .padding(.vertical, 8)
     }
 }
 
 private struct PronunciationGuideRow: View {
     let guide: PronunciationGuide
+    let sources: [SourceReference]
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        LearnRowContainer {
             Text(guide.title)
                 .font(.system(.headline, design: .serif))
                 .foregroundStyle(AppTheme.ink)
@@ -191,34 +270,47 @@ private struct PronunciationGuideRow: View {
             Text(guide.note)
                 .font(.body)
                 .foregroundStyle(AppTheme.mutedInk)
+
+            SourceAttributionLine(references: sources)
         }
-        .padding(.vertical, 8)
     }
 }
 
 private struct ParticipationGuideRow: View {
     let guide: ParticipationGuide
+    let sources: [SourceReference]
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text(guide.title)
-                .font(.system(.headline, design: .serif))
-                .foregroundStyle(AppTheme.ink)
-                .accessibilityIdentifier("learn-participation-\(guide.id)")
+        LearnRowContainer {
+            HStack(alignment: .top) {
+                VStack(alignment: .leading, spacing: 8) {
+                    Text(guide.title)
+                        .font(.system(.headline, design: .serif))
+                        .foregroundStyle(AppTheme.ink)
+                        .accessibilityIdentifier("learn-participation-\(guide.id)")
 
-            Text(guide.body)
-                .font(.body)
-                .foregroundStyle(AppTheme.mutedInk)
+                    Text(guide.body)
+                        .font(.body)
+                        .foregroundStyle(AppTheme.mutedInk)
+                }
+
+                Spacer(minLength: 12)
+
+                PrayerbookBadge(title: guide.kind.title, tone: .neutral)
+                    .accessibilityHidden(true)
+            }
+
+            SourceAttributionLine(references: sources)
         }
-        .padding(.vertical, 8)
     }
 }
 
 private struct ChantGuideRow: View {
     let guide: ChantGuide
+    let sources: [SourceReference]
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        LearnRowContainer {
             Text(guide.title)
                 .font(.system(.headline, design: .serif))
                 .foregroundStyle(AppTheme.ink)
@@ -231,7 +323,46 @@ private struct ChantGuideRow: View {
             Text(guide.body)
                 .font(.body)
                 .foregroundStyle(AppTheme.mutedInk)
+
+            SourceAttributionLine(references: sources)
         }
-        .padding(.vertical, 8)
+    }
+}
+
+private struct LearnRowContainer<Content: View>: View {
+    @ViewBuilder let content: Content
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            content
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(14)
+        .background(
+            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                .fill(AppTheme.secondarySurface)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                .stroke(AppTheme.border.opacity(0.9), lineWidth: 1)
+        )
+    }
+}
+
+private struct LearnOutlineButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 12)
+            .font(.system(.headline, design: .serif))
+            .foregroundStyle(AppTheme.ink)
+            .background(
+                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                    .fill(AppTheme.secondarySurface.opacity(configuration.isPressed ? 0.82 : 1.0))
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                    .stroke(AppTheme.border, lineWidth: 1)
+            )
     }
 }

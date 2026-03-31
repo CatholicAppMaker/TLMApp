@@ -228,13 +228,13 @@
       {
         "id": "collect-purpose",
         "title": "What the Collect does",
-        "body": "The Collect gathers the prayers of the Church into one brief petition that expresses the grace sought on that day.",
+        "body": "The Collect gathers the prayers of the Church into one brief petition that expresses the grace sought on that day. It tells you what the liturgy is asking from God before the readings unfold that same mystery more fully.",
         "sourceID": "ordinary"
       },
       {
         "id": "propers-note",
         "title": "Why some texts are not identical every day",
-        "body": "The readings and many prayers belong to the proper of the Mass and therefore vary with the feast, season, or saint being commemorated.",
+        "body": "The readings and many prayers belong to the proper of the Mass and therefore vary with the feast, season, or saint being commemorated. This is one of the safest places to confirm the day without trying to decode every smaller variation at once.",
         "sourceID": "translation"
       }
     ],
@@ -394,7 +394,7 @@
       {
         "id": "offertory-not-yet-consecration",
         "title": "What is happening at the Offertory",
-        "body": "The gifts are not yet consecrated. The Church is preparing matter for sacrifice and already uniting the faithful to Christ's coming self-offering.",
+        "body": "The gifts are not yet consecrated. The Church is preparing matter for sacrifice and already uniting the faithful to Christ's coming self-offering. This is the moment to move from listening toward offering, not to confuse preparation with the consecration itself.",
         "sourceID": "ordinary"
       }
     ],
@@ -568,7 +568,7 @@
       {
         "id": "canon-silence",
         "title": "Why so much of the Canon is silent",
-        "body": "The hushed voice emphasizes awe before the sacred action. Silence is not emptiness here; it is a sign of mystery, adoration, and concentrated prayer.",
+        "body": "The hushed voice emphasizes awe before the sacred action. Silence is not emptiness here; it is a sign of mystery, adoration, and concentrated prayer. The faithful are meant to stay with the altar action and the sacrificial moment rather than force every prayer into audible form.",
         "sourceID": "translation"
       }
     ],
@@ -750,7 +750,7 @@
       {
         "id": "communion-disposition",
         "title": "Why reception is surrounded by humility",
-        "body": "Holy Communion is intimate union with Christ. The prayers before and after it teach wonder, gratitude, and the need to receive with faith and proper disposition.",
+        "body": "Holy Communion is intimate union with Christ. The prayers before and after it teach wonder, gratitude, and the need to receive with faith and proper disposition. Even when you are not receiving sacramentally, this moment still invites humility, thanksgiving, and spiritual desire.",
         "sourceID": "translation"
       }
     ],
@@ -812,7 +812,7 @@
       {
         "id": "dismissal-mission",
         "title": "Why Mass ends with a sending",
-        "body": "The faithful are not dismissed from grace but sent with it. The Last Gospel leaves the mystery of the Incarnation ringing in the heart as one returns to daily life.",
+        "body": "The faithful are not dismissed from grace but sent with it. The Last Gospel leaves the mystery of the Incarnation ringing in the heart as one returns to daily life, so the rite closes with thanksgiving rather than with a merely practical ending.",
         "sourceID": "ordinary"
       }
     ],

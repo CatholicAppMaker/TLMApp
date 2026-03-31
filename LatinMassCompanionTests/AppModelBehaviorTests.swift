@@ -177,4 +177,54 @@ struct AppModelBehaviorTests {
         model.resetToToday()
         #expect(model.selectedDateKey == "2026-06-29")
     }
+
+    @MainActor
+    @Test
+    func learningGuidesAreGroupedByKindForLearnScreen() {
+        let intro = TestFixtures.makePart(id: "intro", order: 1, title: "Intro")
+        let model = AppModel(
+            repository: StubMassContentRepository {
+                TestFixtures.makeCatalog(
+                    parts: [intro],
+                    participationGuides: [
+                        ParticipationGuide(
+                            id: "orientation",
+                            kind: .orientation,
+                            title: "Orientation",
+                            body: "Body",
+                            keywords: [],
+                            searchAliases: nil,
+                            sourceIDs: ["translation"]
+                        ),
+                        ParticipationGuide(
+                            id: "changes",
+                            kind: .changes,
+                            title: "Changes",
+                            body: "Body",
+                            keywords: [],
+                            searchAliases: nil,
+                            sourceIDs: ["translation"]
+                        ),
+                        ParticipationGuide(
+                            id: "participation",
+                            kind: .participation,
+                            title: "Participation",
+                            body: "Body",
+                            keywords: [],
+                            searchAliases: nil,
+                            sourceIDs: ["translation"]
+                        )
+                    ]
+                )
+            },
+            searchService: SpySearchService(),
+            bookmarkStore: SpyBookmarkStore(),
+            progressStore: SpyMassModeProgressStore(),
+            now: { TestFixtures.date("2026-03-30") }
+        )
+
+        #expect(model.orientationGuides.map(\.id) == ["orientation"])
+        #expect(model.changeGuides.map(\.id) == ["changes"])
+        #expect(model.participationHelpGuides.map(\.id) == ["participation"])
+    }
 }

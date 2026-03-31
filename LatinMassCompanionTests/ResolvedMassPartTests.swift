@@ -87,6 +87,7 @@ struct ResolvedMassPartTests {
                     summary: nil,
                     liveNote: "Base sung live note",
                     participationNote: "Base sung participation note",
+                    quickGuidance: nil,
                     gestureCues: nil,
                     sourceIDs: ["chant"],
                     chantGuideIDs: ["chant-what-is-it"]
@@ -104,6 +105,7 @@ struct ResolvedMassPartTests {
                     summary: nil,
                     liveNote: "Proper sung live note",
                     participationNote: "Proper sung participation note",
+                    quickGuidance: nil,
                     gestureCues: nil,
                     sourceIDs: ["translation"],
                     chantGuideIDs: ["chant-how-to-listen"]
@@ -153,4 +155,70 @@ struct ResolvedMassPartTests {
 
         #expect(resolved.sourceReferenceIDs == ["ordinary", "translation"])
     }
+
+    @Test
+    func quickGuidanceMergesBaseAndProperProfilesWithoutDroppingSources() {
+        let basePart = TestFixtures.makePart(
+            id: "collect-readings",
+            order: 4,
+            phase: .instruction,
+            title: "Collect",
+            quickGuidance: [makeGuidance("base-guidance", "Base guidance", "Use the collect to reconnect.", "ordinary")],
+            formProfiles: [
+                makeSungProfile(
+                    guidance: [makeGuidance(
+                        "sung-guidance",
+                        "Sung guidance",
+                        "Listen for the chant before the Gospel.",
+                        "chant"
+                    )]
+                )
+            ]
+        )
+        let celebration = TestFixtures.makeCelebration(
+            id: "easter-sunday",
+            title: "Easter Sunday",
+            properTitle: "Easter Sunday Propers",
+            properQuickGuidance: [
+                makeGuidance(
+                    "proper-guidance",
+                    "Proper guidance",
+                    "This is where the day becomes obvious.",
+                    "proper"
+                )
+            ]
+        )
+
+        let resolved = ResolvedMassPart(
+            basePart: basePart,
+            properSection: celebration.properSections[0],
+            celebration: celebration,
+            massForm: .sung
+        )
+
+        #expect(resolved.quickGuidance.map(\.id) == ["base-guidance", "sung-guidance", "proper-guidance"])
+        #expect(resolved.sourceReferenceIDs == ["chant", "ordinary", "proper", "translation"])
+    }
+}
+
+private func makeGuidance(
+    _ id: String,
+    _ title: String,
+    _ body: String,
+    _ sourceID: String
+) -> QuickGuidance {
+    QuickGuidance(id: id, title: title, body: body, sourceID: sourceID)
+}
+
+private func makeSungProfile(guidance: [QuickGuidance]) -> MassFormProfile {
+    MassFormProfile(
+        massForm: .sung,
+        summary: nil,
+        liveNote: nil,
+        participationNote: nil,
+        quickGuidance: guidance,
+        gestureCues: nil,
+        sourceIDs: nil,
+        chantGuideIDs: nil
+    )
 }

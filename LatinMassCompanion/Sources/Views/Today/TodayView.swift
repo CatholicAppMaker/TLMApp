@@ -29,7 +29,10 @@ struct TodayView: View {
                     TodayHeader(appModel: appModel)
                     TodayCelebrationCard(appModel: appModel)
                     TodayMassFormCard(selectedMassFormBinding: selectedMassFormBinding)
-                    TodayDateCard(selectedDateBinding: selectedDateBinding)
+                    TodayDateCard(
+                        selectedDateBinding: selectedDateBinding,
+                        resetToToday: appModel.resetToToday
+                    )
                     TodayActions(
                         appModel: appModel,
                         selectedTab: $selectedTab
@@ -96,15 +99,10 @@ private struct TodayHeader: View {
 
                 Spacer()
 
-                Text(appModel.selectedMassFormTitle)
-                    .font(.caption.weight(.semibold))
-                    .foregroundStyle(AppTheme.gold)
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 6)
-                    .background(
-                        Capsule(style: .continuous)
-                            .fill(AppTheme.burgundy.opacity(0.92))
-                    )
+                HStack(spacing: 8) {
+                    PrayerbookBadge(title: "Offline", tone: .neutral)
+                    PrayerbookBadge(title: appModel.selectedMassFormTitle, tone: .accent)
+                }
             }
         }
     }
@@ -130,6 +128,14 @@ private struct TodayCelebrationCard: View {
                     .foregroundStyle(AppTheme.mutedInk)
 
                 LiturgicalRule()
+
+                HStack(spacing: 8) {
+                    PrayerbookBadge(
+                        title: appModel.coverageTitle,
+                        tone: appModel.isOutsideCoverageWindow ? .neutral : .accent
+                    )
+                    PrayerbookBadge(title: appModel.selectedMassFormTitle, tone: .neutral)
+                }
 
                 Text(appModel.coverageTitle)
                     .font(.subheadline.weight(.semibold))
@@ -166,6 +172,16 @@ private struct TodayMassFormCard: View {
                 Text(selectedMassFormBinding.wrappedValue.subtitle)
                     .font(.subheadline)
                     .foregroundStyle(AppTheme.mutedInk)
+
+                Text(
+                    """
+                    Choose the form you are actually attending so the guide can surface the right landmarks,
+                    response expectations, and chant cues without pretending one pattern fits every parish.
+                    """
+                )
+                .font(.caption)
+                .foregroundStyle(AppTheme.mutedInk)
+                .fixedSize(horizontal: false, vertical: true)
             }
         }
     }
@@ -173,6 +189,7 @@ private struct TodayMassFormCard: View {
 
 private struct TodayDateCard: View {
     let selectedDateBinding: Binding<Date>
+    let resetToToday: () -> Void
 
     var body: some View {
         TodayCard {
@@ -190,9 +207,20 @@ private struct TodayDateCard: View {
                 .labelsHidden()
                 .accessibilityIdentifier("today-date-picker")
 
-                Text("The app stays offline after install and only shows bundled propers when the selected date is covered.")
-                    .font(.caption)
-                    .foregroundStyle(AppTheme.mutedInk)
+                Text(
+                    """
+                    The app stays offline after install. It only shows bundled propers when the selected date
+                    belongs to the supported 2026 Sunday-and-feast bundle.
+                    """
+                )
+                .font(.caption)
+                .foregroundStyle(AppTheme.mutedInk)
+                .fixedSize(horizontal: false, vertical: true)
+
+                Button("Reset to Today", action: resetToToday)
+                    .buttonStyle(TodaySecondaryButtonStyle())
+                    .accessibilityIdentifier("reset-to-today-button")
+                    .accessibilityLabel("Reset the selected date to today")
             }
         }
     }
@@ -244,13 +272,15 @@ private struct TodayExpectationCard: View {
 
                 Text(
                     """
-                    The guide is meant to keep you recollected and oriented.
-                    It is not trying to replace a full hand missal or claim
-                    coverage beyond the bundled year.
+                    The guide is meant to keep you recollected and oriented inside the rite.
+                    It does not replace a full hand missal and it does not promise coverage beyond
+                    the bundled year. If you lose your place, come back by posture, chant, and major
+                    landmarks rather than trying to recover every line.
                     """
                 )
                 .font(.subheadline)
                 .foregroundStyle(AppTheme.mutedInk)
+                .fixedSize(horizontal: false, vertical: true)
             }
         }
     }
@@ -330,24 +360,25 @@ private struct TodayAboutCard: View {
 
                 Text(
                     """
-                    This app is a bounded companion for the 1962 Mass.
-                    It is designed to help you follow the fixed Ordinary,
-                    recognize the principal day-specific propers,
-                    and stay calm when you lose your place.
+                    This app is a bounded companion for the 1962 Mass. It is meant to help you recognize
+                    the fixed Ordinary, follow the principal bundled propers, and recover calmly when you
+                    lose your place.
                     """
                 )
                 .font(.body)
                 .foregroundStyle(AppTheme.mutedInk)
+                .fixedSize(horizontal: false, vertical: true)
 
                 Text(
                     """
-                    Posture, spoken responses, and Sung-versus-Low customs can vary locally.
-                    The app aims to orient you without overclaiming certainty
-                    where local practice differs.
+                    Posture, spoken responses, and Sung-versus-Low customs can vary locally. The app tries
+                    to orient you without overclaiming certainty where parish custom differs, and without
+                    pretending to cover more than the bundle actually ships.
                     """
                 )
                 .font(.body)
                 .foregroundStyle(AppTheme.mutedInk)
+                .fixedSize(horizontal: false, vertical: true)
 
                 Button("First Time Here?", action: openFirstVisit)
                     .buttonStyle(TodaySecondaryButtonStyle())
@@ -375,13 +406,14 @@ private struct TodaySourcesCard: View {
 
                 Text(
                     """
-                    The app keeps its content bundled on-device and surfaces
-                    the source references behind the guide, learning material,
-                    and chant introductions.
+                    The app keeps its content bundled on-device and carries source references into the guide
+                    and learning sections so you can see what is anchored in the missal tradition, what is
+                    editorial adaptation, and where the bundle deliberately stops.
                     """
                 )
                 .font(.body)
                 .foregroundStyle(AppTheme.mutedInk)
+                .fixedSize(horizontal: false, vertical: true)
 
                 if !coverageWindowDateText.isEmpty {
                     Text("\(coverageWindowTitle): \(coverageWindowDateText)")
@@ -423,7 +455,7 @@ private struct TodayPrimaryButtonStyle: ButtonStyle {
             .font(.system(.headline, design: .serif))
             .foregroundStyle(.white)
             .background(
-                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                RoundedRectangle(cornerRadius: 10, style: .continuous)
                     .fill(AppTheme.burgundy.opacity(configuration.isPressed ? 0.82 : 1.0))
             )
     }
@@ -437,11 +469,11 @@ private struct TodaySecondaryButtonStyle: ButtonStyle {
             .font(.system(.headline, design: .serif))
             .foregroundStyle(AppTheme.ink)
             .background(
-                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                RoundedRectangle(cornerRadius: 10, style: .continuous)
                     .fill(AppTheme.secondarySurface.opacity(configuration.isPressed ? 0.82 : 1.0))
             )
             .overlay(
-                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                RoundedRectangle(cornerRadius: 10, style: .continuous)
                     .stroke(AppTheme.border, lineWidth: 1)
             )
     }

@@ -1,13 +1,17 @@
 import Foundation
 
+struct LearningContentIndex: Sendable {
+    let glossaryEntries: [GlossaryEntry]
+    let pronunciationGuides: [PronunciationGuide]
+    let participationGuides: [ParticipationGuide]
+    let chantGuides: [ChantGuide]
+}
+
 protocol SearchService {
     func search(
         query: String,
         in parts: [ResolvedMassPart],
-        glossaryEntries: [GlossaryEntry],
-        pronunciationGuides: [PronunciationGuide],
-        participationGuides: [ParticipationGuide],
-        chantGuides: [ChantGuide]
+        learningContent: LearningContentIndex
     ) -> LibrarySearchResults
 }
 
@@ -15,10 +19,7 @@ struct LocalMassSearchService: SearchService {
     func search(
         query: String,
         in parts: [ResolvedMassPart],
-        glossaryEntries: [GlossaryEntry],
-        pronunciationGuides: [PronunciationGuide],
-        participationGuides: [ParticipationGuide],
-        chantGuides: [ChantGuide]
+        learningContent: LearningContentIndex
     ) -> LibrarySearchResults {
         let normalizedQuery = Self.normalize(query)
 
@@ -32,8 +33,8 @@ struct LocalMassSearchService: SearchService {
         let tokens = normalizedQuery.split(separator: " ").map(String.init)
         let matchingParts = parts
             .filter { part in
-                let linkedGlossary = glossaryEntries.filter { part.glossaryIDs.contains($0.id) }
-                let linkedPronunciation = pronunciationGuides.filter { part.pronunciationIDs.contains($0.id) }
+                let linkedGlossary = learningContent.glossaryEntries.filter { part.glossaryIDs.contains($0.id) }
+                let linkedPronunciation = learningContent.pronunciationGuides.filter { part.pronunciationIDs.contains($0.id) }
                 let searchableText = Self.normalize(part.searchableText(
                     glossaryEntries: linkedGlossary,
                     pronunciationGuides: linkedPronunciation
@@ -43,16 +44,16 @@ struct LocalMassSearchService: SearchService {
             .sorted { $0.order < $1.order }
 
         let matchingLearningItems =
-            glossaryEntries
+            learningContent.glossaryEntries
                 .filter { matches(tokens: tokens, text: $0.searchableText) }
                 .map(LearningSearchResult.glossary)
-                + pronunciationGuides
+                + learningContent.pronunciationGuides
                 .filter { matches(tokens: tokens, text: $0.searchableText) }
                 .map(LearningSearchResult.pronunciation)
-                + participationGuides
+                + learningContent.participationGuides
                 .filter { matches(tokens: tokens, text: $0.searchableText) }
                 .map(LearningSearchResult.participation)
-                + chantGuides
+                + learningContent.chantGuides
                 .filter { matches(tokens: tokens, text: $0.searchableText) }
                 .map(LearningSearchResult.chant)
 
