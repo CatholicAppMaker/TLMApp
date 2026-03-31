@@ -1,0 +1,90 @@
+[
+  {
+    "id": "ordinary",
+    "title": "Missale Romanum (1962), Ordinary of the Mass",
+    "description": "The fixed Order of Mass used as the baseline structure for every resolved day in the app.",
+    "note": "Used as the structural source for the Ordinary and for phase-based guide orientation.",
+    "url": null,
+    "category": "ordinary",
+    "rights": "Public-domain Latin liturgical text.",
+    "attribution": "Ordinary baseline adapted from the 1962 Roman Missal and related public-domain hand missals.",
+    "coverageNote": "Applies to every date, including dates outside the bundled coverage window."
+  },
+  {
+    "id": "translation",
+    "title": "Public-domain English hand missal translations",
+    "description": "English renderings and explanatory notes adapted from public-domain missal material.",
+    "note": "Used for side-by-side devotional reading and newcomer guidance.",
+    "url": null,
+    "category": "translation",
+    "rights": "Public-domain or adapted public-domain devotional language.",
+    "attribution": "Compiled from late nineteenth- and early twentieth-century English hand missal material.",
+    "coverageNote": "Supports the Ordinary, learning material, and explanatory notes."
+  },
+  {
+    "id": "calendar-1962",
+    "title": "Traditional Roman calendar reference for 2026",
+    "description": "Date mapping used to bundle Sundays and major feasts for the supported 2026 coverage window.",
+    "note": "Used to map exact dates to celebration records without online computation.",
+    "url": null,
+    "category": "calendar",
+    "rights": "Calendar facts and feast ordering used as reference metadata.",
+    "attribution": "Traditional Roman calendar structure reviewed against 1962-era references for 2026 scheduling.",
+    "coverageNote": "Applies only to the bundled 2026 coverage window."
+  },
+  {
+    "id": "proper-advent",
+    "title": "Seasonal proper set: Advent",
+    "description": "Bundled Advent Sunday proper summaries and representative prayer text for the supported year.",
+    "note": "Used for Advent Sundays in the 2026 bundle.",
+    "url": null,
+    "category": "proper",
+    "rights": "Bundled from public-domain seasonal missal material and editorial adaptation.",
+    "attribution": "Editorially adapted from public-domain traditional Advent proper sources.",
+    "coverageNote": "Referenced by Advent Sundays and the Immaculate Conception."
+  },
+  {
+    "id": "proper-christmas",
+    "title": "Seasonal proper set: Christmastide and Epiphany",
+    "description": "Bundled Christmas and early-January Sunday proper summaries for the supported year.",
+    "note": "Used for Christmas, Epiphany, and Christmastide Sundays in the 2026 bundle.",
+    "url": null,
+    "category": "proper",
+    "rights": "Bundled from public-domain seasonal missal material and editorial adaptation.",
+    "attribution": "Editorially adapted from public-domain Christmas and Epiphany proper sources.",
+    "coverageNote": "Referenced by Christmastide Sundays, Epiphany, and Christmas Day."
+  },
+  {
+    "id": "proper-lent",
+    "title": "Seasonal proper set: Pre-Lent and Lent",
+    "description": "Bundled proper summaries for Septuagesima through Holy Week in the supported year.",
+    "note": "Used for pre-Lent Sundays, Lent, Passiontide, Palm Sunday, Saint Joseph, and the Annunciation.",
+    "url": null,
+    "category": "proper",
+    "rights": "Bundled from public-domain seasonal missal material and editorial adaptation.",
+    "attribution": "Editorially adapted from public-domain traditional Lent and Holy Week proper sources.",
+    "coverageNote": "Referenced across the pre-Lent and Lent cycle in 2026."
+  },
+  {
+    "id": "proper-easter",
+    "title": "Seasonal proper set: Eastertide and Ascension",
+    "description": "Bundled proper summaries for Easter Sunday through Pentecost in the supported year.",
+    "note": "Used for Eastertide Sundays, Ascension, and Pentecost.",
+    "url": null,
+    "category": "proper",
+    "rights": "Bundled from public-domain seasonal missal material and editorial adaptation.",
+    "attribution": "Editorially adapted from public-domain Eastertide proper sources.",
+    "coverageNote": "Referenced by the Paschal cycle in 2026."
+  },
+  {
+    "id": "proper-post-pentecost",
+    "title": "Seasonal proper set: Sundays after Pentecost",
+    "description": "Bundled proper summaries for the long post-Pentecost cycle in the supported year.",
+    "note": "Used for Trinity season and later Sundays after Pentecost.",
+    "url": null,
+    "category": "proper",
+    "rights": "Bundled from public-domain seasonal missal material and editorial adaptation.",
+    "attribution": "Editorially adapted from public-domain post-Pentecost proper sources.",
+    "coverageNote": "Referenced by post-Pentecost Sundays, Corpus Christi, Sacred Heart, Assumption, Christ the King, and All Saints."
+  }
+]

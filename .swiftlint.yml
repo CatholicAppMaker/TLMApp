@@ -1,0 +1,35 @@
+included:
+  - LatinMassCompanion
+  - LatinMassCompanionTests
+  - LatinMassCompanionUITests
+
+disabled_rules:
+  - opening_brace
+
+excluded:
+  - LatinMassCompanion.xcodeproj
+  - docs
+
+line_length:
+  warning: 140
+  error: 180
+
+file_length:
+  warning: 500
+  error: 800
+
+type_name:
+  min_length: 3
+  max_length:
+    warning: 60
+    error: 80
+
+identifier_name:
+  min_length:
+    warning: 1
+  excluded:
+    - id
+    - x
+    - y
+
+reporter: "xcode"

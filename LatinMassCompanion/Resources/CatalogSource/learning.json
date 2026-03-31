@@ -1,0 +1,144 @@
+{
+  "glossaryEntries": [
+    {
+      "id": "collect",
+      "term": "Collect",
+      "definition": "A brief prayer that gathers the petitions of the Church into one focused plea proper to the day or feast.",
+      "keywords": [
+        "oration",
+        "opening prayer",
+        "proper"
+      ],
+      "relatedTerms": [
+        "epistle",
+        "gradual"
+      ],
+      "sourceIDs": [
+        "ordinary",
+        "translation"
+      ],
+      "searchAliases": [
+        "opening collect",
+        "day prayer"
+      ]
+    },
+    {
+      "id": "canon",
+      "term": "Roman Canon",
+      "definition": "The central Eucharistic prayer of the traditional Roman rite, prayed quietly as the sacrifice moves toward consecration.",
+      "keywords": [
+        "silent prayer",
+        "eucharistic prayer",
+        "te igitur"
+      ],
+      "relatedTerms": [
+        "consecration",
+        "sanctus"
+      ],
+      "sourceIDs": [
+        "ordinary",
+        "translation"
+      ],
+      "searchAliases": [
+        "te igitur",
+        "silent canon"
+      ]
+    },
+    {
+      "id": "agnus-dei",
+      "term": "Agnus Dei",
+      "definition": "The invocation 'Lamb of God' said before Communion to ask Christ for mercy and peace.",
+      "keywords": [
+        "lamb of god",
+        "peace",
+        "communion"
+      ],
+      "relatedTerms": [
+        "Domine, non sum dignus",
+        "Pater noster"
+      ],
+      "sourceIDs": [
+        "ordinary",
+        "translation"
+      ],
+      "searchAliases": [
+        "lamb of god",
+        "agnus"
+      ]
+    }
+  ],
+  "pronunciationGuides": [
+    {
+      "id": "et-cum-spiritu-tuo",
+      "title": "Et cum spiritu tuo",
+      "latin": "Et cum spiritu tuo.",
+      "phonetic": "Et koom spee-ree-too TOO-oh.",
+      "note": "Keep the vowels clean and the phrase even. In church Latin, the final 'u-o' is usually heard as two light syllables.",
+      "keywords": [
+        "response",
+        "lord be with you",
+        "greeting"
+      ],
+      "sourceIDs": [
+        "translation"
+      ],
+      "searchAliases": [
+        "and with thy spirit"
+      ]
+    },
+    {
+      "id": "domine-non-sum-dignus",
+      "title": "Domine, non sum dignus",
+      "latin": "Domine, non sum dignus ut intres sub tectum meum.",
+      "phonetic": "DOH-mee-neh, non soom DEEN-yoos oot EEN-tres soob TEHK-toom MEH-oom.",
+      "note": "This is a humble Communion prayer. Say it slowly enough that the sense of reverence is not lost.",
+      "keywords": [
+        "communion",
+        "worthy",
+        "humility"
+      ],
+      "sourceIDs": [
+        "translation"
+      ],
+      "searchAliases": [
+        "lord i am not worthy"
+      ]
+    }
+  ],
+  "participationGuides": [
+    {
+      "id": "participating-at-low-mass",
+      "title": "How to Participate at a Low Mass",
+      "body": "Follow the overall shape first: preparation, readings, offering, consecration, communion, thanksgiving. You do not need to catch every word on the first visit. If you lose your place, return to the current posture, then find the nearest section title in the guide.",
+      "keywords": [
+        "newcomer",
+        "participation",
+        "first time"
+      ],
+      "sourceIDs": [
+        "translation"
+      ],
+      "searchAliases": [
+        "how to follow mass",
+        "first visit"
+      ]
+    },
+    {
+      "id": "when-not-receiving-communion",
+      "title": "When You Are Not Receiving Communion",
+      "body": "Remain prayerful and recollected. Many visitors stay kneeling, follow the Communion prayers in the guide, and make a spiritual communion while the faithful receive sacramentally.",
+      "keywords": [
+        "spiritual communion",
+        "visitor",
+        "communion"
+      ],
+      "sourceIDs": [
+        "translation"
+      ],
+      "searchAliases": [
+        "spiritual communion",
+        "not receiving"
+      ]
+    }
+  ]
+}

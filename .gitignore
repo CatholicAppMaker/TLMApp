@@ -1,0 +1,12 @@
+.DS_Store
+
+# Xcode user data
+xcuserdata/
+*.xcuserstate
+
+# Build products
+DerivedData/
+.build/
+
+# Simulator/debug artifacts
+simulator-shot.png

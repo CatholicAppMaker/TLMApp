@@ -1,0 +1,9 @@
+--swiftversion 6
+--indent 4
+--linebreaks lf
+--wraparguments preserve
+--wrapcollections preserve
+--trailing-commas never
+--stripunusedargs closure-only
+--self remove
+--exclude LatinMassCompanion.xcodeproj,docs,simulator-shot.png

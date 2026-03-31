@@ -1,0 +1,73 @@
+name: LatinMassCompanion
+options:
+  createIntermediateGroups: true
+configs:
+  Debug: debug
+  Release: release
+settings:
+  base:
+    SWIFT_VERSION: 6.0
+targets:
+  LatinMassCompanion:
+    type: application
+    platform: iOS
+    deploymentTarget: "18.0"
+    sources:
+      - path: LatinMassCompanion/Sources
+      - path: LatinMassCompanion/Resources
+    preBuildScripts:
+      - name: Build Mass Catalog
+        script: |
+          python3 "$SRCROOT/scripts/build_mass_catalog.py"
+        inputFiles:
+          - $(SRCROOT)/LatinMassCompanion/Resources/CatalogSource/base.json
+          - $(SRCROOT)/LatinMassCompanion/Resources/CatalogSource/sources.json
+          - $(SRCROOT)/LatinMassCompanion/Resources/CatalogSource/ordinary_parts.json
+          - $(SRCROOT)/LatinMassCompanion/Resources/CatalogSource/learning.json
+          - $(SRCROOT)/LatinMassCompanion/Resources/CatalogSource/calendar_2026.json
+        outputFiles:
+          - $(SRCROOT)/LatinMassCompanion/Resources/mass_library.json
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.kevpierce.LatinMassCompanion
+        PRODUCT_NAME: LatinMassCompanion
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: Latin Mass
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents: YES
+        TARGETED_DEVICE_FAMILY: 1
+        CURRENT_PROJECT_VERSION: 1
+        MARKETING_VERSION: 1.0
+    scheme:
+      gatherCoverageData: true
+      testTargets:
+        - LatinMassCompanionTests
+        - LatinMassCompanionUITests
+  LatinMassCompanionTests:
+    type: bundle.unit-test
+    platform: iOS
+    deploymentTarget: "18.0"
+    sources:
+      - path: LatinMassCompanionTests
+      - path: LatinMassCompanion/Resources
+    dependencies:
+      - target: LatinMassCompanion
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        PRODUCT_BUNDLE_IDENTIFIER: com.kevpierce.LatinMassCompanionTests
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/LatinMassCompanion.app/LatinMassCompanion"
+        BUNDLE_LOADER: "$(TEST_HOST)"
+  LatinMassCompanionUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    deploymentTarget: "18.0"
+    sources:
+      - path: LatinMassCompanionUITests
+    dependencies:
+      - target: LatinMassCompanion
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        PRODUCT_BUNDLE_IDENTIFIER: com.kevpierce.LatinMassCompanionUITests
+        TEST_TARGET_NAME: LatinMassCompanion
