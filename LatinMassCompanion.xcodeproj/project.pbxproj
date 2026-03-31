@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 63;
+	objectVersion = 77;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -40,9 +40,11 @@
 		9FC44E19A9FD639B19332DE0 /* CatalogMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80AC8A89CECDC598E1208287 /* CatalogMetadata.swift */; };
 		A2442BEB89828FA50FAB8C92 /* MassModeProgressStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C0A9D4666779B605330AF15 /* MassModeProgressStore.swift */; };
 		A48DE346CAFCE6B86F4761A4 /* mass_library.json in Resources */ = {isa = PBXBuildFile; fileRef = 13171375A81A0B7F8079E3B2 /* mass_library.json */; };
+		A8FE8CC1EA75AC1EB51F4E3E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 106F141329708AC8836CB587 /* Assets.xcassets */; };
 		B6102B34FC5B07CCDF1BE11F /* AppModelBehaviorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC4265A8F753F0E4CFB9D970 /* AppModelBehaviorTests.swift */; };
 		C038F8D0F43592790C181A10 /* LibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4D2AAD25599AE0BFFB03DB /* LibraryView.swift */; };
 		C7EA1A28EF94A51800970E2B /* ordinary_parts.json in Resources */ = {isa = PBXBuildFile; fileRef = 663F4109AF5923D456E70FEA /* ordinary_parts.json */; };
+		CC40F71AAAC88237C3504EDF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 106F141329708AC8836CB587 /* Assets.xcassets */; };
 		CD0DD2A7884BAD54A35D5669 /* PrayerbookChrome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D0BF0E9285B70CAD5059C7 /* PrayerbookChrome.swift */; };
 		CD12988C92094BB943519E71 /* SourcesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63B69F90E842BE24F249EFE /* SourcesView.swift */; };
 		CF393A723F219369187A852B /* BookmarkStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1CE4765B260EABAAA9A0CA6 /* BookmarkStore.swift */; };
@@ -74,10 +76,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		016CDCC37F93480490146446 /* LatinMassCompanion.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LatinMassCompanion.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		016CDCC37F93480490146446 /* LatinMassCompanion.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = LatinMassCompanion.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		063BECFCFAC505A5D82F2DBE /* LatinMassCompanionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatinMassCompanionApp.swift; sourceTree = "<group>"; };
 		09A0AD6B6018FE2C31DC77E0 /* ContentServicesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentServicesTests.swift; sourceTree = "<group>"; };
 		0D4D2AAD25599AE0BFFB03DB /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
+		106F141329708AC8836CB587 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		10AB033AE89C7E42617BDFFD /* MassModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MassModels.swift; sourceTree = "<group>"; };
 		13171375A81A0B7F8079E3B2 /* mass_library.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = mass_library.json; sourceTree = "<group>"; };
 		1AD9B1B84866102C7E0AAD86 /* LatinMassCompanionUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatinMassCompanionUITests.swift; sourceTree = "<group>"; };
@@ -185,6 +188,7 @@
 		43CBB05597AAB782642FEE2A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				106F141329708AC8836CB587 /* Assets.xcassets */,
 				B0B3013FC026B49298DF0357 /* invalid_mass_library.json */,
 				13171375A81A0B7F8079E3B2 /* mass_library.json */,
 				340EDD95FC8AEF4327D025E8 /* CatalogSource */,
@@ -388,6 +392,7 @@
 			);
 			mainGroup = AFAF8F7D6F587DAE51DC7617;
 			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -403,6 +408,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A8FE8CC1EA75AC1EB51F4E3E /* Assets.xcassets in Resources */,
 				7D1D157CC5441692C95BFCAF /* base.json in Resources */,
 				02E73F8F742EC43E7B355AE5 /* calendar_2026.json in Resources */,
 				226F09ADED692A44B836467A /* invalid_mass_library.json in Resources */,
@@ -417,6 +423,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC40F71AAAC88237C3504EDF /* Assets.xcassets in Resources */,
 				1F4713C12045CBA1A4790D72 /* base.json in Resources */,
 				DA7CFAA82119F84AB12AE5B6 /* calendar_2026.json in Resources */,
 				FDEA6CD655C30A08500B77F6 /* invalid_mass_library.json in Resources */,
@@ -668,7 +675,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 22L6MB4Z6V;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Latin Mass";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -692,7 +698,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 22L6MB4Z6V;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Latin Mass";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
