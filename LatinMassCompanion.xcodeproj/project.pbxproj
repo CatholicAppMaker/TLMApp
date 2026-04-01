@@ -86,7 +86,7 @@
 		13171375A81A0B7F8079E3B2 /* mass_library.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = mass_library.json; sourceTree = "<group>"; };
 		1AD9B1B84866102C7E0AAD86 /* LatinMassCompanionUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatinMassCompanionUITests.swift; sourceTree = "<group>"; };
 		244F54B2BC1A6A2AE0BD0A7D /* AppTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTheme.swift; sourceTree = "<group>"; };
-		3192E112E944FF16CAD42DCD /* LatinMassCompanionUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = LatinMassCompanionUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3192E112E944FF16CAD42DCD /* LatinMassCompanionUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LatinMassCompanionUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		36A2E5C2EECD72AEC21C0385 /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
 		3D535384164BEC883FB56E13 /* MassContentRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MassContentRepository.swift; sourceTree = "<group>"; };
 		45693E3BB6D6C45CBF71A11D /* AppModelDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModelDisplay.swift; sourceTree = "<group>"; };
@@ -112,7 +112,7 @@
 		B0B3013FC026B49298DF0357 /* invalid_mass_library.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = invalid_mass_library.json; sourceTree = "<group>"; };
 		B7343033CAD68BFE5E8EDE06 /* LatinMassCompanionFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatinMassCompanionFlowUITests.swift; sourceTree = "<group>"; };
 		BC83773EAB733F7D68B3EEC3 /* SupportTipJarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportTipJarTests.swift; sourceTree = "<group>"; };
-		C08A22F568BF981B43E4E49C /* LatinMassCompanionTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = LatinMassCompanionTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C08A22F568BF981B43E4E49C /* LatinMassCompanionTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LatinMassCompanionTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C358BF61DA269E446F027C6E /* base.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = base.json; sourceTree = "<group>"; };
 		C7E99583743DCB00E26C2FE0 /* RootTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootTabView.swift; sourceTree = "<group>"; };
 		D1D90FA2F03A1ED9332D5055 /* MassFormStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MassFormStore.swift; sourceTree = "<group>"; };
@@ -536,6 +536,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 22L6MB4Z6V;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -721,6 +722,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 22L6MB4Z6V;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -739,6 +741,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 22L6MB4Z6V;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -757,6 +760,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = 22L6MB4Z6V;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (

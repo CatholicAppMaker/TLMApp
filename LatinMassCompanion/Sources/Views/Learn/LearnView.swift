@@ -37,7 +37,8 @@ struct LearnView: View {
                     glossarySection
                 }
                 .padding(.horizontal, 20)
-                .padding(.vertical, 24)
+                .padding(.top, 44)
+                .padding(.bottom, 132)
             }
         }
         .navigationTitle("Learn")
@@ -55,7 +56,6 @@ struct LearnView: View {
             Text(
                 """
                 Tips are entirely optional. They do not unlock content, and the app remains fully usable without them.
-                Pricing appears only when the App Store returns the live product information.
                 """
             )
             .font(.body)
