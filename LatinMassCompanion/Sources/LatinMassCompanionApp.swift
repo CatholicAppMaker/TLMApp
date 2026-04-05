@@ -15,11 +15,14 @@ struct LatinMassCompanionApp: App {
             defaults.removeObject(forKey: UserDefaultsBookmarkStore.defaultKey)
             defaults.removeObject(forKey: UserDefaultsMassModeProgressStore.defaultKey)
             defaults.removeObject(forKey: UserDefaultsMassFormStore.defaultKey)
+            defaults.removeObject(forKey: UserDefaultsAppAppearanceStore.defaultKey)
+            defaults.removeObject(forKey: "latin.mass.guide.utility.dismissed")
         }
 
         let bookmarkStore = UserDefaultsBookmarkStore(defaults: defaults)
         let progressStore = UserDefaultsMassModeProgressStore(defaults: defaults)
         let massFormStore = UserDefaultsMassFormStore(defaults: defaults)
+        let appearanceStore = UserDefaultsAppAppearanceStore(defaults: defaults)
         let nowProvider = Self.makeNowProvider(arguments: processInfo.arguments)
 
         _appModel = State(
@@ -29,6 +32,7 @@ struct LatinMassCompanionApp: App {
                 bookmarkStore: bookmarkStore,
                 progressStore: progressStore,
                 massFormStore: massFormStore,
+                appearanceStore: appearanceStore,
                 now: nowProvider
             )
         )

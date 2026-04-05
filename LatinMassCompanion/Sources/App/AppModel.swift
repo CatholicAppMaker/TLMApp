@@ -9,6 +9,7 @@ final class AppModel {
     private let bookmarkStore: any BookmarkStore
     private let progressStore: any MassModeProgressStore
     private let massFormStore: any MassFormStore
+    private let appearanceStore: any AppAppearanceStore
     let calendar: Calendar
     let now: () -> Date
 
@@ -27,6 +28,8 @@ final class AppModel {
     private(set) var progress: MassModeProgress?
     private(set) var selectedDate: Date
     private(set) var selectedMassForm: MassForm
+    private(set) var selectedAppearance: AppAppearance
+    private(set) var preferredLibraryScope: LibraryScope = .allSections
     private(set) var focusedLearningDestination: LearnDestination?
     private(set) var errorMessage: String?
 
@@ -38,6 +41,7 @@ final class AppModel {
         bookmarkStore: any BookmarkStore,
         progressStore: any MassModeProgressStore,
         massFormStore: any MassFormStore,
+        appearanceStore: any AppAppearanceStore = UserDefaultsAppAppearanceStore(),
         now: @escaping () -> Date = Date.init,
         calendar: Calendar = .current
     ) {
@@ -46,10 +50,12 @@ final class AppModel {
         self.bookmarkStore = bookmarkStore
         self.progressStore = progressStore
         self.massFormStore = massFormStore
+        self.appearanceStore = appearanceStore
         self.now = now
         self.calendar = calendar
         selectedDate = calendar.startOfDay(for: now())
         selectedMassForm = massFormStore.loadMassForm()
+        selectedAppearance = appearanceStore.loadAppearance()
         loadCatalog()
     }
 
@@ -70,6 +76,7 @@ final class AppModel {
             bookmarks = bookmarkStore.loadBookmarks()
             progress = progressStore.loadProgress()
             selectedMassForm = massFormStore.loadMassForm()
+            selectedAppearance = appearanceStore.loadAppearance()
             errorMessage = nil
         } catch {
             coverageWindow = nil
@@ -87,19 +94,6 @@ final class AppModel {
 
     func selectDate(_ date: Date) {
         selectedDate = calendar.startOfDay(for: date)
-    }
-
-    func resetToToday() {
-        selectDate(now())
-    }
-
-    func selectMassForm(_ massForm: MassForm) {
-        guard selectedMassForm != massForm else {
-            return
-        }
-
-        selectedMassForm = massForm
-        massFormStore.saveMassForm(massForm)
     }
 
     func search(query: String, scope: LibraryScope) -> LibrarySearchResults {
@@ -272,4 +266,40 @@ final class AppModel {
         formatter.unitsStyle = .full
         return formatter
     }()
+}
+
+extension AppModel {
+    func resetToToday() {
+        selectDate(now())
+    }
+
+    func selectMassForm(_ massForm: MassForm) {
+        guard selectedMassForm != massForm else {
+            return
+        }
+
+        selectedMassForm = massForm
+        massFormStore.saveMassForm(massForm)
+    }
+
+    func selectAppearance(_ appearance: AppAppearance) {
+        guard selectedAppearance != appearance else {
+            return
+        }
+
+        selectedAppearance = appearance
+        appearanceStore.saveAppearance(appearance)
+    }
+
+    func setPreferredLibraryScope(_ scope: LibraryScope) {
+        preferredLibraryScope = scope
+    }
+
+    func focusBookmarkedSections() {
+        preferredLibraryScope = .bookmarks
+    }
+
+    func focusAllSections() {
+        preferredLibraryScope = .allSections
+    }
 }

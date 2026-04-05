@@ -137,6 +137,46 @@ struct AppModelTests {
 
     @MainActor
     @Test
+    func selectingAppearancePersistsChoice() {
+        let appearanceStore = SpyAppAppearanceStore()
+        let model = AppModel(
+            repository: StubMassContentRepository {
+                TestFixtures.makeCatalog(parts: [TestFixtures.makePart(id: "intro", order: 1, title: "Intro")])
+            },
+            searchService: SpySearchService(),
+            bookmarkStore: SpyBookmarkStore(),
+            progressStore: SpyMassModeProgressStore(),
+            appearanceStore: appearanceStore,
+            now: { TestFixtures.date("2026-03-30") }
+        )
+
+        #expect(model.selectedAppearance == .system)
+
+        model.selectAppearance(.dark)
+
+        #expect(model.selectedAppearance == .dark)
+        #expect(appearanceStore.saveCalls == [.dark])
+    }
+
+    @MainActor
+    @Test
+    func storedAppearanceLoadsOnStartup() {
+        let model = AppModel(
+            repository: StubMassContentRepository {
+                TestFixtures.makeCatalog(parts: [TestFixtures.makePart(id: "intro", order: 1, title: "Intro")])
+            },
+            searchService: SpySearchService(),
+            bookmarkStore: SpyBookmarkStore(),
+            progressStore: SpyMassModeProgressStore(),
+            appearanceStore: SpyAppAppearanceStore(storedAppearance: .dark),
+            now: { TestFixtures.date("2026-03-30") }
+        )
+
+        #expect(model.selectedAppearance == .dark)
+    }
+
+    @MainActor
+    @Test
     func guideOrientationUsesPhaseLiveNoteAndUpcomingSection() throws {
         let intro = TestFixtures.makePart(
             id: "intro",

@@ -4,6 +4,7 @@ struct GuideView: View {
     let appModel: AppModel
     @Binding var selectedTab: AppTab
 
+    @AppStorage("latin.mass.guide.utility.dismissed") private var hasDismissedUtilityCard = false
     @State private var selectedPartID: String?
     @State private var isShowingJumpList = false
 
@@ -16,6 +17,14 @@ struct GuideView: View {
 
     private var currentPart: ResolvedMassPart? {
         appModel.part(withID: selectedPartID)
+    }
+
+    private var canResumeSavedPlace: Bool {
+        guard let progress = appModel.progress else {
+            return false
+        }
+
+        return progress.sectionID != selectedPartID && appModel.part(withID: progress.sectionID) != nil
     }
 
     var body: some View {
@@ -83,6 +92,7 @@ struct GuideView: View {
         }
         .sheet(isPresented: $isShowingJumpList) {
             JumpToSectionView(
+                majorMoments: appModel.majorMomentAnchors,
                 parts: appModel.orderedParts,
                 selectedPartID: $selectedPartID
             )
@@ -104,10 +114,34 @@ struct GuideView: View {
             }
         }
         .safeAreaInset(edge: .top) {
-            GuideMassFormSwitcher(selectedMassFormBinding: selectedMassFormBinding)
-                .padding(.horizontal, 20)
-                .padding(.top, 8)
-                .background(AppTheme.backgroundWash.opacity(0.96))
+            VStack(spacing: 10) {
+                GuideMassFormSwitcher(selectedMassFormBinding: selectedMassFormBinding)
+
+                if !hasDismissedUtilityCard {
+                    GuideUtilityCard(
+                        bookmarkCountText: appModel.bookmarkCountText,
+                        hasBookmarks: !appModel.bookmarkedParts.isEmpty,
+                        canResumeSavedPlace: canResumeSavedPlace,
+                        onResume: {
+                            appModel.resumeMass()
+                            syncSelection()
+                        },
+                        onJump: {
+                            isShowingJumpList = true
+                        },
+                        onOpenBookmarks: {
+                            appModel.focusBookmarkedSections()
+                            selectedTab = .library
+                        },
+                        onDismiss: {
+                            hasDismissedUtilityCard = true
+                        }
+                    )
+                }
+            }
+            .padding(.horizontal, 20)
+            .padding(.top, 8)
+            .background(AppTheme.backgroundWash.opacity(0.96))
         }
     }
 
@@ -131,6 +165,87 @@ struct GuideView: View {
         }
 
         appModel.recordMassProgress(for: part)
+    }
+}
+
+private struct GuideUtilityCard: View {
+    let bookmarkCountText: String
+    let hasBookmarks: Bool
+    let canResumeSavedPlace: Bool
+    let onResume: () -> Void
+    let onJump: () -> Void
+    let onOpenBookmarks: () -> Void
+    let onDismiss: () -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack(alignment: .top) {
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("Use This Guide in Real Time")
+                        .font(.system(.headline, design: .serif))
+                        .foregroundStyle(AppTheme.ink)
+                        .accessibilityIdentifier("guide-utility-title")
+
+                    Text("Follow the Mass, switch form above, jump to major moments, and save important sections for a quicker return.")
+                        .font(.subheadline)
+                        .foregroundStyle(AppTheme.mutedInk)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+
+                Spacer(minLength: 12)
+
+                Button(action: onDismiss) {
+                    Image(systemName: "xmark")
+                        .font(.caption.weight(.bold))
+                        .foregroundStyle(AppTheme.mutedInk)
+                        .padding(8)
+                        .background(
+                            RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                .fill(AppTheme.secondarySurface)
+                        )
+                }
+                .buttonStyle(.plain)
+                .accessibilityIdentifier("dismiss-guide-utility")
+                .accessibilityLabel("Dismiss guide utility tips")
+            }
+
+            HStack(spacing: 8) {
+                PrayerbookBadge(title: "Guide-first", tone: .accent)
+                PrayerbookBadge(title: "Major moments", tone: .neutral)
+                if hasBookmarks {
+                    PrayerbookBadge(title: bookmarkCountText, tone: .neutral)
+                }
+            }
+
+            VStack(spacing: 10) {
+                Button("Jump to Major Moments", action: onJump)
+                    .buttonStyle(GuideUtilityPrimaryButtonStyle())
+                    .accessibilityIdentifier("guide-major-moments-button")
+
+                HStack(spacing: 10) {
+                    if canResumeSavedPlace {
+                        Button("Resume Saved Place", action: onResume)
+                            .buttonStyle(GuideUtilitySecondaryButtonStyle())
+                            .accessibilityIdentifier("guide-resume-button")
+                    }
+
+                    Button(hasBookmarks ? "Open Saved Sections" : "Open Library") {
+                        onOpenBookmarks()
+                    }
+                    .buttonStyle(GuideUtilitySecondaryButtonStyle())
+                    .accessibilityIdentifier("guide-bookmarks-button")
+                }
+            }
+        }
+        .padding(14)
+        .background(
+            RoundedRectangle(cornerRadius: 14, style: .continuous)
+                .fill(AppTheme.surface)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 14, style: .continuous)
+                .stroke(AppTheme.border, lineWidth: 1)
+        )
     }
 }
 
@@ -164,31 +279,59 @@ private struct GuideMassFormSwitcher: View {
 }
 
 private struct JumpToSectionView: View {
+    let majorMoments: [MajorMomentAnchor]
     let parts: [ResolvedMassPart]
     @Binding var selectedPartID: String?
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
         NavigationStack {
-            List(parts) { part in
-                Button {
-                    selectedPartID = part.id
-                    dismiss()
-                } label: {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(part.title)
-                            .font(.headline)
-                            .foregroundStyle(AppTheme.ink)
-                        Text(part.summary)
-                            .font(.subheadline)
-                            .foregroundStyle(AppTheme.mutedInk)
-                            .lineLimit(2)
+            List {
+                if !majorMoments.isEmpty {
+                    Section("Major Moments") {
+                        ForEach(majorMoments) { anchor in
+                            Button {
+                                selectedPartID = anchor.partID
+                                dismiss()
+                            } label: {
+                                VStack(alignment: .leading, spacing: 4) {
+                                    Text(anchor.title)
+                                        .font(.headline)
+                                        .foregroundStyle(AppTheme.ink)
+                                    Text(anchor.summary)
+                                        .font(.subheadline)
+                                        .foregroundStyle(AppTheme.mutedInk)
+                                        .lineLimit(2)
+                                }
+                                .padding(.vertical, 6)
+                            }
+                            .accessibilityIdentifier("jump-moment-\(anchor.partID)")
+                        }
                     }
-                    .padding(.vertical, 6)
                 }
-                .accessibilityIdentifier("jump-to-\(part.id)")
+
+                Section("All Sections") {
+                    ForEach(parts) { part in
+                        Button {
+                            selectedPartID = part.id
+                            dismiss()
+                        } label: {
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(part.title)
+                                    .font(.headline)
+                                    .foregroundStyle(AppTheme.ink)
+                                Text(part.summary)
+                                    .font(.subheadline)
+                                    .foregroundStyle(AppTheme.mutedInk)
+                                    .lineLimit(2)
+                            }
+                            .padding(.vertical, 6)
+                        }
+                        .accessibilityIdentifier("jump-to-\(part.id)")
+                    }
+                }
             }
-            .navigationTitle("Jump to a Section")
+            .navigationTitle("Jump to Major Moments")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Done") {
@@ -198,6 +341,38 @@ private struct JumpToSectionView: View {
             }
         }
         .presentationDetents([.medium, .large])
+    }
+}
+
+private struct GuideUtilityPrimaryButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .frame(maxWidth: .infinity)
+            .font(.system(.headline, design: .serif))
+            .foregroundStyle(.white)
+            .padding(.vertical, 12)
+            .background(
+                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                    .fill(AppTheme.burgundy.opacity(configuration.isPressed ? 0.85 : 1.0))
+            )
+    }
+}
+
+private struct GuideUtilitySecondaryButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .frame(maxWidth: .infinity)
+            .font(.subheadline.weight(.semibold))
+            .foregroundStyle(AppTheme.ink)
+            .padding(.vertical, 12)
+            .background(
+                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                    .fill(AppTheme.secondarySurface.opacity(configuration.isPressed ? 0.82 : 1.0))
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                    .stroke(AppTheme.border, lineWidth: 1)
+            )
     }
 }
 

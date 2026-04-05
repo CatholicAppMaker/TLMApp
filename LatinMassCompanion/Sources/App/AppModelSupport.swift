@@ -66,6 +66,13 @@ struct GuideOrientation: Hashable, Sendable {
     let nextPartSummary: String?
 }
 
+struct MajorMomentAnchor: Identifiable, Hashable, Sendable {
+    let id: String
+    let title: String
+    let summary: String
+    let partID: String
+}
+
 enum CoverageStatus: Hashable, Sendable {
     case properAvailable
     case ordinaryOnlyWithinSupportedWindow

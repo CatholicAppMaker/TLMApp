@@ -9,6 +9,74 @@ extension AppModel {
         orderedParts.filter { bookmarks.contains($0.id) }
     }
 
+    var majorMomentAnchors: [MajorMomentAnchor] {
+        var seenPartIDs = Set<String>()
+        var anchors: [MajorMomentAnchor] = []
+
+        func appendAnchor(
+            id: String,
+            title: String,
+            matcher: (ResolvedMassPart) -> Bool
+        ) {
+            guard let part = orderedParts.first(where: matcher),
+                  seenPartIDs.insert(part.id).inserted
+            else {
+                return
+            }
+
+            anchors.append(
+                MajorMomentAnchor(
+                    id: id,
+                    title: title,
+                    summary: part.summary,
+                    partID: part.id
+                )
+            )
+        }
+
+        appendAnchor(id: "foot-of-the-altar", title: "Prayers at the Foot of the Altar") {
+            $0.id.localizedCaseInsensitiveContains("foot")
+                || $0.title.localizedCaseInsensitiveContains("Foot of the Altar")
+        }
+        appendAnchor(id: "kyrie-gloria", title: "Kyrie / Gloria") {
+            $0.id.localizedCaseInsensitiveContains("kyrie")
+                || $0.title.localizedCaseInsensitiveContains("Kyrie")
+                || $0.title.localizedCaseInsensitiveContains("Gloria")
+        }
+        appendAnchor(id: "collect-readings", title: "Collect / Readings") {
+            $0.id.localizedCaseInsensitiveContains("collect")
+                || $0.title.localizedCaseInsensitiveContains("Collect")
+        }
+        appendAnchor(id: "offertory", title: "Offertory") {
+            $0.phase == .offertory
+        }
+        appendAnchor(id: "canon", title: "Canon") {
+            $0.phase == .canon
+        }
+        appendAnchor(id: "communion", title: "Communion") {
+            $0.phase == .communion
+        }
+        appendAnchor(id: "last-gospel", title: "Last Gospel") {
+            $0.id.localizedCaseInsensitiveContains("last-gospel")
+                || $0.title.localizedCaseInsensitiveContains("Last Gospel")
+        }
+
+        if let finalPart = orderedParts.last,
+           !seenPartIDs.contains(finalPart.id)
+        {
+            anchors.append(
+                MajorMomentAnchor(
+                    id: "final-section",
+                    title: finalPart.title,
+                    summary: finalPart.summary,
+                    partID: finalPart.id
+                )
+            )
+        }
+
+        return anchors
+    }
+
     var selectedDateKey: String {
         Self.storageDateFormatter.string(from: selectedDate)
     }
@@ -23,6 +91,11 @@ extension AppModel {
 
     var selectedMassFormSubtitle: String {
         selectedMassForm.subtitle
+    }
+
+    var bookmarkCountText: String {
+        let count = bookmarks.count
+        return count == 1 ? "1 saved section" : "\(count) saved sections"
     }
 
     var isShowingOrdinaryOnly: Bool {

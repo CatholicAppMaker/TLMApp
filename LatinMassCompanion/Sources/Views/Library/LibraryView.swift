@@ -32,12 +32,21 @@ struct LibraryView: View {
                 searchSection
 
                 if results.isEmpty {
-                    ContentUnavailableView(
-                        "No Results",
-                        systemImage: "magnifyingglass",
-                        description: Text("Try a prayer, response, proper, chant topic, or section name.")
-                    )
-                    .listRowBackground(Color.clear)
+                    if scope == .bookmarks, appModel.bookmarkedParts.isEmpty {
+                        ContentUnavailableView(
+                            "No Saved Sections Yet",
+                            systemImage: "bookmark",
+                            description: Text("Bookmark important moments from Guide and they will appear here for quick return.")
+                        )
+                        .listRowBackground(Color.clear)
+                    } else {
+                        ContentUnavailableView(
+                            "No Results",
+                            systemImage: "magnifyingglass",
+                            description: Text("Try a prayer, response, proper, chant topic, or section name.")
+                        )
+                        .listRowBackground(Color.clear)
+                    }
                 } else {
                     if shouldPrioritizeLearningResults {
                         learningSection
@@ -53,6 +62,12 @@ struct LibraryView: View {
         }
         .navigationTitle("Library")
         .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            scope = appModel.preferredLibraryScope
+        }
+        .onChange(of: scope) { _, newValue in
+            appModel.setPreferredLibraryScope(newValue)
+        }
     }
 
     private func openLearningItem(_ item: LearningSearchResult) {
@@ -74,6 +89,40 @@ struct LibraryView: View {
                 Text(appModel.availabilitySummary)
                     .font(.caption)
                     .foregroundStyle(appModel.isShowingOrdinaryOnly ? AppTheme.mutedInk : AppTheme.burgundy)
+
+                if !appModel.bookmarkedParts.isEmpty {
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text("\(appModel.bookmarkCountText) ready for quick return.")
+                            .font(.subheadline.weight(.semibold))
+                            .foregroundStyle(AppTheme.ink)
+
+                        Text("Use saved sections when you want to reopen important moments without searching during Mass.")
+                            .font(.caption)
+                            .foregroundStyle(AppTheme.mutedInk)
+                            .fixedSize(horizontal: false, vertical: true)
+
+                        Button(scope == .bookmarks ? "Show All Sections" : "Open Saved Sections") {
+                            scope = scope == .bookmarks ? .allSections : .bookmarks
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .tint(AppTheme.burgundy)
+                        .accessibilityIdentifier("library-saved-sections-button")
+                    }
+                    .padding(12)
+                    .background(
+                        RoundedRectangle(cornerRadius: 12, style: .continuous)
+                            .fill(AppTheme.secondarySurface)
+                    )
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12, style: .continuous)
+                            .stroke(AppTheme.border, lineWidth: 1)
+                    )
+                } else {
+                    Text("Bookmark sections from Guide to build a smaller working library for repeated use.")
+                        .font(.caption)
+                        .foregroundStyle(AppTheme.mutedInk)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
 
                 Picker("Mass Form", selection: selectedMassFormBinding) {
                     ForEach(MassForm.allCases) { massForm in
@@ -108,10 +157,9 @@ struct LibraryView: View {
 
                 Text(
                     """
-                    Search across the resolved Mass text for this date, the bundled propers,
-                    and the learning material that explains how to follow without anxiety.
-                    Learning matches stay in their own section on purpose so devotional reading
-                    and explanatory notes do not blur together.
+                    Search across the resolved Mass text, bundled propers, saved sections,
+                    and the learning material that helps you recover by landmarks.
+                    Learning matches stay separate so explanatory notes never pretend to be the rite itself.
                     """
                 )
                 .font(.caption)

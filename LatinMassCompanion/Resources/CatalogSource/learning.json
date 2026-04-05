@@ -209,7 +209,7 @@
       "id": "how-to-use-this-app-well",
       "kind": "orientation",
       "title": "How to Use This App Well",
-      "body": "Treat the app as a companion, not a scoreboard. Use Today to confirm the date, coverage, and Mass form. Use Guide when you need to follow the movement of the rite. Use Library when you know what you want to find. Use Learn before or after Mass so the liturgy itself can remain primary while you are in church. If the phone begins to pull more attention than the altar, set it down and return by landmarks later.",
+      "body": "Treat the app as a companion, not a scoreboard. Use Guide when you need to follow the movement of the rite. Use the form switch and jump controls to recover quickly. Use Library when you know what you want to find or want to reopen saved sections. Use Learn before or after Mass so the liturgy itself can remain primary while you are in church. If the phone begins to pull more attention than the altar, set it down and return by landmarks later.",
       "keywords": [
         "app guide",
         "how to use",
@@ -221,6 +221,24 @@
       "searchAliases": [
         "using the app",
         "how do i use this app"
+      ]
+    },
+    {
+      "id": "history-and-context",
+      "kind": "orientation",
+      "title": "A Brief History and Context",
+      "body": "The Traditional Latin Mass is the Roman rite as handed on in the liturgical books used before the postconciliar reform, especially the 1962 Missal. This app is not trying to teach the whole history of the rite. It offers just enough context to help newcomers understand why the older form has its own cadence, ceremonial language, and devotional expectations.",
+      "keywords": [
+        "history",
+        "context",
+        "traditional latin mass"
+      ],
+      "sourceIDs": [
+        "translation"
+      ],
+      "searchAliases": [
+        "history of tlm",
+        "what is the traditional latin mass"
       ]
     },
     {
@@ -282,7 +300,7 @@
       "id": "low-mass-and-sung-mass",
       "kind": "changes",
       "title": "Low Mass and Sung Mass",
-      "body": "The structure of the rite remains recognizable in both forms, but Sung Mass is often slower, more ceremonial, and more chant-led. Low Mass usually leaves more of the audible response to the servers and asks the faithful to stay recollected amid quieter movement. The app lets you choose the form on Today so the guide can emphasize either quieter landmarks or sung ones without pretending every parish does things identically.",
+      "body": "The structure of the rite remains recognizable in both forms, but Sung Mass is often slower, more ceremonial, and more chant-led. Low Mass usually leaves more of the audible response to the servers and asks the faithful to stay recollected amid quieter movement. The app lets you choose the form directly in the guide and library so it can emphasize either quieter landmarks or sung ones without pretending every parish does things identically.",
       "keywords": [
         "mass form",
         "sung mass",

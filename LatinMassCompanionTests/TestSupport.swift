@@ -93,6 +93,24 @@ final class SpyMassFormStore: MassFormStore {
     }
 }
 
+final class SpyAppAppearanceStore: AppAppearanceStore {
+    private(set) var storedAppearance: AppAppearance
+    private(set) var saveCalls: [AppAppearance] = []
+
+    init(storedAppearance: AppAppearance = .system) {
+        self.storedAppearance = storedAppearance
+    }
+
+    func loadAppearance() -> AppAppearance {
+        storedAppearance
+    }
+
+    func saveAppearance(_ appearance: AppAppearance) {
+        storedAppearance = appearance
+        saveCalls.append(appearance)
+    }
+}
+
 actor SpySupportTipStorefront: SupportTipStorefront {
     var nextProducts: [SupportTipProduct] = []
     var nextPurchaseOutcome: SupportTipPurchaseOutcome = .success
@@ -168,6 +186,7 @@ extension AppModel {
         searchService: any SearchService,
         bookmarkStore: any BookmarkStore,
         progressStore: any MassModeProgressStore,
+        appearanceStore: any AppAppearanceStore = SpyAppAppearanceStore(),
         now: @escaping () -> Date = Date.init
     ) {
         self.init(
@@ -176,6 +195,7 @@ extension AppModel {
             bookmarkStore: bookmarkStore,
             progressStore: progressStore,
             massFormStore: SpyMassFormStore(),
+            appearanceStore: appearanceStore,
             now: now
         )
     }

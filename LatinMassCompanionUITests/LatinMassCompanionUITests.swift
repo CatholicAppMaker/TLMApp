@@ -13,6 +13,7 @@ final class LatinMassCompanionUITests: XCTestCase {
         XCTAssertTrue(app.tabBars.buttons["Guide"].exists)
         XCTAssertTrue(app.tabBars.buttons["Library"].exists)
         XCTAssertTrue(app.tabBars.buttons["Learn"].exists)
+        XCTAssertTrue(app.staticTexts["guide-utility-title"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.staticTexts["mass-part-title"].waitForExistence(timeout: 5))
     }
 
@@ -23,6 +24,9 @@ final class LatinMassCompanionUITests: XCTestCase {
         app.openGuide()
         app.buttons["bookmark-button"].tap()
         app.openLibrary()
+
+        XCTAssertTrue(app.buttons["library-saved-sections-button"].waitForExistence(timeout: 5))
+        app.buttons["library-saved-sections-button"].tap()
         app.buttons["Bookmarks"].tap()
 
         XCTAssertTrue(app.staticTexts["Prayers at the Foot of the Altar"].waitForExistence(timeout: 5))
@@ -73,6 +77,7 @@ final class LatinMassCompanionUITests: XCTestCase {
         app.tabBars.buttons["Learn"].tap()
 
         XCTAssertTrue(app.staticTexts["learn-participation-first-time-at-the-1962-mass"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["learn-participation-history-and-context"].exists)
     }
 
     func testLibraryLearningResultOpensPronunciationGuide() {
@@ -136,6 +141,29 @@ final class LatinMassCompanionUITests: XCTestCase {
 
         XCTAssertTrue(app.staticTexts["Learn the Rite, Keep the Prayer"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.staticTexts["Gregorian Chant"].exists)
+    }
+
+    func testAppearanceTogglePersistsDarkModeWithoutBreakingGuide() {
+        let firstLaunch = XCUIApplication()
+        firstLaunch.launchApp(resetState: true, todayOverride: "2026-03-30")
+        firstLaunch.tabBars.buttons["Learn"].tap()
+
+        let appearanceToggle = firstLaunch.segmentedControls["appearance-toggle"]
+        XCTAssertTrue(appearanceToggle.waitForExistence(timeout: 5))
+        appearanceToggle.buttons["Dark"].tap()
+        firstLaunch.terminate()
+
+        let resumedLaunch = XCUIApplication()
+        resumedLaunch.launchApp(resetState: false, todayOverride: "2026-03-30")
+        resumedLaunch.tabBars.buttons["Learn"].tap()
+
+        let resumedAppearanceToggle = resumedLaunch.segmentedControls["appearance-toggle"]
+        XCTAssertTrue(resumedAppearanceToggle.waitForExistence(timeout: 5))
+        XCTAssertTrue(resumedAppearanceToggle.buttons["Dark"].isSelected)
+
+        resumedLaunch.openGuide()
+        XCTAssertTrue(resumedLaunch.staticTexts["guide-utility-title"].waitForExistence(timeout: 5))
+        XCTAssertTrue(resumedLaunch.staticTexts["mass-part-title"].waitForExistence(timeout: 5))
     }
 }
 

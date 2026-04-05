@@ -321,7 +321,7 @@ private struct HeroCard: View {
             }
 
             if let onJump {
-                Button("Open jump list", action: onJump)
+                Button("Jump to Major Moments", action: onJump)
                     .font(.subheadline.weight(.semibold))
                     .foregroundStyle(.white)
                     .padding(.horizontal, 14)
@@ -331,7 +331,7 @@ private struct HeroCard: View {
                             .fill(AppTheme.burgundy)
                     )
                     .accessibilityIdentifier("jump-list-button")
-                    .accessibilityLabel("Open jump list")
+                    .accessibilityLabel("Jump to major moments")
             }
         }
         .prayerbookPanel()

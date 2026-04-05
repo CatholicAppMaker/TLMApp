@@ -35,6 +35,24 @@ final class LatinMassCompanionFlowUITests: XCTestCase {
         XCTAssertEqual(partTitle.label, "Christmas Day Collect, Epistle, and Gradual")
     }
 
+    func testGuideJumpToMajorMomentNavigatesToCanon() {
+        let app = XCUIApplication()
+        app.launchApp(resetState: true, todayOverride: "2026-03-30")
+
+        app.openGuide()
+
+        XCTAssertTrue(app.buttons["guide-major-moments-button"].waitForExistence(timeout: 5))
+        app.buttons["guide-major-moments-button"].tap()
+        app.swipeUp()
+        let canonMoment = app.staticTexts["Canon"].firstMatch
+        XCTAssertTrue(canonMoment.waitForExistence(timeout: 5))
+        canonMoment.tap()
+
+        let partTitle = app.staticTexts["mass-part-title"]
+        XCTAssertTrue(partTitle.waitForExistence(timeout: 5))
+        XCTAssertEqual(partTitle.label, "Canon of the Mass")
+    }
+
     func testUncoveredDateShowsOrdinaryOnlyFallback() {
         let app = XCUIApplication()
         app.launchApp(resetState: true, todayOverride: "2026-03-30")

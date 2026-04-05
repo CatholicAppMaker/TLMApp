@@ -41,5 +41,6 @@ struct RootTabView: View {
         .tint(AppTheme.burgundy)
         .toolbarBackground(AppTheme.surface, for: .tabBar)
         .toolbarBackground(.visible, for: .tabBar)
+        .preferredColorScheme(appModel.selectedAppearance.colorScheme)
     }
 }
