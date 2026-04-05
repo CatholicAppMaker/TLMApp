@@ -296,7 +296,118 @@ final class LatinMassCompanionUITests: XCTestCase {
         XCTAssertEqual(partTitle.label, "Canon of the Mass")
     }
 }
+@MainActor
+final class LatinMassCompanionReleaseUITests: XCTestCase {
+    override func setUpWithError() throws {
+        continueAfterFailure = false
+    }
 
+    func testCalendarOpenLibraryCarriesSelectedCelebrationContext() {
+        let app = XCUIApplication()
+        app.launchApp(resetState: true, todayOverride: "2026-03-30")
+
+        app.openCalendar()
+        app.swipeUp()
+
+        let octaveDayRow = app.buttons["calendar-row-2026-01-01"]
+        XCTAssertTrue(octaveDayRow.waitForExistence(timeout: 5))
+        octaveDayRow.tap()
+
+        let openLibraryButton = app.buttons["calendar-open-library-button"]
+        XCTAssertTrue(openLibraryButton.waitForExistence(timeout: 5))
+        openLibraryButton.tap()
+
+        XCTAssertTrue(app.staticTexts["Octave Day of Christmas"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.segmentedControls["library-mass-form-toggle"].exists)
+    }
+
+    func testLearnShowsAppearanceAndOptionalSupportSections() {
+        let app = XCUIApplication()
+        app.launchApp(resetState: true, todayOverride: "2026-03-30")
+
+        app.tabBars.buttons["Learn"].tap()
+
+        XCTAssertTrue(app.segmentedControls["appearance-toggle"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["Optional Support"].waitForExistence(timeout: 5))
+        XCTAssertTrue(
+            app.otherElements["support-tip-loading"].exists ||
+                app.buttons["support-tip-retry"].exists ||
+                app.buttons.matching(identifier: "support-tip-com.kevpierce.LatinMassCompanion.tip.small").firstMatch.exists
+        )
+    }
+
+    func testIPadCalendarSelectionCanOpenLibraryContext() throws {
+        let app = XCUIApplication()
+        app.launchApp(resetState: true, todayOverride: "2026-04-05")
+
+        guard !app.tabBars.buttons["Guide"].exists else {
+            throw XCTSkip("iPad-only sidebar test")
+        }
+
+        app.buttons["sidebar-tab-calendar"].tap()
+
+        let octaveDayRow = app.buttons["calendar-row-2026-01-01"]
+        XCTAssertTrue(octaveDayRow.waitForExistence(timeout: 5))
+        octaveDayRow.tap()
+
+        let openLibraryButton = app.buttons["calendar-open-library-button"]
+        XCTAssertTrue(openLibraryButton.waitForExistence(timeout: 5))
+        openLibraryButton.tap()
+
+        XCTAssertTrue(app.staticTexts["Octave Day of Christmas"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.textFields["library-search-field"].exists)
+    }
+
+    func testIPadLearnShowsAppearanceAndSupportSections() throws {
+        let app = XCUIApplication()
+        app.launchApp(resetState: true, todayOverride: "2026-04-05")
+
+        guard !app.tabBars.buttons["Guide"].exists else {
+            throw XCTSkip("iPad-only sidebar test")
+        }
+
+        app.buttons["sidebar-tab-learn"].tap()
+
+        XCTAssertTrue(app.segmentedControls["appearance-toggle"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["Optional Support"].waitForExistence(timeout: 5))
+    }
+
+    func testIPadGuideBookmarkCarriesIntoLibrarySavedSections() throws {
+        let app = XCUIApplication()
+        app.launchApp(resetState: true, todayOverride: "2026-04-05")
+
+        guard !app.tabBars.buttons["Guide"].exists else {
+            throw XCTSkip("iPad-only sidebar test")
+        }
+
+        app.buttons["sidebar-tab-guide"].tap()
+        XCTAssertTrue(app.buttons["bookmark-button"].waitForExistence(timeout: 5))
+        tapAfterScrollingIfNeeded(app.buttons["bookmark-button"], in: app)
+
+        app.buttons["sidebar-tab-library"].tap()
+        XCTAssertTrue(app.buttons["library-saved-sections-button"].waitForExistence(timeout: 5))
+        app.buttons["library-saved-sections-button"].tap()
+        XCTAssertTrue(app.buttons["Show All Sections"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.segmentedControls.buttons["Bookmarks"].isSelected)
+    }
+
+    private func tapAfterScrollingIfNeeded(_ element: XCUIElement, in app: XCUIApplication) {
+        if element.isHittable {
+            element.tap()
+            return
+        }
+
+        for _ in 0 ..< 4 {
+            app.swipeUp()
+            if element.isHittable {
+                element.tap()
+                return
+            }
+        }
+
+        element.tap()
+    }
+}
 private extension XCUIApplication {
     func launchApp(resetState: Bool, todayOverride: String? = nil) {
         var arguments: [String] = []
@@ -330,7 +441,6 @@ private extension XCUIApplication {
         }
     }
 }
-
 @MainActor
 private func assertContentIsClearOfChrome(_ element: XCUIElement, in app: XCUIApplication) {
     XCTAssertTrue(element.waitForExistence(timeout: 5))

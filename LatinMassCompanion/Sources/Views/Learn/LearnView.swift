@@ -79,7 +79,9 @@ struct LearnView: View {
                     appModel.clearLearnFocus()
                 }
                 .buttonStyle(LearnOutlineButtonStyle())
+                .accessibilityIdentifier("learn-clear-highlight-button")
             }
+            .accessibilityIdentifier("learn-focused-section")
         }
     }
 

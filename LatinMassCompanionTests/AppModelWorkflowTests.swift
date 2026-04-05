@@ -232,6 +232,86 @@ struct AppModelWorkflowTests {
         #expect(update.shouldRecordProgress)
         #expect(model.consumePendingGuideSectionID() == nil)
     }
+
+}
+
+struct AppModelCalendarWorkflowTests {
+    @MainActor
+    @Test
+    func coverageStatusChangesBetweenProperOrdinaryOnlyAndOutsideWindow() {
+        let model = AppModel(
+            repository: StubMassContentRepository {
+                TestFixtures.makeCatalog(
+                    parts: [TestFixtures.makePart(id: "intro", order: 1, title: "Intro")],
+                    celebrations: [
+                        TestFixtures.makeCelebration(
+                            id: "epiphany",
+                            title: "Epiphany",
+                            properTitle: "Epiphany Proper"
+                        )
+                    ],
+                    dateIndex: [
+                        LiturgicalDateIndex(date: "2026-01-06", celebrationID: "epiphany")
+                    ]
+                )
+            },
+            searchService: SpySearchService(),
+            bookmarkStore: SpyBookmarkStore(),
+            progressStore: SpyMassModeProgressStore(),
+            now: { TestFixtures.date("2026-01-06") }
+        )
+
+        #expect(model.currentCoverageBadgeTitle == "Proper Texts")
+
+        model.selectDate(TestFixtures.date("2026-02-02"))
+        #expect(model.currentCoverageBadgeTitle == "Ordinary Only")
+        #expect(model.selectedCelebrationTitle == "Ordinary of the Mass")
+
+        model.selectDate(TestFixtures.date("2027-01-10"))
+        #expect(model.currentCoverageBadgeTitle == "Outside Coverage")
+        #expect(model.selectedCelebrationTitle == "Ordinary of the Mass")
+    }
+
+    @MainActor
+    @Test
+    func resumeMassRestoresSavedDateAndMassFormContext() {
+        let intro = TestFixtures.makePart(id: "intro", order: 1, title: "Intro")
+        let savedProgress = MassModeProgress(
+            dateKey: "2026-01-06",
+            sectionID: "intro",
+            celebrationID: "epiphany",
+            massForm: .sung,
+            lastOpenedAt: TestFixtures.date("2026-01-06")
+        )
+
+        let model = AppModel(
+            repository: StubMassContentRepository {
+                TestFixtures.makeCatalog(
+                    parts: [intro],
+                    celebrations: [
+                        TestFixtures.makeCelebration(
+                            id: "epiphany",
+                            title: "Epiphany",
+                            properTitle: "Epiphany Proper"
+                        )
+                    ],
+                    dateIndex: [
+                        LiturgicalDateIndex(date: "2026-01-06", celebrationID: "epiphany")
+                    ]
+                )
+            },
+            searchService: SpySearchService(),
+            bookmarkStore: SpyBookmarkStore(),
+            progressStore: SpyMassModeProgressStore(storedProgress: savedProgress),
+            now: { TestFixtures.date("2026-03-30") }
+        )
+
+        model.resumeMass()
+
+        #expect(model.selectedDateKey == "2026-01-06")
+        #expect(model.selectedMassForm == .sung)
+        #expect(model.currentGuideSectionID == "intro")
+    }
 }
 
 private struct GuideCheckpoint {
