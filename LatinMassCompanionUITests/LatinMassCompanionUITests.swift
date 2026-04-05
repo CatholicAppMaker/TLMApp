@@ -11,10 +11,38 @@ final class LatinMassCompanionUITests: XCTestCase {
         app.launchApp(resetState: true, todayOverride: "2026-04-05")
 
         XCTAssertTrue(app.tabBars.buttons["Guide"].exists)
+        XCTAssertTrue(app.tabBars.buttons["Calendar"].exists)
         XCTAssertTrue(app.tabBars.buttons["Library"].exists)
         XCTAssertTrue(app.tabBars.buttons["Learn"].exists)
         XCTAssertTrue(app.staticTexts["guide-utility-title"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.staticTexts["mass-part-title"].waitForExistence(timeout: 5))
+    }
+
+    func testCalendarSelectionUpdatesGuideContext() {
+        let app = XCUIApplication()
+        app.launchApp(resetState: true, todayOverride: "2026-03-30")
+
+        app.openCalendar()
+
+        let searchField = app.textFields["calendar-search-field"]
+        XCTAssertTrue(searchField.waitForExistence(timeout: 5))
+        searchField.tap()
+        searchField.typeText("Easter Sunday")
+
+        let easterRow = app.buttons["calendar-row-2026-04-05"]
+        XCTAssertTrue(easterRow.waitForExistence(timeout: 5))
+        easterRow.tap()
+
+        let openGuideButton = app.buttons["calendar-open-guide-button"]
+        XCTAssertTrue(openGuideButton.waitForExistence(timeout: 5))
+        openGuideButton.tap()
+
+        app.buttons["jump-list-button"].tap()
+        app.buttons["jump-moment-collect-readings"].tap()
+
+        let partTitle = app.staticTexts["mass-part-title"]
+        XCTAssertTrue(partTitle.waitForExistence(timeout: 5))
+        XCTAssertEqual(partTitle.label, "Easter Sunday Collect, Epistle, and Gradual")
     }
 
     func testBookmarkAppearsInLibraryBookmarks() {
@@ -165,6 +193,34 @@ final class LatinMassCompanionUITests: XCTestCase {
         XCTAssertTrue(resumedLaunch.staticTexts["guide-utility-title"].waitForExistence(timeout: 5))
         XCTAssertTrue(resumedLaunch.staticTexts["mass-part-title"].waitForExistence(timeout: 5))
     }
+
+    func testIPadSidebarCalendarFlow() throws {
+        let app = XCUIApplication()
+        app.launchApp(resetState: true, todayOverride: "2026-04-05")
+
+        guard !app.tabBars.buttons["Guide"].exists else {
+            throw XCTSkip("iPad-only sidebar test")
+        }
+
+        XCTAssertTrue(app.buttons["sidebar-tab-calendar"].waitForExistence(timeout: 5))
+        app.buttons["sidebar-tab-calendar"].tap()
+        XCTAssertTrue(app.textFields["calendar-search-field"].waitForExistence(timeout: 5))
+    }
+
+    func testIPadGuideUsesPersistentRailTools() throws {
+        let app = XCUIApplication()
+        app.launchApp(resetState: true, todayOverride: "2026-04-05")
+
+        guard !app.tabBars.buttons["Guide"].exists else {
+            throw XCTSkip("iPad-only sidebar test")
+        }
+
+        XCTAssertTrue(app.buttons["sidebar-tab-guide"].waitForExistence(timeout: 5))
+        app.buttons["sidebar-tab-guide"].tap()
+
+        XCTAssertTrue(app.buttons["ipad-major-moment-collect-readings"].waitForExistence(timeout: 5))
+        XCTAssertFalse(app.staticTexts["guide-utility-title"].exists)
+    }
 }
 
 private extension XCUIApplication {
@@ -181,12 +237,22 @@ private extension XCUIApplication {
     }
 
     func openGuide() {
-        if tabBars.buttons["Guide"].exists {
-            tabBars.buttons["Guide"].tap()
-        }
+        openSection(named: "Guide")
     }
 
     func openLibrary() {
-        tabBars.buttons["Library"].tap()
+        openSection(named: "Library")
+    }
+
+    func openCalendar() {
+        openSection(named: "Calendar")
+    }
+
+    private func openSection(named name: String) {
+        if tabBars.buttons[name].exists {
+            tabBars.buttons[name].tap()
+        } else if buttons["sidebar-tab-\(name.lowercased())"].exists {
+            buttons["sidebar-tab-\(name.lowercased())"].tap()
+        }
     }
 }

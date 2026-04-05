@@ -3,10 +3,13 @@ import SwiftUI
 struct GuideView: View {
     let appModel: AppModel
     @Binding var selectedTab: AppTab
+    var showsInlineTools = true
 
     @AppStorage("latin.mass.guide.utility.dismissed") private var hasDismissedUtilityCard = false
     @State private var selectedPartID: String?
     @State private var isShowingJumpList = false
+    @State private var isShowingFindMyPlace = false
+    @State private var shouldSkipNextProgressRecord = false
 
     private var selectedMassFormBinding: Binding<MassForm> {
         Binding(
@@ -20,11 +23,13 @@ struct GuideView: View {
     }
 
     private var canResumeSavedPlace: Bool {
-        guard let progress = appModel.progress else {
+        guard let savedProgressContext = appModel.savedProgressContext else {
             return false
         }
 
-        return progress.sectionID != selectedPartID && appModel.part(withID: progress.sectionID) != nil
+        return savedProgressContext.progress.sectionID != selectedPartID
+            || savedProgressContext.progress.dateKey != appModel.selectedDateKey
+            || savedProgressContext.progress.massForm != appModel.selectedMassForm
     }
 
     var body: some View {
@@ -87,13 +92,26 @@ struct GuideView: View {
         .onChange(of: appModel.selectedMassForm) { _, _ in
             syncSelection()
         }
+        .onChange(of: appModel.guideSelectionToken) { _, _ in
+            syncSelection()
+        }
         .onChange(of: selectedPartID) { _, _ in
+            if shouldSkipNextProgressRecord {
+                shouldSkipNextProgressRecord = false
+                return
+            }
             updateProgress()
         }
         .sheet(isPresented: $isShowingJumpList) {
             JumpToSectionView(
                 majorMoments: appModel.majorMomentAnchors,
                 parts: appModel.orderedParts,
+                selectedPartID: $selectedPartID
+            )
+        }
+        .sheet(isPresented: $isShowingFindMyPlace) {
+            FindMyPlaceView(
+                anchors: appModel.findMyPlaceAnchors,
                 selectedPartID: $selectedPartID
             )
         }
@@ -114,34 +132,55 @@ struct GuideView: View {
             }
         }
         .safeAreaInset(edge: .top) {
-            VStack(spacing: 10) {
-                GuideMassFormSwitcher(selectedMassFormBinding: selectedMassFormBinding)
+            if showsInlineTools {
+                VStack(spacing: 10) {
+                    GuideMassFormSwitcher(selectedMassFormBinding: selectedMassFormBinding)
 
-                if !hasDismissedUtilityCard {
-                    GuideUtilityCard(
-                        bookmarkCountText: appModel.bookmarkCountText,
-                        hasBookmarks: !appModel.bookmarkedParts.isEmpty,
-                        canResumeSavedPlace: canResumeSavedPlace,
-                        onResume: {
-                            appModel.resumeMass()
-                            syncSelection()
-                        },
-                        onJump: {
-                            isShowingJumpList = true
-                        },
-                        onOpenBookmarks: {
-                            appModel.focusBookmarkedSections()
-                            selectedTab = .library
-                        },
-                        onDismiss: {
-                            hasDismissedUtilityCard = true
-                        }
-                    )
+                    if !hasDismissedUtilityCard {
+                        GuideUtilityCard(
+                            bookmarkCountText: appModel.bookmarkCountText,
+                            hasBookmarks: !appModel.bookmarkedParts.isEmpty,
+                            canResumeSavedPlace: canResumeSavedPlace,
+                            onResume: {
+                                appModel.resumeMass()
+                                syncSelection()
+                            },
+                            onFindMyPlace: {
+                                isShowingFindMyPlace = true
+                            },
+                            onJump: {
+                                isShowingJumpList = true
+                            },
+                            onOpenBookmarks: {
+                                appModel.focusBookmarkedSections()
+                                selectedTab = .library
+                            },
+                            onDismiss: {
+                                hasDismissedUtilityCard = true
+                            }
+                        )
+                    } else if canResumeSavedPlace || !appModel.bookmarkedParts.isEmpty {
+                        GuideQuickAccessStrip(
+                            canResumeSavedPlace: canResumeSavedPlace,
+                            hasBookmarks: !appModel.bookmarkedParts.isEmpty,
+                            onResume: {
+                                appModel.resumeMass()
+                                syncSelection()
+                            },
+                            onFindMyPlace: {
+                                isShowingFindMyPlace = true
+                            },
+                            onSaved: {
+                                appModel.focusBookmarkedSections()
+                                selectedTab = .library
+                            }
+                        )
+                    }
                 }
+                .padding(.horizontal, 20)
+                .padding(.top, 8)
+                .background(AppTheme.backgroundWash.opacity(0.96))
             }
-            .padding(.horizontal, 20)
-            .padding(.top, 8)
-            .background(AppTheme.backgroundWash.opacity(0.96))
         }
     }
 
@@ -153,10 +192,29 @@ struct GuideView: View {
         } else if let selectedPartID, appModel.part(withID: selectedPartID) != nil {
             // Keep the current position when the selected date still resolves this section.
         } else {
+            if shouldPreserveResumePrompt {
+                shouldSkipNextProgressRecord = true
+            }
             selectedPartID = appModel.orderedParts.first?.id
         }
 
-        updateProgress()
+        if !shouldSkipNextProgressRecord {
+            updateProgress()
+        }
+    }
+
+    private var shouldPreserveResumePrompt: Bool {
+        guard
+            selectedPartID == nil,
+            let firstPartID = appModel.orderedParts.first?.id,
+            let savedProgressContext = appModel.savedProgressContext
+        else {
+            return false
+        }
+
+        return savedProgressContext.progress.sectionID != firstPartID
+            || savedProgressContext.progress.dateKey != appModel.selectedDateKey
+            || savedProgressContext.progress.massForm != appModel.selectedMassForm
     }
 
     private func updateProgress() {
@@ -173,6 +231,7 @@ private struct GuideUtilityCard: View {
     let hasBookmarks: Bool
     let canResumeSavedPlace: Bool
     let onResume: () -> Void
+    let onFindMyPlace: () -> Void
     let onJump: () -> Void
     let onOpenBookmarks: () -> Void
     let onDismiss: () -> Void
@@ -218,8 +277,12 @@ private struct GuideUtilityCard: View {
             }
 
             VStack(spacing: 10) {
-                Button("Jump to Major Moments", action: onJump)
+                Button("Find My Place", action: onFindMyPlace)
                     .buttonStyle(GuideUtilityPrimaryButtonStyle())
+                    .accessibilityIdentifier("guide-find-my-place-button")
+
+                Button("Jump to Major Moments", action: onJump)
+                    .buttonStyle(GuideUtilitySecondaryButtonStyle())
                     .accessibilityIdentifier("guide-major-moments-button")
 
                 HStack(spacing: 10) {
@@ -249,6 +312,34 @@ private struct GuideUtilityCard: View {
     }
 }
 
+private struct GuideQuickAccessStrip: View {
+    let canResumeSavedPlace: Bool
+    let hasBookmarks: Bool
+    let onResume: () -> Void
+    let onFindMyPlace: () -> Void
+    let onSaved: () -> Void
+
+    var body: some View {
+        HStack(spacing: 10) {
+            Button("Find My Place", action: onFindMyPlace)
+                .buttonStyle(GuideUtilitySecondaryButtonStyle())
+                .accessibilityIdentifier("guide-find-my-place-quick-button")
+
+            if canResumeSavedPlace {
+                Button("Resume", action: onResume)
+                    .buttonStyle(GuideUtilitySecondaryButtonStyle())
+                    .accessibilityIdentifier("guide-resume-quick-button")
+            }
+
+            if hasBookmarks {
+                Button("Saved", action: onSaved)
+                    .buttonStyle(GuideUtilitySecondaryButtonStyle())
+                    .accessibilityIdentifier("guide-saved-quick-button")
+            }
+        }
+    }
+}
+
 private struct GuideMassFormSwitcher: View {
     let selectedMassFormBinding: Binding<MassForm>
 
@@ -275,161 +366,5 @@ private struct GuideMassFormSwitcher: View {
             RoundedRectangle(cornerRadius: 12, style: .continuous)
                 .stroke(AppTheme.border, lineWidth: 1)
         )
-    }
-}
-
-private struct JumpToSectionView: View {
-    let majorMoments: [MajorMomentAnchor]
-    let parts: [ResolvedMassPart]
-    @Binding var selectedPartID: String?
-    @Environment(\.dismiss) private var dismiss
-
-    var body: some View {
-        NavigationStack {
-            List {
-                if !majorMoments.isEmpty {
-                    Section("Major Moments") {
-                        ForEach(majorMoments) { anchor in
-                            Button {
-                                selectedPartID = anchor.partID
-                                dismiss()
-                            } label: {
-                                VStack(alignment: .leading, spacing: 4) {
-                                    Text(anchor.title)
-                                        .font(.headline)
-                                        .foregroundStyle(AppTheme.ink)
-                                    Text(anchor.summary)
-                                        .font(.subheadline)
-                                        .foregroundStyle(AppTheme.mutedInk)
-                                        .lineLimit(2)
-                                }
-                                .padding(.vertical, 6)
-                            }
-                            .accessibilityIdentifier("jump-moment-\(anchor.partID)")
-                        }
-                    }
-                }
-
-                Section("All Sections") {
-                    ForEach(parts) { part in
-                        Button {
-                            selectedPartID = part.id
-                            dismiss()
-                        } label: {
-                            VStack(alignment: .leading, spacing: 4) {
-                                Text(part.title)
-                                    .font(.headline)
-                                    .foregroundStyle(AppTheme.ink)
-                                Text(part.summary)
-                                    .font(.subheadline)
-                                    .foregroundStyle(AppTheme.mutedInk)
-                                    .lineLimit(2)
-                            }
-                            .padding(.vertical, 6)
-                        }
-                        .accessibilityIdentifier("jump-to-\(part.id)")
-                    }
-                }
-            }
-            .navigationTitle("Jump to Major Moments")
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Done") {
-                        dismiss()
-                    }
-                }
-            }
-        }
-        .presentationDetents([.medium, .large])
-    }
-}
-
-private struct GuideUtilityPrimaryButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .frame(maxWidth: .infinity)
-            .font(.system(.headline, design: .serif))
-            .foregroundStyle(.white)
-            .padding(.vertical, 12)
-            .background(
-                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    .fill(AppTheme.burgundy.opacity(configuration.isPressed ? 0.85 : 1.0))
-            )
-    }
-}
-
-private struct GuideUtilitySecondaryButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .frame(maxWidth: .infinity)
-            .font(.subheadline.weight(.semibold))
-            .foregroundStyle(AppTheme.ink)
-            .padding(.vertical, 12)
-            .background(
-                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    .fill(AppTheme.secondarySurface.opacity(configuration.isPressed ? 0.82 : 1.0))
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    .stroke(AppTheme.border, lineWidth: 1)
-            )
-    }
-}
-
-private struct GuideNavigationBar: View {
-    let previousTitle: String?
-    let nextTitle: String?
-    let onPrevious: () -> Void
-    let onNext: () -> Void
-
-    var body: some View {
-        HStack(spacing: 12) {
-            Button(action: onPrevious) {
-                Label(previousTitle ?? "Beginning", systemImage: "chevron.left")
-                    .frame(maxWidth: .infinity)
-            }
-            .buttonStyle(GuideNavButtonStyle())
-            .disabled(previousTitle == nil)
-            .accessibilityIdentifier("previous-section")
-            .accessibilityLabel("Previous section")
-            .accessibilityValue(previousTitle ?? "Beginning of Mass")
-
-            Button(action: onNext) {
-                Label(nextTitle ?? "End", systemImage: "chevron.right")
-                    .frame(maxWidth: .infinity)
-            }
-            .buttonStyle(GuideNavButtonStyle())
-            .disabled(nextTitle == nil)
-            .accessibilityIdentifier("next-section")
-            .accessibilityLabel("Next section")
-            .accessibilityValue(nextTitle ?? "End of Mass")
-        }
-        .padding(.horizontal, 20)
-        .padding(.top, 10)
-        .padding(.bottom, 12)
-        .background(AppTheme.surface)
-        .overlay(alignment: .top) {
-            Rectangle()
-                .fill(AppTheme.divider)
-                .frame(height: 1)
-        }
-    }
-}
-
-private struct GuideNavButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .font(.subheadline.weight(.semibold))
-            .foregroundStyle(AppTheme.ink)
-            .padding(.horizontal, 14)
-            .padding(.vertical, 12)
-            .background(
-                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    .fill(AppTheme.surface.opacity(configuration.isPressed ? 0.82 : 1.0))
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    .stroke(AppTheme.border, lineWidth: 1)
-            )
     }
 }

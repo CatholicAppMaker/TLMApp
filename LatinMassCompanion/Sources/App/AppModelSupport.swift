@@ -56,6 +56,13 @@ struct ResumePreview: Hashable, Sendable {
     let lastOpenedText: String
 }
 
+struct SavedProgressContext: Sendable {
+    let progress: MassModeProgress
+    let date: Date
+    let resolvedDay: ResolvedDay
+    let part: ResolvedMassPart
+}
+
 struct GuideOrientation: Hashable, Sendable {
     let positionText: String
     let phaseTitle: String
@@ -71,6 +78,52 @@ struct MajorMomentAnchor: Identifiable, Hashable, Sendable {
     let title: String
     let summary: String
     let partID: String
+}
+
+struct FindMyPlaceAnchor: Identifiable, Hashable, Sendable {
+    let id: String
+    let title: String
+    let summary: String
+    let partID: String
+}
+
+struct CelebrationListing: Identifiable, Hashable, Sendable {
+    let date: Date
+    let dateKey: String
+    let title: String
+    let subtitle: String
+    let summary: String
+    let rank: String
+    let celebrationID: String
+    let monthTitle: String
+    let shortDateText: String
+    let longDateText: String
+
+    var id: String {
+        dateKey
+    }
+
+    func matches(_ query: String) -> Bool {
+        let normalized = query.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        guard !normalized.isEmpty else {
+            return true
+        }
+
+        let haystack = [title, subtitle, summary, rank, shortDateText, longDateText, monthTitle]
+            .joined(separator: " ")
+            .lowercased()
+
+        return haystack.contains(normalized)
+    }
+}
+
+struct CelebrationMonthSection: Identifiable, Hashable, Sendable {
+    let title: String
+    let listings: [CelebrationListing]
+
+    var id: String {
+        title
+    }
 }
 
 enum CoverageStatus: Hashable, Sendable {

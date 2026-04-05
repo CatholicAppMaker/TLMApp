@@ -84,6 +84,61 @@ struct AppModelWorkflowTests {
         #expect(model.preferredLibraryScope == .allSections)
         #expect(searchService.capturedPartIDs == ["intro", "canon"])
     }
+
+    @MainActor
+    @Test
+    func celebrationSectionsGroupVisibleCoverageByMonth() {
+        let model = AppModel(
+            repository: StubMassContentRepository {
+                TestFixtures.makeCatalog(
+                    parts: [TestFixtures.makePart(id: "intro", order: 1, title: "Intro")],
+                    celebrations: [
+                        TestFixtures.makeCelebration(id: "epiphany", title: "Epiphany", properTitle: "Epiphany Proper"),
+                        TestFixtures.makeCelebration(id: "easter", title: "Easter Sunday", properTitle: "Easter Proper")
+                    ],
+                    dateIndex: [
+                        LiturgicalDateIndex(date: "2026-01-06", celebrationID: "epiphany"),
+                        LiturgicalDateIndex(date: "2026-04-05", celebrationID: "easter")
+                    ]
+                )
+            },
+            searchService: SpySearchService(),
+            bookmarkStore: SpyBookmarkStore(),
+            progressStore: SpyMassModeProgressStore(),
+            now: { TestFixtures.date("2026-01-06") }
+        )
+
+        let sections = model.celebrationSections(matching: "")
+
+        #expect(sections.map(\.title) == ["January 2026", "April 2026"])
+        #expect(sections.flatMap(\.listings).map(\.title) == ["Epiphany", "Easter Sunday"])
+    }
+
+    @MainActor
+    @Test
+    func openingGuideSectionQueuesPendingSelectionAndChangesToken() {
+        let model = AppModel(
+            repository: StubMassContentRepository {
+                TestFixtures.makeCatalog(
+                    parts: [
+                        TestFixtures.makePart(id: "intro", order: 1, title: "Intro"),
+                        TestFixtures.makePart(id: "canon", order: 2, phase: .canon, title: "Canon")
+                    ]
+                )
+            },
+            searchService: SpySearchService(),
+            bookmarkStore: SpyBookmarkStore(),
+            progressStore: SpyMassModeProgressStore(),
+            now: { TestFixtures.date("2026-03-30") }
+        )
+
+        let firstToken = model.guideSelectionToken
+
+        model.openGuideSection("canon")
+
+        #expect(model.consumePendingGuideSectionID() == "canon")
+        #expect(model.guideSelectionToken != firstToken)
+    }
 }
 
 private struct GuideCheckpoint {

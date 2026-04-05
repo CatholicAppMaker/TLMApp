@@ -12,6 +12,9 @@ targets:
     type: application
     platform: iOS
     deploymentTarget: "18.0"
+    dependencies:
+      - target: LatinMassCompanionWidgets
+        embed: true
     sources:
       - path: LatinMassCompanion/Sources
       - path: LatinMassCompanion/Resources
@@ -32,18 +35,33 @@ targets:
         CODE_SIGN_STYLE: Automatic
         PRODUCT_BUNDLE_IDENTIFIER: com.kevpierce.LatinMassCompanion
         PRODUCT_NAME: LatinMassCompanion
-        GENERATE_INFOPLIST_FILE: YES
-        INFOPLIST_KEY_CFBundleDisplayName: Latin Mass
-        INFOPLIST_KEY_UILaunchScreen_Generation: YES
-        INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents: YES
-        TARGETED_DEVICE_FAMILY: 1
-        CURRENT_PROJECT_VERSION: 1
+        GENERATE_INFOPLIST_FILE: NO
+        INFOPLIST_FILE: LatinMassCompanion/Support/Info.plist
+        TARGETED_DEVICE_FAMILY: 1,2
+        CURRENT_PROJECT_VERSION: 25
         MARKETING_VERSION: 1.0
     scheme:
       gatherCoverageData: true
       testTargets:
         - LatinMassCompanionTests
         - LatinMassCompanionUITests
+  LatinMassCompanionWidgets:
+    type: app-extension
+    platform: iOS
+    deploymentTarget: "18.0"
+    sources:
+      - path: LatinMassCompanionWidgets/Sources
+      - path: LatinMassCompanionWidgets/Resources
+    settings:
+      base:
+        CODE_SIGN_STYLE: Automatic
+        PRODUCT_BUNDLE_IDENTIFIER: com.kevpierce.LatinMassCompanion.widgets
+        PRODUCT_NAME: LatinMassCompanionWidgets
+        GENERATE_INFOPLIST_FILE: NO
+        INFOPLIST_FILE: LatinMassCompanionWidgets/Info.plist
+        APPLICATION_EXTENSION_API_ONLY: YES
+        CURRENT_PROJECT_VERSION: 25
+        MARKETING_VERSION: 1.0
   LatinMassCompanionTests:
     type: bundle.unit-test
     platform: iOS

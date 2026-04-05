@@ -32,6 +32,7 @@ final class AppModel {
     private(set) var preferredLibraryScope: LibraryScope = .allSections
     private(set) var focusedLearningDestination: LearnDestination?
     private(set) var errorMessage: String?
+    private(set) var guideSelectionToken = UUID()
 
     private var pendingGuideSectionID: String?
 
@@ -157,13 +158,15 @@ final class AppModel {
     }
 
     func resumeMass() {
-        guard let progress else {
+        guard let savedProgressContext else {
             return
         }
 
-        selectedMassForm = progress.massForm
-        massFormStore.saveMassForm(progress.massForm)
-        pendingGuideSectionID = progress.sectionID
+        selectedDate = calendar.startOfDay(for: savedProgressContext.date)
+        selectedMassForm = savedProgressContext.progress.massForm
+        massFormStore.saveMassForm(savedProgressContext.progress.massForm)
+        pendingGuideSectionID = savedProgressContext.progress.sectionID
+        guideSelectionToken = UUID()
     }
 
     func consumePendingGuideSectionID() -> String? {
@@ -181,6 +184,11 @@ final class AppModel {
         )
         self.progress = progress
         progressStore.saveProgress(progress)
+    }
+
+    func openGuideSection(_ sectionID: String) {
+        pendingGuideSectionID = sectionID
+        guideSelectionToken = UUID()
     }
 
     func openLearn(_ destination: LearnDestination) {

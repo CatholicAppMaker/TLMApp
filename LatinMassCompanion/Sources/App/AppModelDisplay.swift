@@ -82,7 +82,15 @@ extension AppModel {
     }
 
     var selectedDateTitle: String {
-        "Today"
+        if calendar.isDate(selectedDate, inSameDayAs: now()) {
+            return "Today"
+        }
+
+        return Self.shortDateFormatter.string(from: selectedDate)
+    }
+
+    var selectedDateLongTitle: String {
+        Self.displayDateFormatter.string(from: selectedDate)
     }
 
     var selectedMassFormTitle: String {
@@ -96,6 +104,61 @@ extension AppModel {
     var bookmarkCountText: String {
         let count = bookmarks.count
         return count == 1 ? "1 saved section" : "\(count) saved sections"
+    }
+
+    var celebrationListings: [CelebrationListing] {
+        let celebrationByID = Dictionary(uniqueKeysWithValues: celebrations.map { ($0.id, $0) })
+
+        return dateIndex.compactMap { entry in
+            guard
+                let celebration = celebrationByID[entry.celebrationID],
+                let date = Self.storageDateFormatter.date(from: entry.date)
+            else {
+                return nil
+            }
+
+            return CelebrationListing(
+                date: date,
+                dateKey: entry.date,
+                title: celebration.title,
+                subtitle: celebration.subtitle,
+                summary: celebration.summary,
+                rank: celebration.rank,
+                celebrationID: celebration.id,
+                monthTitle: Self.monthSectionFormatter.string(from: date),
+                shortDateText: Self.shortDateFormatter.string(from: date),
+                longDateText: Self.displayDateFormatter.string(from: date)
+            )
+        }
+        .sorted { $0.date < $1.date }
+    }
+
+    var selectedCelebrationListing: CelebrationListing? {
+        celebrationListings.first(where: { $0.dateKey == selectedDateKey })
+    }
+
+    var bundledCoverageSummary: String {
+        "\(celebrationListings.count) bundled 2026 Sundays and major feasts."
+    }
+
+    func celebrationSections(matching query: String) -> [CelebrationMonthSection] {
+        let filteredListings = celebrationListings.filter { $0.matches(query) }
+        let grouped = Dictionary(grouping: filteredListings, by: \.monthTitle)
+
+        return celebrationListings
+            .map(\.monthTitle)
+            .reduce(into: [String]()) { titles, title in
+                if !titles.contains(title) {
+                    titles.append(title)
+                }
+            }
+            .compactMap { title in
+                guard let listings = grouped[title], !listings.isEmpty else {
+                    return nil
+                }
+
+                return CelebrationMonthSection(title: title, listings: listings)
+            }
     }
 
     var isShowingOrdinaryOnly: Bool {
@@ -116,6 +179,10 @@ extension AppModel {
 
     var selectedCelebrationSummary: String {
         resolvedDay.summary
+    }
+
+    var currentCoverageBadgeTitle: String {
+        isShowingOrdinaryOnly ? "Ordinary Only" : "Proper Texts"
     }
 
     var availabilitySummary: String {
@@ -218,11 +285,11 @@ extension AppModel {
 
         return switch resolvedDay.coverageStatus {
         case .properAvailable:
-            "\(selectedDateTitle) • \(formText) • \(resolvedDay.subtitle)"
+            "\(selectedDateLongTitle) • \(formText) • \(resolvedDay.subtitle)"
         case .ordinaryOnlyWithinSupportedWindow:
-            "\(selectedDateTitle) • \(formText) • Ordinary only"
+            "\(selectedDateLongTitle) • \(formText) • Ordinary only"
         case .outsideSupportedWindow:
-            "\(selectedDateTitle) • \(formText) • Outside bundled coverage"
+            "\(selectedDateLongTitle) • \(formText) • Outside bundled coverage"
         }
     }
 
@@ -230,24 +297,36 @@ extension AppModel {
         resolvedDay.celebration
     }
 
-    var resumePreview: ResumePreview? {
+    var savedProgressContext: SavedProgressContext? {
         guard let progress, let date = Self.storageDateFormatter.date(from: progress.dateKey) else {
             return nil
         }
 
-        let selectedMassForm = progress.massForm
-        let resolvedDay = resolveDay(for: date, massForm: selectedMassForm)
+        let resolvedDay = resolveDay(for: date, massForm: progress.massForm)
         guard let part = resolvedDay.parts.first(where: { $0.id == progress.sectionID }) else {
             return nil
         }
 
+        return SavedProgressContext(
+            progress: progress,
+            date: date,
+            resolvedDay: resolvedDay,
+            part: part
+        )
+    }
+
+    var resumePreview: ResumePreview? {
+        guard let savedProgressContext else {
+            return nil
+        }
+
         return ResumePreview(
-            partTitle: part.title,
-            celebrationTitle: resolvedDay.title,
-            dateText: Self.displayDateFormatter.string(from: date),
-            massFormTitle: selectedMassForm.title,
+            partTitle: savedProgressContext.part.title,
+            celebrationTitle: savedProgressContext.resolvedDay.title,
+            dateText: Self.displayDateFormatter.string(from: savedProgressContext.date),
+            massFormTitle: savedProgressContext.progress.massForm.title,
             lastOpenedText: Self.relativeFormatter.localizedString(
-                for: progress.lastOpenedAt,
+                for: savedProgressContext.progress.lastOpenedAt,
                 relativeTo: now()
             )
         )
@@ -288,6 +367,44 @@ extension AppModel {
         return chantGuides.filter { ids.contains($0.id) }.sorted { $0.title < $1.title }
     }
 
+    var findMyPlaceAnchors: [FindMyPlaceAnchor] {
+        var anchors: [FindMyPlaceAnchor] = []
+
+        func appendAnchor(title: String, matchingAnchorID anchorID: String) {
+            guard let anchor = majorMomentAnchors.first(where: { $0.id == anchorID }) else {
+                return
+            }
+
+            anchors.append(
+                FindMyPlaceAnchor(
+                    id: anchor.id,
+                    title: title,
+                    summary: anchor.summary,
+                    partID: anchor.partID
+                )
+            )
+        }
+
+        if let firstPart = orderedParts.first {
+            anchors.append(
+                FindMyPlaceAnchor(
+                    id: "beginning",
+                    title: "Beginning",
+                    summary: firstPart.summary,
+                    partID: firstPart.id
+                )
+            )
+        }
+
+        appendAnchor(title: "Readings", matchingAnchorID: "collect-readings")
+        appendAnchor(title: "Offertory", matchingAnchorID: "offertory")
+        appendAnchor(title: "Canon", matchingAnchorID: "canon")
+        appendAnchor(title: "Communion", matchingAnchorID: "communion")
+        appendAnchor(title: "Last Gospel", matchingAnchorID: "last-gospel")
+
+        return anchors
+    }
+
     func resolveDay(for date: Date, massForm: MassForm) -> ResolvedDay {
         let dateKey = Self.storageDateFormatter.string(from: date)
         let celebrationByID = Dictionary(uniqueKeysWithValues: celebrations.map { ($0.id, $0) })
@@ -320,4 +437,14 @@ extension AppModel {
             coverageStatus: coverageStatus
         )
     }
+}
+
+private extension AppModel {
+    static let monthSectionFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.calendar = Calendar(identifier: .gregorian)
+        formatter.locale = Locale.current
+        formatter.dateFormat = "LLLL yyyy"
+        return formatter
+    }()
 }
