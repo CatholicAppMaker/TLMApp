@@ -78,21 +78,31 @@ Latin Mass Companion is built to help you stay oriented, recollected, and honest
 - Do not attach perks, unlocks, or feature promises to the tips
 
 ## Screenshot Direction
-- Screenshot 1: `Today`
-  - show covered date, Mass form, and clear scope language
-  - headline idea: `Know what today’s Mass includes`
-- Screenshot 2: `Guide`
-  - show section title, progress, quick guidance, and side-by-side text
+- Screenshot 1: `Guide`
+  - show the timeline, mass form, and clear guide utility
   - headline idea: `Follow the rite without losing the bigger structure`
-- Screenshot 3: `Library`
+- Screenshot 2: `Calendar`
+  - show celebration browsing, date labels, and scope language
+  - headline idea: `Browse the bundled year by feast and season`
+- Screenshot 3: `Guide`
+  - show section title, progress, and quick guidance
+  - headline idea: `Find your place quickly during Mass`
+- Screenshot 4: `Library`
   - show proper-backed search result plus separate learning result
   - headline idea: `Find prayers, propers, and explanations fast`
-- Screenshot 4: `Learn`
+- Screenshot 5: `Learn`
   - show first-time guidance, chant/pronunciation support, and the optional support section
   - headline idea: `Build confidence before or after Mass`
 
+## If Apple Denies Again
+- Use `docs/app-review-contingency.md` as the immediate response playbook
+- ask App Review for specific examples instead of guessing at the complaint
+- appeal if the response stays generic after clarification
+- only do one more product pass if Apple gives a concrete direction
+- if escalation fails, treat the problem as distribution fit and use TestFlight / web fallback instead of endless churn
+
 ## Manual Launch Checklist
-- Verify scope language appears consistently in `Today`, `Learn`, and `Sources & Rights`
+- Verify scope language appears consistently in `Guide`, `Calendar`, `Learn`, and `Sources & Rights`
 - Verify `Low Mass` and `Sung Mass` selection persists through resume
 - Verify a covered feast, an uncovered in-window date, and an outside-window date all read clearly
 - Verify bookmark, resume, and search behavior from a fresh install state
