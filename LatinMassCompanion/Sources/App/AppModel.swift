@@ -59,7 +59,9 @@ final class AppModel {
         selectedAppearance = appearanceStore.loadAppearance()
         loadCatalog()
     }
+}
 
+extension AppModel {
     func loadCatalog() {
         do {
             let catalog = try repository.loadCatalog()
@@ -92,7 +94,9 @@ final class AppModel {
             errorMessage = error.localizedDescription
         }
     }
+}
 
+extension AppModel {
     func selectDate(_ date: Date) {
         selectedDate = calendar.startOfDay(for: date)
     }
@@ -152,7 +156,9 @@ final class AppModel {
     func displayIndex(for part: ResolvedMassPart) -> Int {
         orderedParts.firstIndex(of: part).map { $0 + 1 } ?? 1
     }
+}
 
+extension AppModel {
     func startGuide() {
         pendingGuideSectionID = nil
     }
@@ -191,6 +197,62 @@ final class AppModel {
         guideSelectionToken = UUID()
     }
 
+    func canResumeSavedPlace(from sectionID: String?) -> Bool {
+        guard let savedProgressContext else {
+            return false
+        }
+
+        return !savedProgressMatchesCurrentSelection(
+            sectionID: sectionID,
+            dateKey: selectedDateKey,
+            massForm: selectedMassForm,
+            savedProgressContext: savedProgressContext
+        )
+    }
+
+    func synchronizedGuideSelection(from currentSectionID: String?) -> GuideSelectionUpdate {
+        if let pendingSectionID = consumePendingGuideSectionID(),
+           part(withID: pendingSectionID) != nil
+        {
+            return GuideSelectionUpdate(sectionID: pendingSectionID, shouldRecordProgress: true)
+        }
+
+        if let currentSectionID,
+           part(withID: currentSectionID) != nil
+        {
+            return GuideSelectionUpdate(sectionID: currentSectionID, shouldRecordProgress: true)
+        }
+
+        let firstPartID = orderedParts.first?.id
+        return GuideSelectionUpdate(
+            sectionID: firstPartID,
+            shouldRecordProgress: !shouldPreserveResumePrompt(
+                from: currentSectionID,
+                fallbackSectionID: firstPartID
+            )
+        )
+    }
+
+    var currentGuideSectionID: String? {
+        if let pendingGuideSectionID,
+           part(withID: pendingGuideSectionID) != nil
+        {
+            return pendingGuideSectionID
+        }
+
+        if let progress,
+           progress.dateKey == selectedDateKey,
+           progress.massForm == selectedMassForm,
+           part(withID: progress.sectionID) != nil
+        {
+            return progress.sectionID
+        }
+
+        return orderedParts.first?.id
+    }
+}
+
+extension AppModel {
     func openLearn(_ destination: LearnDestination) {
         focusedLearningDestination = destination
     }
@@ -214,7 +276,9 @@ final class AppModel {
     func chantGuide(withID id: String) -> ChantGuide? {
         chantGuides.first(where: { $0.id == id })
     }
+}
 
+extension AppModel {
     var resolvedDay: ResolvedDay {
         resolveDay(for: selectedDate, massForm: selectedMassForm)
     }
@@ -244,7 +308,9 @@ final class AppModel {
 
         return matchedCelebration == nil ? .ordinaryOnlyWithinSupportedWindow : .properAvailable
     }
+}
 
+extension AppModel {
     static let storageDateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.calendar = Calendar(identifier: .gregorian)
@@ -309,5 +375,36 @@ extension AppModel {
 
     func focusAllSections() {
         preferredLibraryScope = .allSections
+    }
+
+    private func shouldPreserveResumePrompt(
+        from currentSectionID: String?,
+        fallbackSectionID: String?
+    ) -> Bool {
+        guard
+            currentSectionID == nil,
+            let fallbackSectionID,
+            let savedProgressContext
+        else {
+            return false
+        }
+
+        return !savedProgressMatchesCurrentSelection(
+            sectionID: fallbackSectionID,
+            dateKey: selectedDateKey,
+            massForm: selectedMassForm,
+            savedProgressContext: savedProgressContext
+        )
+    }
+
+    private func savedProgressMatchesCurrentSelection(
+        sectionID: String?,
+        dateKey: String,
+        massForm: MassForm,
+        savedProgressContext: SavedProgressContext
+    ) -> Bool {
+        savedProgressContext.progress.sectionID == sectionID
+            && savedProgressContext.progress.dateKey == dateKey
+            && savedProgressContext.progress.massForm == massForm
     }
 }

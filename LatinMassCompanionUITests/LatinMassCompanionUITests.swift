@@ -33,12 +33,28 @@ final class LatinMassCompanionUITests: XCTestCase {
         XCTAssertTrue(openGuideButton.waitForExistence(timeout: 5))
         openGuideButton.tap()
 
-        app.buttons["jump-list-button"].tap()
-        app.buttons["jump-moment-collect-readings"].tap()
+        let collectCheckpoint = app.buttons["timeline-checkpoint-collect-readings"]
+        XCTAssertTrue(collectCheckpoint.waitForExistence(timeout: 5))
+        collectCheckpoint.tap()
 
         let partTitle = app.staticTexts["mass-part-title"]
         XCTAssertTrue(partTitle.waitForExistence(timeout: 5))
         XCTAssertEqual(partTitle.label, "Octave Day of Christmas Collect, Epistle, and Gradual")
+    }
+
+    func testGuideTimelineJumpsToCanon() {
+        let app = XCUIApplication()
+        app.launchApp(resetState: true, todayOverride: "2026-03-30")
+
+        app.openGuide()
+
+        let canonCheckpoint = app.buttons["timeline-checkpoint-canon"]
+        XCTAssertTrue(canonCheckpoint.waitForExistence(timeout: 5))
+        canonCheckpoint.tap()
+
+        let partTitle = app.staticTexts["mass-part-title"]
+        XCTAssertTrue(partTitle.waitForExistence(timeout: 5))
+        XCTAssertEqual(partTitle.label, "Canon of the Mass")
     }
 
     func testBookmarkAppearsInLibraryBookmarks() {
@@ -175,6 +191,10 @@ final class LatinMassCompanionUITests: XCTestCase {
             app.staticTexts["guide-utility-title"],
             in: app
         )
+        assertContentIsClearOfChrome(
+            app.staticTexts["guide-timeline-title"],
+            in: app
+        )
 
         app.openCalendar()
         assertContentIsClearOfChrome(
@@ -252,8 +272,28 @@ final class LatinMassCompanionUITests: XCTestCase {
         XCTAssertTrue(app.buttons["sidebar-tab-guide"].waitForExistence(timeout: 5))
         app.buttons["sidebar-tab-guide"].tap()
 
-        XCTAssertTrue(app.buttons["ipad-major-moment-collect-readings"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["ipad-rite-timeline-title"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["ipad-timeline-collect-readings"].waitForExistence(timeout: 5))
         XCTAssertFalse(app.staticTexts["guide-utility-title"].exists)
+    }
+
+    func testIPadTimelineUpdatesGuideDetail() throws {
+        let app = XCUIApplication()
+        app.launchApp(resetState: true, todayOverride: "2026-04-05")
+
+        guard !app.tabBars.buttons["Guide"].exists else {
+            throw XCTSkip("iPad-only sidebar test")
+        }
+
+        app.buttons["sidebar-tab-guide"].tap()
+
+        let canonCheckpoint = app.buttons["ipad-timeline-canon"]
+        XCTAssertTrue(canonCheckpoint.waitForExistence(timeout: 5))
+        canonCheckpoint.tap()
+
+        let partTitle = app.staticTexts["mass-part-title"]
+        XCTAssertTrue(partTitle.waitForExistence(timeout: 5))
+        XCTAssertEqual(partTitle.label, "Canon of the Mass")
     }
 }
 

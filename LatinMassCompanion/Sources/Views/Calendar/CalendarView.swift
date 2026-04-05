@@ -129,7 +129,6 @@ struct CalendarView: View {
             if let selectedListing {
                 CelebrationPreviewCard(
                     listing: selectedListing,
-                    coverageTitle: appModel.currentCoverageBadgeTitle,
                     availabilitySummary: appModel.availabilitySummary,
                     selectedMassFormTitle: appModel.selectedMassFormTitle,
                     onOpenGuide: {
@@ -165,7 +164,6 @@ private struct CelebrationBundleCard: View {
 
 private struct CelebrationPreviewCard: View {
     let listing: CelebrationListing
-    let coverageTitle: String
     let availabilitySummary: String
     let selectedMassFormTitle: String
     let onOpenGuide: () -> Void
@@ -188,7 +186,7 @@ private struct CelebrationPreviewCard: View {
             }
 
             HStack(spacing: 8) {
-                PrayerbookBadge(title: coverageTitle, tone: .accent)
+                PrayerbookBadge(title: listing.coverageBadgeTitle, tone: .accent)
                 PrayerbookBadge(title: listing.rank, tone: .neutral)
                 PrayerbookBadge(title: selectedMassFormTitle, tone: .neutral)
             }
@@ -242,7 +240,7 @@ private struct CelebrationListingRow: View {
             Spacer(minLength: 12)
 
             VStack(alignment: .trailing, spacing: 6) {
-                PrayerbookBadge(title: "Proper Texts", tone: .accent)
+                PrayerbookBadge(title: listing.coverageBadgeTitle, tone: .accent)
                 PrayerbookBadge(title: listing.rank, tone: .neutral)
                 if isSelected {
                     Image(systemName: "checkmark.circle.fill")

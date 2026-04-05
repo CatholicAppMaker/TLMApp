@@ -22,14 +22,12 @@ struct GuideView: View {
         appModel.part(withID: selectedPartID)
     }
 
-    private var canResumeSavedPlace: Bool {
-        guard let savedProgressContext = appModel.savedProgressContext else {
-            return false
-        }
+    private var timelineCheckpoints: [RiteTimelineCheckpoint] {
+        appModel.riteTimelineCheckpoints(activePartID: selectedPartID)
+    }
 
-        return savedProgressContext.progress.sectionID != selectedPartID
-            || savedProgressContext.progress.dateKey != appModel.selectedDateKey
-            || savedProgressContext.progress.massForm != appModel.selectedMassForm
+    private var canResumeSavedPlace: Bool {
+        appModel.canResumeSavedPlace(from: selectedPartID)
     }
 
     var body: some View {
@@ -122,11 +120,9 @@ struct GuideView: View {
                     nextTitle: appModel.part(after: part)?.title,
                     onPrevious: {
                         selectedPartID = appModel.part(before: part)?.id
-                        updateProgress()
                     },
                     onNext: {
                         selectedPartID = appModel.part(after: part)?.id
-                        updateProgress()
                     }
                 )
             }
@@ -176,6 +172,15 @@ struct GuideView: View {
                             }
                         )
                     }
+
+                    if !timelineCheckpoints.isEmpty {
+                        RiteTimelineStrip(
+                            checkpoints: timelineCheckpoints,
+                            onSelect: { checkpoint in
+                                selectedPartID = checkpoint.partID
+                            }
+                        )
+                    }
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 8)
@@ -185,36 +190,13 @@ struct GuideView: View {
     }
 
     private func syncSelection() {
-        if let pendingSectionID = appModel.consumePendingGuideSectionID(),
-           appModel.part(withID: pendingSectionID) != nil
-        {
-            selectedPartID = pendingSectionID
-        } else if let selectedPartID, appModel.part(withID: selectedPartID) != nil {
-            // Keep the current position when the selected date still resolves this section.
-        } else {
-            if shouldPreserveResumePrompt {
-                shouldSkipNextProgressRecord = true
-            }
-            selectedPartID = appModel.orderedParts.first?.id
-        }
+        let selectionUpdate = appModel.synchronizedGuideSelection(from: selectedPartID)
+        shouldSkipNextProgressRecord = !selectionUpdate.shouldRecordProgress
+        selectedPartID = selectionUpdate.sectionID
 
-        if !shouldSkipNextProgressRecord {
+        if selectionUpdate.shouldRecordProgress {
             updateProgress()
         }
-    }
-
-    private var shouldPreserveResumePrompt: Bool {
-        guard
-            selectedPartID == nil,
-            let firstPartID = appModel.orderedParts.first?.id,
-            let savedProgressContext = appModel.savedProgressContext
-        else {
-            return false
-        }
-
-        return savedProgressContext.progress.sectionID != firstPartID
-            || savedProgressContext.progress.dateKey != appModel.selectedDateKey
-            || savedProgressContext.progress.massForm != appModel.selectedMassForm
     }
 
     private func updateProgress() {

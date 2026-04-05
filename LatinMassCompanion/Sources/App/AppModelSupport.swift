@@ -63,6 +63,11 @@ struct SavedProgressContext: Sendable {
     let part: ResolvedMassPart
 }
 
+struct GuideSelectionUpdate: Hashable, Sendable {
+    let sectionID: String?
+    let shouldRecordProgress: Bool
+}
+
 struct GuideOrientation: Hashable, Sendable {
     let positionText: String
     let phaseTitle: String
@@ -80,6 +85,21 @@ struct MajorMomentAnchor: Identifiable, Hashable, Sendable {
     let partID: String
 }
 
+enum RiteTimelineCheckpointState: Hashable, Sendable {
+    case completed
+    case current
+    case upcoming
+}
+
+struct RiteTimelineCheckpoint: Identifiable, Hashable, Sendable {
+    let id: String
+    let title: String
+    let summary: String
+    let partID: String
+    let phaseTitle: String
+    let state: RiteTimelineCheckpointState
+}
+
 struct FindMyPlaceAnchor: Identifiable, Hashable, Sendable {
     let id: String
     let title: String
@@ -95,12 +115,17 @@ struct CelebrationListing: Identifiable, Hashable, Sendable {
     let summary: String
     let rank: String
     let celebrationID: String
+    let coverageStatus: CoverageStatus
     let monthTitle: String
     let shortDateText: String
     let longDateText: String
 
     var id: String {
         dateKey
+    }
+
+    var coverageBadgeTitle: String {
+        coverageStatus.calendarBadgeTitle
     }
 
     func matches(_ query: String) -> Bool {
@@ -135,6 +160,17 @@ enum CoverageStatus: Hashable, Sendable {
         switch self {
         case .properAvailable:
             "Proper Available"
+        case .ordinaryOnlyWithinSupportedWindow:
+            "Ordinary Only"
+        case .outsideSupportedWindow:
+            "Outside Coverage"
+        }
+    }
+
+    var calendarBadgeTitle: String {
+        switch self {
+        case .properAvailable:
+            "Proper Texts"
         case .ordinaryOnlyWithinSupportedWindow:
             "Ordinary Only"
         case .outsideSupportedWindow:

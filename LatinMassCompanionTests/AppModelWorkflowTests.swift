@@ -112,6 +112,7 @@ struct AppModelWorkflowTests {
 
         #expect(sections.map(\.title) == ["January 2026", "April 2026"])
         #expect(sections.flatMap(\.listings).map(\.title) == ["Epiphany", "Easter Sunday"])
+        #expect(sections.flatMap(\.listings).allSatisfy { $0.coverageBadgeTitle == "Proper Texts" })
     }
 
     @MainActor
@@ -138,6 +139,98 @@ struct AppModelWorkflowTests {
 
         #expect(model.consumePendingGuideSectionID() == "canon")
         #expect(model.guideSelectionToken != firstToken)
+    }
+
+    @MainActor
+    @Test
+    func riteTimelineMarksCurrentCheckpointFromActiveSection() {
+        let checkpoints = [
+            GuideCheckpoint("foot-of-the-altar", .preparation, "Prayers at the Foot of the Altar"),
+            GuideCheckpoint("kyrie-gloria", .instruction, "Kyrie and Gloria"),
+            GuideCheckpoint("collect-readings", .instruction, "Collect and Readings"),
+            GuideCheckpoint("offertory", .offertory, "Offertory"),
+            GuideCheckpoint("canon", .canon, "Canon"),
+            GuideCheckpoint("communion", .communion, "Communion"),
+            GuideCheckpoint("last-gospel", .conclusion, "Last Gospel")
+        ]
+        let parts = checkpoints.enumerated().map { index, checkpoint in
+            TestFixtures.makePart(
+                id: checkpoint.id,
+                order: index + 1,
+                phase: checkpoint.phase,
+                title: checkpoint.title
+            )
+        }
+
+        let model = AppModel(
+            repository: StubMassContentRepository {
+                TestFixtures.makeCatalog(parts: parts)
+            },
+            searchService: SpySearchService(),
+            bookmarkStore: SpyBookmarkStore(),
+            progressStore: SpyMassModeProgressStore(),
+            now: { TestFixtures.date("2026-03-30") }
+        )
+
+        let timeline = model.riteTimelineCheckpoints(activePartID: "canon")
+
+        #expect(timeline.first(where: { $0.id == "offertory" })?.state == .completed)
+        #expect(timeline.first(where: { $0.id == "canon" })?.state == .current)
+        #expect(timeline.first(where: { $0.id == "communion" })?.state == .upcoming)
+    }
+
+    @MainActor
+    @Test
+    func synchronizedGuideSelectionPreservesResumePromptWhenSavedPlaceDiffersFromOpening() {
+        let intro = TestFixtures.makePart(id: "intro", order: 1, title: "Intro")
+        let canon = TestFixtures.makePart(id: "canon", order: 2, phase: .canon, title: "Canon of the Mass")
+        let savedProgress = MassModeProgress(
+            dateKey: "2026-03-30",
+            sectionID: "canon",
+            celebrationID: nil,
+            massForm: .low,
+            lastOpenedAt: TestFixtures.date("2026-03-30")
+        )
+
+        let model = AppModel(
+            repository: StubMassContentRepository {
+                TestFixtures.makeCatalog(parts: [intro, canon])
+            },
+            searchService: SpySearchService(),
+            bookmarkStore: SpyBookmarkStore(),
+            progressStore: SpyMassModeProgressStore(storedProgress: savedProgress),
+            now: { TestFixtures.date("2026-03-30") }
+        )
+
+        let update = model.synchronizedGuideSelection(from: nil)
+
+        #expect(update.sectionID == "intro")
+        #expect(update.shouldRecordProgress == false)
+        #expect(model.canResumeSavedPlace(from: update.sectionID))
+    }
+
+    @MainActor
+    @Test
+    func synchronizedGuideSelectionUsesPendingGuideSectionWhenPresent() {
+        let intro = TestFixtures.makePart(id: "intro", order: 1, title: "Intro")
+        let canon = TestFixtures.makePart(id: "canon", order: 2, phase: .canon, title: "Canon of the Mass")
+
+        let model = AppModel(
+            repository: StubMassContentRepository {
+                TestFixtures.makeCatalog(parts: [intro, canon])
+            },
+            searchService: SpySearchService(),
+            bookmarkStore: SpyBookmarkStore(),
+            progressStore: SpyMassModeProgressStore(),
+            now: { TestFixtures.date("2026-03-30") }
+        )
+
+        model.openGuideSection("canon")
+        let update = model.synchronizedGuideSelection(from: "intro")
+
+        #expect(update.sectionID == "canon")
+        #expect(update.shouldRecordProgress)
+        #expect(model.consumePendingGuideSectionID() == nil)
     }
 }
 

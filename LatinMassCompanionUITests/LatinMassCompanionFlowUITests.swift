@@ -120,8 +120,9 @@ final class LatinMassCompanionFlowUITests: XCTestCase {
         XCTAssertTrue(openGuideButton.waitForExistence(timeout: 5))
         openGuideButton.tap()
 
-        firstLaunch.buttons["jump-list-button"].tap()
-        firstLaunch.buttons["jump-moment-collect-readings"].tap()
+        let collectCheckpoint = firstLaunch.buttons["timeline-checkpoint-collect-readings"]
+        XCTAssertTrue(collectCheckpoint.waitForExistence(timeout: 5))
+        collectCheckpoint.tap()
 
         let firstPartTitle = firstLaunch.staticTexts["mass-part-title"]
         XCTAssertTrue(firstPartTitle.waitForExistence(timeout: 5))

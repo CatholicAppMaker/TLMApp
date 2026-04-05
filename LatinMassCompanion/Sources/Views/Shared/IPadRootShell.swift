@@ -84,6 +84,10 @@ private struct GuideWorkspaceRail: View {
         )
     }
 
+    private var timelineCheckpoints: [RiteTimelineCheckpoint] {
+        appModel.riteTimelineCheckpoints(activePartID: appModel.currentGuideSectionID)
+    }
+
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 18) {
@@ -156,40 +160,14 @@ private struct GuideWorkspaceRail: View {
                 }
                 .prayerbookPanel()
 
-                VStack(alignment: .leading, spacing: 10) {
-                    Text("Major Moments")
-                        .font(.system(.headline, design: .serif))
-                        .foregroundStyle(AppTheme.ink)
-
-                    ForEach(appModel.majorMomentAnchors) { anchor in
-                        Button {
-                            appModel.openGuideSection(anchor.partID)
-                        } label: {
-                            VStack(alignment: .leading, spacing: 4) {
-                                Text(anchor.title)
-                                    .font(.subheadline.weight(.semibold))
-                                    .foregroundStyle(AppTheme.ink)
-                                Text(anchor.summary)
-                                    .font(.caption)
-                                    .foregroundStyle(AppTheme.mutedInk)
-                                    .lineLimit(2)
-                            }
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(12)
-                            .background(
-                                RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                    .fill(AppTheme.secondarySurface)
-                            )
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                    .stroke(AppTheme.border, lineWidth: 1)
-                            )
+                if !timelineCheckpoints.isEmpty {
+                    RiteTimelineRail(
+                        checkpoints: timelineCheckpoints,
+                        onSelect: { checkpoint in
+                            appModel.openGuideSection(checkpoint.partID)
                         }
-                        .buttonStyle(.plain)
-                        .accessibilityIdentifier("ipad-major-moment-\(anchor.id)")
-                    }
+                    )
                 }
-                .prayerbookPanel()
 
                 VStack(alignment: .leading, spacing: 10) {
                     Text("Quick Tools")

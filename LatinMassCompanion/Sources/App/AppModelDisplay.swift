@@ -10,71 +10,47 @@ extension AppModel {
     }
 
     var majorMomentAnchors: [MajorMomentAnchor] {
-        var seenPartIDs = Set<String>()
-        var anchors: [MajorMomentAnchor] = []
+        guideAnchorMatches.map {
+            MajorMomentAnchor(
+                id: $0.id,
+                title: $0.title,
+                summary: $0.part.summary,
+                partID: $0.part.id
+            )
+        }
+    }
 
-        func appendAnchor(
-            id: String,
-            title: String,
-            matcher: (ResolvedMassPart) -> Bool
-        ) {
-            guard let part = orderedParts.first(where: matcher),
-                  seenPartIDs.insert(part.id).inserted
-            else {
-                return
+    func riteTimelineCheckpoints(activePartID: String?) -> [RiteTimelineCheckpoint] {
+        guard !guideAnchorMatches.isEmpty else {
+            return []
+        }
+
+        let currentPartIndex = orderedParts.firstIndex(where: { $0.id == activePartID }) ?? 0
+        let checkpointPartIndices = guideAnchorMatches.map { anchor in
+            orderedParts.firstIndex(where: { $0.id == anchor.part.id }) ?? 0
+        }
+        let currentCheckpointIndex =
+            checkpointPartIndices.lastIndex(where: { $0 <= currentPartIndex }) ?? 0
+
+        return guideAnchorMatches.enumerated().map { index, anchor in
+            let state: RiteTimelineCheckpointState
+            if index < currentCheckpointIndex {
+                state = .completed
+            } else if index == currentCheckpointIndex {
+                state = .current
+            } else {
+                state = .upcoming
             }
 
-            anchors.append(
-                MajorMomentAnchor(
-                    id: id,
-                    title: title,
-                    summary: part.summary,
-                    partID: part.id
-                )
+            return RiteTimelineCheckpoint(
+                id: anchor.id,
+                title: anchor.title,
+                summary: anchor.part.summary,
+                partID: anchor.part.id,
+                phaseTitle: anchor.part.phase.title,
+                state: state
             )
         }
-
-        appendAnchor(id: "foot-of-the-altar", title: "Prayers at the Foot of the Altar") {
-            $0.id.localizedCaseInsensitiveContains("foot")
-                || $0.title.localizedCaseInsensitiveContains("Foot of the Altar")
-        }
-        appendAnchor(id: "kyrie-gloria", title: "Kyrie / Gloria") {
-            $0.id.localizedCaseInsensitiveContains("kyrie")
-                || $0.title.localizedCaseInsensitiveContains("Kyrie")
-                || $0.title.localizedCaseInsensitiveContains("Gloria")
-        }
-        appendAnchor(id: "collect-readings", title: "Collect / Readings") {
-            $0.id.localizedCaseInsensitiveContains("collect")
-                || $0.title.localizedCaseInsensitiveContains("Collect")
-        }
-        appendAnchor(id: "offertory", title: "Offertory") {
-            $0.phase == .offertory
-        }
-        appendAnchor(id: "canon", title: "Canon") {
-            $0.phase == .canon
-        }
-        appendAnchor(id: "communion", title: "Communion") {
-            $0.phase == .communion
-        }
-        appendAnchor(id: "last-gospel", title: "Last Gospel") {
-            $0.id.localizedCaseInsensitiveContains("last-gospel")
-                || $0.title.localizedCaseInsensitiveContains("Last Gospel")
-        }
-
-        if let finalPart = orderedParts.last,
-           !seenPartIDs.contains(finalPart.id)
-        {
-            anchors.append(
-                MajorMomentAnchor(
-                    id: "final-section",
-                    title: finalPart.title,
-                    summary: finalPart.summary,
-                    partID: finalPart.id
-                )
-            )
-        }
-
-        return anchors
     }
 
     var selectedDateKey: String {
@@ -125,6 +101,7 @@ extension AppModel {
                 summary: celebration.summary,
                 rank: celebration.rank,
                 celebrationID: celebration.id,
+                coverageStatus: coverageStatus(for: date, matchedCelebration: celebration),
                 monthTitle: Self.monthSectionFormatter.string(from: date),
                 shortDateText: Self.shortDateFormatter.string(from: date),
                 longDateText: Self.displayDateFormatter.string(from: date)
@@ -182,7 +159,7 @@ extension AppModel {
     }
 
     var currentCoverageBadgeTitle: String {
-        isShowingOrdinaryOnly ? "Ordinary Only" : "Proper Texts"
+        resolvedDay.coverageStatus.calendarBadgeTitle
     }
 
     var availabilitySummary: String {
@@ -440,6 +417,78 @@ extension AppModel {
 }
 
 private extension AppModel {
+    struct GuideAnchorMatch {
+        let id: String
+        let title: String
+        let part: ResolvedMassPart
+    }
+
+    var guideAnchorMatches: [GuideAnchorMatch] {
+        var seenPartIDs = Set<String>()
+        var matches: [GuideAnchorMatch] = []
+
+        func appendAnchor(
+            id: String,
+            title: String,
+            matcher: (ResolvedMassPart) -> Bool
+        ) {
+            guard let part = orderedParts.first(where: matcher),
+                  seenPartIDs.insert(part.id).inserted
+            else {
+                return
+            }
+
+            matches.append(
+                GuideAnchorMatch(
+                    id: id,
+                    title: title,
+                    part: part
+                )
+            )
+        }
+
+        appendAnchor(id: "foot-of-the-altar", title: "Prayers at the Foot of the Altar") {
+            $0.id.localizedCaseInsensitiveContains("foot")
+                || $0.title.localizedCaseInsensitiveContains("Foot of the Altar")
+        }
+        appendAnchor(id: "kyrie-gloria", title: "Kyrie / Gloria") {
+            $0.id.localizedCaseInsensitiveContains("kyrie")
+                || $0.title.localizedCaseInsensitiveContains("Kyrie")
+                || $0.title.localizedCaseInsensitiveContains("Gloria")
+        }
+        appendAnchor(id: "collect-readings", title: "Collect / Readings") {
+            $0.id.localizedCaseInsensitiveContains("collect")
+                || $0.title.localizedCaseInsensitiveContains("Collect")
+        }
+        appendAnchor(id: "offertory", title: "Offertory") {
+            $0.phase == .offertory
+        }
+        appendAnchor(id: "canon", title: "Canon") {
+            $0.phase == .canon
+        }
+        appendAnchor(id: "communion", title: "Communion") {
+            $0.phase == .communion
+        }
+        appendAnchor(id: "last-gospel", title: "Last Gospel") {
+            $0.id.localizedCaseInsensitiveContains("last-gospel")
+                || $0.title.localizedCaseInsensitiveContains("Last Gospel")
+        }
+
+        if let finalPart = orderedParts.last,
+           !seenPartIDs.contains(finalPart.id)
+        {
+            matches.append(
+                GuideAnchorMatch(
+                    id: "final-section",
+                    title: finalPart.title,
+                    part: finalPart
+                )
+            )
+        }
+
+        return matches
+    }
+
     static let monthSectionFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.calendar = Calendar(identifier: .gregorian)
