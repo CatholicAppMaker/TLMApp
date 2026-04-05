@@ -22,6 +22,15 @@ struct LearnView: View {
                     LearnIntroCard(
                         sources: appModel.sourceReferences(for: ["ordinary", "translation", "chant"])
                     )
+                    .accessibilityIdentifier("learn-intro-card")
+                    LiturgicalHeroPanel(
+                        eyebrow: "Prepare, Then Pray",
+                        title: "Study the Mass Without Losing the Atmosphere of Worship",
+                        subtitle: "These notes are here to steady your eye, your ear, and your expectations before you need them live.",
+                        kind: .learn,
+                        caption: "Keep the learning supportive, not louder than the rite itself."
+                    )
+                    .accessibilityIdentifier("learn-hero-card")
                     AppearanceLearnSection(selectedAppearanceBinding: selectedAppearanceBinding)
                     focusedSection
                     guideSection(
@@ -40,6 +49,7 @@ struct LearnView: View {
                         guides: appModel.participationHelpGuides
                     )
                     chantSection
+                    VoicesOfTraditionSection()
                     pronunciationSection
                     glossarySection
                     SupportLearnSection(supportTipJar: supportTipJar)
@@ -343,7 +353,7 @@ private struct ChantGuideRow: View {
     }
 }
 
-private struct LearnRowContainer<Content: View>: View {
+struct LearnRowContainer<Content: View>: View {
     @ViewBuilder let content: Content
 
     var body: some View {

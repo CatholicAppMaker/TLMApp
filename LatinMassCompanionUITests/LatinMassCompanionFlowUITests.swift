@@ -28,7 +28,7 @@ final class LatinMassCompanionFlowUITests: XCTestCase {
         app.openGuide()
 
         app.buttons["jump-list-button"].tap()
-        app.buttons["jump-to-collect-readings"].tap()
+        app.buttons["jump-moment-collect-readings"].tap()
 
         let partTitle = app.staticTexts["mass-part-title"]
         XCTAssertTrue(partTitle.waitForExistence(timeout: 5))
@@ -68,7 +68,7 @@ final class LatinMassCompanionFlowUITests: XCTestCase {
 
         app.openGuide()
         app.buttons["jump-list-button"].tap()
-        app.buttons["jump-to-collect-readings"].tap()
+        app.buttons["jump-moment-collect-readings"].tap()
         let partTitle = app.staticTexts["mass-part-title"]
         XCTAssertTrue(partTitle.waitForExistence(timeout: 5))
         XCTAssertEqual(partTitle.label, "Palm Sunday Collect, Epistle, and Gradual")
@@ -111,14 +111,10 @@ final class LatinMassCompanionFlowUITests: XCTestCase {
         firstLaunch.launchApp(resetState: true, todayOverride: "2026-03-30")
 
         firstLaunch.openCalendar()
-        let searchField = firstLaunch.textFields["calendar-search-field"]
-        XCTAssertTrue(searchField.waitForExistence(timeout: 5))
-        searchField.tap()
-        searchField.typeText("Easter Sunday")
-
-        let easterRow = firstLaunch.buttons["calendar-row-2026-04-05"]
-        XCTAssertTrue(easterRow.waitForExistence(timeout: 5))
-        easterRow.tap()
+        firstLaunch.swipeUp()
+        let octaveDayRow = firstLaunch.buttons["calendar-row-2026-01-01"]
+        XCTAssertTrue(octaveDayRow.waitForExistence(timeout: 5))
+        octaveDayRow.tap()
 
         let openGuideButton = firstLaunch.buttons["calendar-open-guide-button"]
         XCTAssertTrue(openGuideButton.waitForExistence(timeout: 5))
@@ -129,7 +125,7 @@ final class LatinMassCompanionFlowUITests: XCTestCase {
 
         let firstPartTitle = firstLaunch.staticTexts["mass-part-title"]
         XCTAssertTrue(firstPartTitle.waitForExistence(timeout: 5))
-        XCTAssertEqual(firstPartTitle.label, "Easter Sunday Collect, Epistle, and Gradual")
+        XCTAssertEqual(firstPartTitle.label, "Octave Day of Christmas Collect, Epistle, and Gradual")
         firstLaunch.terminate()
 
         let resumedLaunch = XCUIApplication()
@@ -146,7 +142,7 @@ final class LatinMassCompanionFlowUITests: XCTestCase {
 
         let resumedPartTitle = resumedLaunch.staticTexts["mass-part-title"]
         XCTAssertTrue(resumedPartTitle.waitForExistence(timeout: 5))
-        XCTAssertEqual(resumedPartTitle.label, "Easter Sunday Collect, Epistle, and Gradual")
+        XCTAssertEqual(resumedPartTitle.label, "Octave Day of Christmas Collect, Epistle, and Gradual")
     }
 
     func testGuideNavigationReflectsBeginningAndEndBoundaries() {

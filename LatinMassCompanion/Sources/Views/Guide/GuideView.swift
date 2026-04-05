@@ -253,6 +253,8 @@ private struct GuideUtilityCard: View {
 
                 Spacer(minLength: 12)
 
+                LiturgicalMotifBadge(kind: .guide)
+
                 Button(action: onDismiss) {
                     Image(systemName: "xmark")
                         .font(.caption.weight(.bold))
@@ -309,6 +311,8 @@ private struct GuideUtilityCard: View {
             RoundedRectangle(cornerRadius: 14, style: .continuous)
                 .stroke(AppTheme.border, lineWidth: 1)
         )
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier("guide-utility-card")
     }
 }
 

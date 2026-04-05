@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 77;
+	objectVersion = 63;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -34,6 +34,7 @@
 		7098145A331D04AE3BB9DBD7 /* MassContentRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D535384164BEC883FB56E13 /* MassContentRepository.swift */; };
 		718E29CC8472286BAD5C6945 /* TestFixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FB8341833A77135B4C11AB /* TestFixtures.swift */; };
 		770BE73CC951F443B227A5EB /* LatinMassCompanionWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 61163B67EF501159840928B0 /* LatinMassCompanionWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		773FE255169885984F2EFDAE /* UITestTargetAppIntentsLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA3F802E2D94E3A64DE2BE8 /* UITestTargetAppIntentsLink.swift */; };
 		7D1D157CC5441692C95BFCAF /* base.json in Resources */ = {isa = PBXBuildFile; fileRef = C358BF61DA269E446F027C6E /* base.json */; };
 		85053B56601DE4F4198D6FBD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 79AC3BF2820948504F9251AD /* LaunchScreen.storyboard */; };
 		8844A4113153BA6F34C29D31 /* AppModelDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45693E3BB6D6C45CBF71A11D /* AppModelDisplay.swift */; };
@@ -57,6 +58,7 @@
 		CD12988C92094BB943519E71 /* SourcesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63B69F90E842BE24F249EFE /* SourcesView.swift */; };
 		CD50DA88347B2D5E9B0C878F /* IPadRootShell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1638092EB2BAA6495A1F92F1 /* IPadRootShell.swift */; };
 		CF393A723F219369187A852B /* BookmarkStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1CE4765B260EABAAA9A0CA6 /* BookmarkStore.swift */; };
+		D0D78C1763E65F758903CE59 /* LatinMassCompanionShortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A824BD89DB028721EA3164 /* LatinMassCompanionShortcuts.swift */; };
 		D5547BB0B7ECD31E45FC3536 /* GuideSupportComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A0CD0E6256CE9689B03A01 /* GuideSupportComponents.swift */; };
 		D7AAF98E41BDEE0AF4095718 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36A2E5C2EECD72AEC21C0385 /* AppModel.swift */; };
 		D9310CB01F59980E6D01515B /* LearningModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8217AE3BCB7A9F4947D0313F /* LearningModels.swift */; };
@@ -68,6 +70,7 @@
 		EE083878582CBFD47DD6AAD3 /* AppModelWorkflowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43CAEB15E0374BD5E6FF4021 /* AppModelWorkflowTests.swift */; };
 		F1D1180D78DC3B0E6401DC6C /* AppRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4396FFBED1B0839CCD45999 /* AppRoute.swift */; };
 		F1ECB41A842A5AEE0314CEDE /* LearnSupportComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EE25CE94D22A8D5125B3E93 /* LearnSupportComponents.swift */; };
+		F8D234E3272751C9E2D10EA2 /* TestTargetAppIntentsLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26FA522B8D380B2363A30531 /* TestTargetAppIntentsLink.swift */; };
 		FDEA6CD655C30A08500B77F6 /* invalid_mass_library.json in Resources */ = {isa = PBXBuildFile; fileRef = B0B3013FC026B49298DF0357 /* invalid_mass_library.json */; };
 		FFC65D54ABC8DC21AF699942 /* SearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A60C37073FC49FF400C422B6 /* SearchService.swift */; };
 /* End PBXBuildFile section */
@@ -111,8 +114,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		016CDCC37F93480490146446 /* LatinMassCompanion.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = LatinMassCompanion.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		016CDCC37F93480490146446 /* LatinMassCompanion.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LatinMassCompanion.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		063BECFCFAC505A5D82F2DBE /* LatinMassCompanionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatinMassCompanionApp.swift; sourceTree = "<group>"; };
+		08A824BD89DB028721EA3164 /* LatinMassCompanionShortcuts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatinMassCompanionShortcuts.swift; sourceTree = "<group>"; };
 		09A0AD6B6018FE2C31DC77E0 /* ContentServicesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentServicesTests.swift; sourceTree = "<group>"; };
 		0D4D2AAD25599AE0BFFB03DB /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
 		0FD7F1D1FA33F035EA1704AB /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
@@ -122,6 +126,8 @@
 		1638092EB2BAA6495A1F92F1 /* IPadRootShell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IPadRootShell.swift; sourceTree = "<group>"; };
 		1AD9B1B84866102C7E0AAD86 /* LatinMassCompanionUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatinMassCompanionUITests.swift; sourceTree = "<group>"; };
 		244F54B2BC1A6A2AE0BD0A7D /* AppTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTheme.swift; sourceTree = "<group>"; };
+		26FA522B8D380B2363A30531 /* TestTargetAppIntentsLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestTargetAppIntentsLink.swift; sourceTree = "<group>"; };
+		2BA3F802E2D94E3A64DE2BE8 /* UITestTargetAppIntentsLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestTargetAppIntentsLink.swift; sourceTree = "<group>"; };
 		3192E112E944FF16CAD42DCD /* LatinMassCompanionUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = LatinMassCompanionUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		36A2E5C2EECD72AEC21C0385 /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
 		3D535384164BEC883FB56E13 /* MassContentRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MassContentRepository.swift; sourceTree = "<group>"; };
@@ -278,6 +284,7 @@
 				BC83773EAB733F7D68B3EEC3 /* SupportTipJarTests.swift */,
 				A0FB8341833A77135B4C11AB /* TestFixtures.swift */,
 				4D52C72E7F91AA2EC91F99E5 /* TestSupport.swift */,
+				26FA522B8D380B2363A30531 /* TestTargetAppIntentsLink.swift */,
 			);
 			path = LatinMassCompanionTests;
 			sourceTree = "<group>";
@@ -320,6 +327,7 @@
 				45693E3BB6D6C45CBF71A11D /* AppModelDisplay.swift */,
 				E0BA31A6615FE3F58C877FF3 /* AppModelSupport.swift */,
 				F4396FFBED1B0839CCD45999 /* AppRoute.swift */,
+				08A824BD89DB028721EA3164 /* LatinMassCompanionShortcuts.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -338,6 +346,7 @@
 			children = (
 				B7343033CAD68BFE5E8EDE06 /* LatinMassCompanionFlowUITests.swift */,
 				1AD9B1B84866102C7E0AAD86 /* LatinMassCompanionUITests.swift */,
+				2BA3F802E2D94E3A64DE2BE8 /* UITestTargetAppIntentsLink.swift */,
 			);
 			path = LatinMassCompanionUITests;
 			sourceTree = "<group>";
@@ -483,6 +492,7 @@
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					6901A7FF7EC427AF8D27645C = {
+						DevelopmentTeam = 22L6MB4Z6V;
 						ProvisioningStyle = Automatic;
 					};
 					CF9A5162F55FF25175490B07 = {
@@ -503,7 +513,6 @@
 			);
 			mainGroup = AFAF8F7D6F587DAE51DC7617;
 			minimizedProjectReferenceProxies = 1;
-			preferredProjectObjectVersion = 77;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -602,6 +611,7 @@
 				E2C85A095C3077C511D178C7 /* SupportTipJarTests.swift in Sources */,
 				718E29CC8472286BAD5C6945 /* TestFixtures.swift in Sources */,
 				EA0B740E7432D8F3377570FA /* TestSupport.swift in Sources */,
+				F8D234E3272751C9E2D10EA2 /* TestTargetAppIntentsLink.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -611,6 +621,7 @@
 			files = (
 				0F1469244984F7BD1DA4D4F8 /* LatinMassCompanionFlowUITests.swift in Sources */,
 				8971B6834A10BF5DB893D31B /* LatinMassCompanionUITests.swift in Sources */,
+				773FE255169885984F2EFDAE /* UITestTargetAppIntentsLink.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -639,6 +650,7 @@
 				18B17E819428C2ECEFFFD27D /* GuideView.swift in Sources */,
 				CD50DA88347B2D5E9B0C878F /* IPadRootShell.swift in Sources */,
 				4B82F555B22A0F19C8C78FD2 /* LatinMassCompanionApp.swift in Sources */,
+				D0D78C1763E65F758903CE59 /* LatinMassCompanionShortcuts.swift in Sources */,
 				F1ECB41A842A5AEE0314CEDE /* LearnSupportComponents.swift in Sources */,
 				37D69106A1D1EDBE2CE2560A /* LearnView.swift in Sources */,
 				D9310CB01F59980E6D01515B /* LearningModels.swift in Sources */,
@@ -831,6 +843,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 25;
+				DEVELOPMENT_TEAM = 22L6MB4Z6V;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = LatinMassCompanion/Support/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
@@ -853,6 +866,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 25;
+				DEVELOPMENT_TEAM = 22L6MB4Z6V;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = LatinMassCompanion/Support/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
@@ -892,6 +906,7 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 25;
+				DEVELOPMENT_TEAM = 22L6MB4Z6V;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = LatinMassCompanionWidgets/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
@@ -932,6 +947,7 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 25;
+				DEVELOPMENT_TEAM = 22L6MB4Z6V;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = LatinMassCompanionWidgets/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;

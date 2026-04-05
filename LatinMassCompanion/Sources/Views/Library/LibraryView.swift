@@ -78,13 +78,16 @@ struct LibraryView: View {
     private var searchSection: some View {
         Section {
             VStack(alignment: .leading, spacing: 14) {
-                Text(appModel.selectedCelebrationTitle)
-                    .font(.system(.headline, design: .serif))
-                    .foregroundStyle(AppTheme.ink)
-
-                Text("\(appModel.selectedDateTitle) • \(appModel.selectedMassFormTitle)")
-                    .font(.subheadline)
-                    .foregroundStyle(AppTheme.mutedInk)
+                LiturgicalHeroPanel(
+                    eyebrow: "Search the Rite",
+                    title: appModel.selectedCelebrationTitle,
+                    subtitle: "\(appModel.selectedDateTitle) • \(appModel.selectedMassFormTitle)",
+                    kind: .guide,
+                    caption: appModel.isShowingOrdinaryOnly
+                        ? "Ordinary-only fallback remains searchable and clearly labeled."
+                        : "Bundled propers, saved sections, and learning notes stay separated but close at hand."
+                )
+                .accessibilityIdentifier("library-hero-card")
 
                 Text(appModel.availabilitySummary)
                     .font(.caption)

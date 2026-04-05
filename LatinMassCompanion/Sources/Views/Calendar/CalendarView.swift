@@ -74,13 +74,14 @@ struct CalendarView: View {
     private var searchHeader: some View {
         Section {
             VStack(alignment: .leading, spacing: 12) {
-                Text("Bundled 2026 Sundays and major feasts")
-                    .font(.system(.headline, design: .serif))
-                    .foregroundStyle(AppTheme.ink)
-
-                Text(appModel.bundledCoverageSummary)
-                    .font(.subheadline)
-                    .foregroundStyle(AppTheme.mutedInk)
+                LiturgicalHeroPanel(
+                    eyebrow: "Calendar and Celebrations",
+                    title: "Browse the Bundled Year by Feast, Sunday, and Season",
+                    subtitle: "Move directly from a covered celebration into the guide or library without guessing where to begin.",
+                    kind: .calendar,
+                    caption: appModel.bundledCoverageSummary
+                )
+                .accessibilityIdentifier("calendar-hero-card")
 
                 TextField("Search Sundays, feasts, or dates", text: $searchText)
                     .textInputAutocapitalization(.words)
@@ -150,18 +151,15 @@ private struct CelebrationBundleCard: View {
     let summary: String
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("Browse the Liturgical Year")
-                .font(.system(.title3, design: .serif).weight(.semibold))
-                .foregroundStyle(AppTheme.ink)
-
-            Text("Use this calendar to move directly into covered Sundays and feasts, then carry that selection into Guide and Library.")
-                .font(.body)
-                .foregroundStyle(AppTheme.mutedInk)
-
-            PrayerbookBadge(title: summary, tone: .neutral)
-        }
-        .prayerbookPanel()
+        LiturgicalHeroPanel(
+            eyebrow: "Covered Celebrations",
+            title: "Browse the Liturgical Year",
+            subtitle:
+                "Use this calendar to move directly into covered Sundays and feasts, then carry that selection into Guide and Library.",
+            kind: .calendar,
+            caption: summary
+        )
+        .accessibilityIdentifier("calendar-bundle-card")
     }
 }
 

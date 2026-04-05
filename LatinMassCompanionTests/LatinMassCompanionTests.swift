@@ -15,7 +15,8 @@ struct LatinMassCompanionTests {
         #expect(catalog.dateIndex.count == 63)
         #expect(catalog.glossaryEntries.count == 5)
         #expect(catalog.pronunciationGuides.count == 4)
-        #expect(catalog.participationGuides.count == 9)
+        #expect(catalog.participationGuides.count == 10)
+        #expect(catalog.participationGuides.contains(where: { $0.id == "history-and-context" }))
         #expect(catalog.chantGuides.count == 3)
     }
 

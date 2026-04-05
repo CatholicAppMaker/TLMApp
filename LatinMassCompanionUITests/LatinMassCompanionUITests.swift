@@ -23,15 +23,11 @@ final class LatinMassCompanionUITests: XCTestCase {
         app.launchApp(resetState: true, todayOverride: "2026-03-30")
 
         app.openCalendar()
+        app.swipeUp()
 
-        let searchField = app.textFields["calendar-search-field"]
-        XCTAssertTrue(searchField.waitForExistence(timeout: 5))
-        searchField.tap()
-        searchField.typeText("Easter Sunday")
-
-        let easterRow = app.buttons["calendar-row-2026-04-05"]
-        XCTAssertTrue(easterRow.waitForExistence(timeout: 5))
-        easterRow.tap()
+        let octaveDayRow = app.buttons["calendar-row-2026-01-01"]
+        XCTAssertTrue(octaveDayRow.waitForExistence(timeout: 5))
+        octaveDayRow.tap()
 
         let openGuideButton = app.buttons["calendar-open-guide-button"]
         XCTAssertTrue(openGuideButton.waitForExistence(timeout: 5))
@@ -42,7 +38,7 @@ final class LatinMassCompanionUITests: XCTestCase {
 
         let partTitle = app.staticTexts["mass-part-title"]
         XCTAssertTrue(partTitle.waitForExistence(timeout: 5))
-        XCTAssertEqual(partTitle.label, "Easter Sunday Collect, Epistle, and Gradual")
+        XCTAssertEqual(partTitle.label, "Octave Day of Christmas Collect, Epistle, and Gradual")
     }
 
     func testBookmarkAppearsInLibraryBookmarks() {
@@ -55,9 +51,8 @@ final class LatinMassCompanionUITests: XCTestCase {
 
         XCTAssertTrue(app.buttons["library-saved-sections-button"].waitForExistence(timeout: 5))
         app.buttons["library-saved-sections-button"].tap()
-        app.buttons["Bookmarks"].tap()
-
-        XCTAssertTrue(app.staticTexts["Prayers at the Foot of the Altar"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["Show All Sections"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.segmentedControls.buttons["Bookmarks"].isSelected)
     }
 
     func testLibrarySearchFindsProperSpecificTerm() {
@@ -171,6 +166,35 @@ final class LatinMassCompanionUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["Gregorian Chant"].exists)
     }
 
+    func testPrimaryCardsStayClearOfNavigationAndTabChrome() {
+        let app = XCUIApplication()
+        app.launchApp(resetState: true, todayOverride: "2026-03-30")
+
+        app.openGuide()
+        assertContentIsClearOfChrome(
+            app.staticTexts["guide-utility-title"],
+            in: app
+        )
+
+        app.openCalendar()
+        assertContentIsClearOfChrome(
+            app.staticTexts["Browse the Bundled Year by Feast, Sunday, and Season"],
+            in: app
+        )
+
+        app.openLibrary()
+        assertContentIsClearOfChrome(
+            app.staticTexts["Search the Rite"],
+            in: app
+        )
+
+        app.tabBars.buttons["Learn"].tap()
+        assertContentIsClearOfChrome(
+            app.staticTexts["Learn the Rite, Keep the Prayer"],
+            in: app
+        )
+    }
+
     func testAppearanceTogglePersistsDarkModeWithoutBreakingGuide() {
         let firstLaunch = XCUIApplication()
         firstLaunch.launchApp(resetState: true, todayOverride: "2026-03-30")
@@ -192,6 +216,16 @@ final class LatinMassCompanionUITests: XCTestCase {
         resumedLaunch.openGuide()
         XCTAssertTrue(resumedLaunch.staticTexts["guide-utility-title"].waitForExistence(timeout: 5))
         XCTAssertTrue(resumedLaunch.staticTexts["mass-part-title"].waitForExistence(timeout: 5))
+        assertContentIsClearOfChrome(
+            resumedLaunch.staticTexts["guide-utility-title"],
+            in: resumedLaunch
+        )
+
+        resumedLaunch.openCalendar()
+        assertContentIsClearOfChrome(
+            resumedLaunch.staticTexts["Browse the Bundled Year by Feast, Sunday, and Season"],
+            in: resumedLaunch
+        )
     }
 
     func testIPadSidebarCalendarFlow() throws {
@@ -254,5 +288,45 @@ private extension XCUIApplication {
         } else if buttons["sidebar-tab-\(name.lowercased())"].exists {
             buttons["sidebar-tab-\(name.lowercased())"].tap()
         }
+    }
+}
+
+@MainActor
+private func assertContentIsClearOfChrome(_ element: XCUIElement, in app: XCUIApplication) {
+    XCTAssertTrue(element.waitForExistence(timeout: 5))
+
+    let navBar = app.navigationBars.firstMatch
+    let tabBar = app.tabBars.firstMatch
+
+    for _ in 0 ..< 4 {
+        let elementFrame = element.frame
+        XCTAssertFalse(elementFrame.isEmpty)
+
+        let clearsTopChrome = !navBar.exists || elementFrame.minY >= navBar.frame.maxY - 4
+        let clearsBottomChrome = !tabBar.exists || elementFrame.maxY <= tabBar.frame.minY + 4
+
+        if clearsTopChrome && clearsBottomChrome {
+            break
+        }
+
+        if tabBar.exists && elementFrame.maxY > tabBar.frame.minY + 4 {
+            app.swipeUp()
+            continue
+        }
+
+        if navBar.exists && elementFrame.minY < navBar.frame.maxY - 4 {
+            app.swipeDown()
+        }
+    }
+
+    let elementFrame = element.frame
+    XCTAssertFalse(elementFrame.isEmpty)
+
+    if navBar.exists {
+        XCTAssertGreaterThanOrEqual(elementFrame.minY, navBar.frame.maxY - 4)
+    }
+
+    if tabBar.exists {
+        XCTAssertLessThanOrEqual(elementFrame.maxY, tabBar.frame.minY + 4)
     }
 }

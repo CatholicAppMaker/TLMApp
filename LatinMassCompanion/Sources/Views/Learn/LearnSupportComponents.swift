@@ -1,5 +1,24 @@
 import SwiftUI
 
+struct TraditionQuote: Identifiable {
+    let id: String
+    let text: String
+    let attribution: String
+}
+
+private let traditionQuotes: [TraditionQuote] = [
+    TraditionQuote(
+        id: "faber-mass",
+        text: "The Mass is the most beautiful thing this side of heaven.",
+        attribution: "Fr. Frederick Faber"
+    ),
+    TraditionQuote(
+        id: "benedict-sacred",
+        text: "What earlier generations held as sacred remains sacred and great for us too.",
+        attribution: "Benedict XVI"
+    )
+]
+
 struct AppearanceLearnSection: View {
     let selectedAppearanceBinding: Binding<AppAppearance>
 
@@ -25,6 +44,29 @@ struct AppearanceLearnSection: View {
             .font(.subheadline)
             .foregroundStyle(AppTheme.mutedInk)
             .fixedSize(horizontal: false, vertical: true)
+        }
+    }
+}
+
+struct VoicesOfTraditionSection: View {
+    var body: some View {
+        LearnSectionCard(
+            title: "Voices of the Tradition",
+            subtitle: "A few short lines that help set the tone without turning the app into a quotation wall."
+        ) {
+            ForEach(traditionQuotes) { quote in
+                LearnRowContainer {
+                    Text("\"\(quote.text)\"")
+                        .font(.system(.body, design: .serif))
+                        .foregroundStyle(AppTheme.ink)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .accessibilityIdentifier("learn-quote-\(quote.id)")
+
+                    Text(quote.attribution)
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(AppTheme.burgundy)
+                }
+            }
         }
     }
 }
