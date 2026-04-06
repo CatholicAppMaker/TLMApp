@@ -842,7 +842,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 25;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = 22L6MB4Z6V;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = LatinMassCompanion/Support/Info.plist;
@@ -851,7 +851,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kevpierce.LatinMassCompanion;
 				PRODUCT_NAME = LatinMassCompanion;
 				SDKROOT = iphoneos;
@@ -865,7 +865,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 25;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = 22L6MB4Z6V;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = LatinMassCompanion/Support/Info.plist;
@@ -874,7 +874,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kevpierce.LatinMassCompanion;
 				PRODUCT_NAME = LatinMassCompanion;
 				SDKROOT = iphoneos;
@@ -905,7 +905,7 @@
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 25;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = 22L6MB4Z6V;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = LatinMassCompanionWidgets/Info.plist;
@@ -915,7 +915,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kevpierce.LatinMassCompanion.widgets;
 				PRODUCT_NAME = LatinMassCompanionWidgets;
 				SDKROOT = iphoneos;
@@ -946,7 +946,7 @@
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 25;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = 22L6MB4Z6V;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = LatinMassCompanionWidgets/Info.plist;
@@ -956,7 +956,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kevpierce.LatinMassCompanion.widgets;
 				PRODUCT_NAME = LatinMassCompanionWidgets;
 				SDKROOT = iphoneos;
