@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 77;
+	objectVersion = 63;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -115,7 +115,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		016CDCC37F93480490146446 /* LatinMassCompanion.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = LatinMassCompanion.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		016CDCC37F93480490146446 /* LatinMassCompanion.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LatinMassCompanion.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		063BECFCFAC505A5D82F2DBE /* LatinMassCompanionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatinMassCompanionApp.swift; sourceTree = "<group>"; };
 		08A824BD89DB028721EA3164 /* LatinMassCompanionShortcuts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatinMassCompanionShortcuts.swift; sourceTree = "<group>"; };
 		09A0AD6B6018FE2C31DC77E0 /* ContentServicesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentServicesTests.swift; sourceTree = "<group>"; };
@@ -515,7 +515,6 @@
 			);
 			mainGroup = AFAF8F7D6F587DAE51DC7617;
 			minimizedProjectReferenceProxies = 1;
-			preferredProjectObjectVersion = 77;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -847,8 +846,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5;
+				DEVELOPMENT_TEAM = 22L6MB4Z6V;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = LatinMassCompanion/Support/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.reference";
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -869,8 +870,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5;
+				DEVELOPMENT_TEAM = 22L6MB4Z6V;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = LatinMassCompanion/Support/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.reference";
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -908,6 +911,7 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5;
+				DEVELOPMENT_TEAM = 22L6MB4Z6V;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = LatinMassCompanionWidgets/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
@@ -948,6 +952,7 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5;
+				DEVELOPMENT_TEAM = 22L6MB4Z6V;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = LatinMassCompanionWidgets/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
