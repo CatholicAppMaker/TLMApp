@@ -136,7 +136,7 @@ private struct SavedSectionsWidget: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: ActionProvider()) { _ in
             VStack(alignment: .leading, spacing: 10) {
-                Label("Saved Sections", systemImage: "bookmark")
+                Label("Bookmarks", systemImage: "bookmark")
                     .font(.headline)
                 Text("Jump straight into your bookmarked sections when you need a quicker working library.")
                     .font(.subheadline)
@@ -148,7 +148,7 @@ private struct SavedSectionsWidget: Widget {
             .containerBackground(.fill.tertiary, for: .widget)
             .widgetURL(URL(string: "latinmasscompanion://library?saved=1"))
         }
-        .configurationDisplayName("Saved Sections")
+        .configurationDisplayName("Bookmarks")
         .description("Open the Library focused on bookmarked sections.")
         .supportedFamilies([.systemSmall, .systemMedium])
     }

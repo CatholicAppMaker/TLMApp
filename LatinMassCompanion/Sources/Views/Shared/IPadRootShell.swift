@@ -180,7 +180,7 @@ private struct GuideWorkspaceRail: View {
                     .buttonStyle(.borderedProminent)
                     .tint(AppTheme.burgundy)
 
-                    Button(appModel.bookmarkedParts.isEmpty ? "Open Library" : "Open Saved Sections") {
+                    Button(appModel.bookmarkedParts.isEmpty ? "Open Library" : "Open Bookmarks") {
                         appModel.focusBookmarkedSections()
                         selectedTab = .library
                     }

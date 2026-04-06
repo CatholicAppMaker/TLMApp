@@ -62,6 +62,18 @@ final class LatinMassCompanionFlowUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["Ordinary of the Mass"].waitForExistence(timeout: 5))
     }
 
+    func testLibraryBookmarksScopeShowsClearEmptyState() {
+        let app = XCUIApplication()
+        app.launchApp(resetState: true, todayOverride: "2026-03-30")
+
+        app.openLibrary()
+        let scopeToggle = app.segmentedControls["library-scope-toggle"]
+        XCTAssertTrue(scopeToggle.waitForExistence(timeout: 5))
+        scopeToggle.buttons["Bookmarks"].tap()
+
+        XCTAssertTrue(app.staticTexts["No Bookmarks Yet"].waitForExistence(timeout: 5))
+    }
+
     func testLearnLinkOpensPronunciationContent() {
         let app = XCUIApplication()
         app.launchApp(resetState: true, todayOverride: "2026-03-29")
@@ -169,39 +181,5 @@ final class LatinMassCompanionFlowUITests: XCTestCase {
         XCTAssertTrue(previousButton.isEnabled)
         XCTAssertFalse(nextButton.isEnabled)
         XCTAssertEqual(stepCount, 13)
-    }
-}
-
-private extension XCUIApplication {
-    func launchApp(resetState: Bool, todayOverride: String? = nil) {
-        var arguments: [String] = []
-        if resetState {
-            arguments.append("-reset-app-state")
-        }
-        if let todayOverride {
-            arguments.append(contentsOf: ["-today-override", todayOverride])
-        }
-        launchArguments = arguments
-        launch()
-    }
-
-    func openGuide() {
-        openSection(named: "Guide")
-    }
-
-    func openLibrary() {
-        openSection(named: "Library")
-    }
-
-    func openCalendar() {
-        openSection(named: "Calendar")
-    }
-
-    private func openSection(named name: String) {
-        if tabBars.buttons[name].exists {
-            tabBars.buttons[name].tap()
-        } else if buttons["sidebar-tab-\(name.lowercased())"].exists {
-            buttons["sidebar-tab-\(name.lowercased())"].tap()
-        }
     }
 }

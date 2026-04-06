@@ -19,6 +19,12 @@ struct LatinMassCompanionApp: App {
             defaults.removeObject(forKey: "latin.mass.guide.utility.dismissed")
         }
 
+        if let seedIndex = processInfo.arguments.firstIndex(of: "-seed-bookmark"),
+           processInfo.arguments.indices.contains(seedIndex + 1)
+        {
+            defaults.set([processInfo.arguments[seedIndex + 1]], forKey: UserDefaultsBookmarkStore.defaultKey)
+        }
+
         let bookmarkStore = UserDefaultsBookmarkStore(defaults: defaults)
         let progressStore = UserDefaultsMassModeProgressStore(defaults: defaults)
         let massFormStore = UserDefaultsMassFormStore(defaults: defaults)

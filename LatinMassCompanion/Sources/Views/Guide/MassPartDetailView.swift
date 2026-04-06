@@ -307,7 +307,7 @@ private struct HeroCard: View {
                 }
                 .accessibilityIdentifier("bookmark-button")
                 .accessibilityLabel(isBookmarked ? "Remove bookmark" : "Bookmark section")
-                .accessibilityValue(isBookmarked ? "Saved" : "Not saved")
+                .accessibilityValue(isBookmarked ? "Bookmarked" : "Not bookmarked")
             }
 
             if !part.tags.isEmpty {

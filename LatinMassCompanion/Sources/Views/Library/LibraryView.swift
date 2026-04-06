@@ -33,12 +33,8 @@ struct LibraryView: View {
 
                 if results.isEmpty {
                     if scope == .bookmarks, appModel.bookmarkedParts.isEmpty {
-                        ContentUnavailableView(
-                            "No Saved Sections Yet",
-                            systemImage: "bookmark",
-                            description: Text("Bookmark important moments from Guide and they will appear here for quick return.")
-                        )
-                        .listRowBackground(Color.clear)
+                        EmptyView()
+                            .listRowBackground(Color.clear)
                     } else {
                         ContentUnavailableView(
                             "No Results",
@@ -85,7 +81,7 @@ struct LibraryView: View {
                     kind: .guide,
                     caption: appModel.isShowingOrdinaryOnly
                         ? "Ordinary-only fallback remains searchable and clearly labeled."
-                        : "Bundled propers, saved sections, and learning notes stay separated but close at hand."
+                        : "Bundled propers, Bookmarks, and learning notes stay separated but close at hand."
                 )
                 .accessibilityIdentifier("library-hero-card")
 
@@ -93,18 +89,36 @@ struct LibraryView: View {
                     .font(.caption)
                     .foregroundStyle(appModel.isShowingOrdinaryOnly ? AppTheme.mutedInk : AppTheme.burgundy)
 
+                if scope == .bookmarks {
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text("Bookmarks")
+                            .font(.system(.headline, design: .serif))
+                            .foregroundStyle(AppTheme.ink)
+
+                        Text("Bookmarked sections from Guide appear here for quick return.")
+                            .font(.caption)
+                            .foregroundStyle(AppTheme.mutedInk)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                }
+
                 if !appModel.bookmarkedParts.isEmpty {
                     VStack(alignment: .leading, spacing: 10) {
-                        Text("\(appModel.bookmarkCountText) ready for quick return.")
+                        Text("\(appModel.bookmarkCountText) ready for quick return in Bookmarks.")
                             .font(.subheadline.weight(.semibold))
                             .foregroundStyle(AppTheme.ink)
 
-                        Text("Use saved sections when you want to reopen important moments without searching during Mass.")
+                        Text(
+                            """
+                            Bookmarked sections from Guide appear here when you want
+                            to reopen important moments without searching during Mass.
+                            """
+                        )
                             .font(.caption)
                             .foregroundStyle(AppTheme.mutedInk)
                             .fixedSize(horizontal: false, vertical: true)
 
-                        Button(scope == .bookmarks ? "Show All Sections" : "Open Saved Sections") {
+                        Button(scope == .bookmarks ? "Show All" : "Open Bookmarks") {
                             scope = scope == .bookmarks ? .allSections : .bookmarks
                         }
                         .buttonStyle(.borderedProminent)
@@ -120,8 +134,28 @@ struct LibraryView: View {
                         RoundedRectangle(cornerRadius: 12, style: .continuous)
                             .stroke(AppTheme.border, lineWidth: 1)
                     )
+                } else if scope == .bookmarks {
+                    VStack(alignment: .leading, spacing: 10) {
+                        Label("No Bookmarks Yet", systemImage: "bookmark")
+                            .font(.system(.headline, design: .serif))
+                            .foregroundStyle(AppTheme.ink)
+
+                        Text("Bookmark a section in Guide, then return here and open Bookmarks for quick access.")
+                            .font(.caption)
+                            .foregroundStyle(AppTheme.mutedInk)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    .padding(12)
+                    .background(
+                        RoundedRectangle(cornerRadius: 12, style: .continuous)
+                            .fill(AppTheme.secondarySurface)
+                    )
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12, style: .continuous)
+                            .stroke(AppTheme.border, lineWidth: 1)
+                    )
                 } else {
-                    Text("Bookmark sections from Guide to build a smaller working library for repeated use.")
+                    Text("Bookmark sections from Guide, then return here to open Bookmarks quickly.")
                         .font(.caption)
                         .foregroundStyle(AppTheme.mutedInk)
                         .fixedSize(horizontal: false, vertical: true)
@@ -141,6 +175,7 @@ struct LibraryView: View {
                     }
                 }
                 .pickerStyle(.segmented)
+                .accessibilityIdentifier("library-scope-toggle")
 
                 TextField("Search the selected Mass and learning guides", text: $searchText)
                     .textInputAutocapitalization(.words)
@@ -160,7 +195,7 @@ struct LibraryView: View {
 
                 Text(
                     """
-                    Search across the resolved Mass text, bundled propers, saved sections,
+                    Search across the resolved Mass text, bundled propers, Bookmarks,
                     and the learning material that helps you recover by landmarks.
                     Learning matches stay separate so explanatory notes never pretend to be the rite itself.
                     """
@@ -177,7 +212,7 @@ struct LibraryView: View {
     @ViewBuilder
     private var massSections: some View {
         if !results.parts.isEmpty {
-            Section("Mass Sections") {
+            Section(scope == .bookmarks ? "Bookmarks" : "Mass Sections") {
                 ForEach(results.parts) { part in
                     NavigationLink {
                         LibraryPartDetailView(

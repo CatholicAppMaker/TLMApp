@@ -227,7 +227,7 @@ private struct GuideUtilityCard: View {
                         .foregroundStyle(AppTheme.ink)
                         .accessibilityIdentifier("guide-utility-title")
 
-                    Text("Follow the Mass, switch form above, jump to major moments, and save important sections for a quicker return.")
+                    Text("Follow the Mass, switch form above, jump to major moments, and bookmark important sections for a quicker return.")
                         .font(.subheadline)
                         .foregroundStyle(AppTheme.mutedInk)
                         .fixedSize(horizontal: false, vertical: true)
@@ -276,7 +276,7 @@ private struct GuideUtilityCard: View {
                             .accessibilityIdentifier("guide-resume-button")
                     }
 
-                    Button(hasBookmarks ? "Open Saved Sections" : "Open Library") {
+                    Button(hasBookmarks ? "Open Bookmarks" : "Open Library") {
                         onOpenBookmarks()
                     }
                     .buttonStyle(GuideUtilitySecondaryButtonStyle())
@@ -318,7 +318,7 @@ private struct GuideQuickAccessStrip: View {
             }
 
             if hasBookmarks {
-                Button("Saved", action: onSaved)
+                Button("Bookmarks", action: onSaved)
                     .buttonStyle(GuideUtilitySecondaryButtonStyle())
                     .accessibilityIdentifier("guide-saved-quick-button")
             }

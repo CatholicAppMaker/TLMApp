@@ -15,7 +15,7 @@ Reply in App Review and ask for specific examples of what Apple believes is miss
 
 Use this message as the base response:
 
-> Thank you for the review. Latin Mass Companion is an offline attendance companion for the 1962 Mass, not a general reading app. The current version includes a guided Mass flow, a bundled celebration browser for 2026 Sundays and major feasts, Low Mass and Sung Mass switching, find-my-place and timeline navigation, search, bookmarks, resume behavior, widgets, and an iPad-specific workflow. If the app is still being evaluated under Guideline 4.2, we would appreciate specific examples of the functionality or content you believe is insufficient so we can address the concern directly rather than guess at the issue.
+> Thank you for the review. Latin Mass Companion is an offline attendance companion for the 1962 Mass, not a general reading app. The current version includes a guided Mass flow, a bundled celebration browser for 2026 Sundays and major feasts, Low Mass and Sung Mass switching, find-my-place and timeline navigation, search, bookmarks, resume behavior, widgets, and an iPad-specific workflow. Bookmarked sections are located in the Library tab under the visible Bookmarks mode. If the app is still being evaluated under Guideline 4.2, we would appreciate specific examples of the functionality or content you believe is insufficient so we can address the concern directly rather than guess at the issue.
 
 If the follow-up reply is still generic:
 - request a call or deeper clarification through App Review

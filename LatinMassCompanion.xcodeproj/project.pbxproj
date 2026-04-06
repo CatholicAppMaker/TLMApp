@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 63;
+	objectVersion = 77;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -30,6 +30,7 @@
 		4E879D723F402B2722146C97 /* SupportTipJar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A7D8F7D87BCA915494DAA8 /* SupportTipJar.swift */; };
 		515F9DC73356F60EEF06ECAD /* learning.json in Resources */ = {isa = PBXBuildFile; fileRef = 7406F90901481F93D27D07DA /* learning.json */; };
 		580D5C962E96B027A9F5EDD6 /* AppAppearanceStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00E6AB11EAB0817B9FA6A5 /* AppAppearanceStore.swift */; };
+		6A63E71269F5D156ACE3F2F7 /* UITestSupportHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E96A0CA333E92A8A60E24B7 /* UITestSupportHelpers.swift */; };
 		6B27CC19F808820DDFD976EF /* ordinary_parts.json in Resources */ = {isa = PBXBuildFile; fileRef = 663F4109AF5923D456E70FEA /* ordinary_parts.json */; };
 		7098145A331D04AE3BB9DBD7 /* MassContentRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D535384164BEC883FB56E13 /* MassContentRepository.swift */; };
 		718E29CC8472286BAD5C6945 /* TestFixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FB8341833A77135B4C11AB /* TestFixtures.swift */; };
@@ -114,7 +115,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		016CDCC37F93480490146446 /* LatinMassCompanion.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LatinMassCompanion.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		016CDCC37F93480490146446 /* LatinMassCompanion.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = LatinMassCompanion.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		063BECFCFAC505A5D82F2DBE /* LatinMassCompanionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatinMassCompanionApp.swift; sourceTree = "<group>"; };
 		08A824BD89DB028721EA3164 /* LatinMassCompanionShortcuts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatinMassCompanionShortcuts.swift; sourceTree = "<group>"; };
 		09A0AD6B6018FE2C31DC77E0 /* ContentServicesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentServicesTests.swift; sourceTree = "<group>"; };
@@ -144,6 +145,7 @@
 		61163B67EF501159840928B0 /* LatinMassCompanionWidgets.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = LatinMassCompanionWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		663F4109AF5923D456E70FEA /* ordinary_parts.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ordinary_parts.json; sourceTree = "<group>"; };
 		69BA6CB934A9E76C7621598F /* LatinMassCompanionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatinMassCompanionTests.swift; sourceTree = "<group>"; };
+		6E96A0CA333E92A8A60E24B7 /* UITestSupportHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestSupportHelpers.swift; sourceTree = "<group>"; };
 		70B1A45C51814B97C32A8A85 /* AppRouteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouteTests.swift; sourceTree = "<group>"; };
 		7406F90901481F93D27D07DA /* learning.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = learning.json; sourceTree = "<group>"; };
 		80AC8A89CECDC598E1208287 /* CatalogMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogMetadata.swift; sourceTree = "<group>"; };
@@ -346,6 +348,7 @@
 			children = (
 				B7343033CAD68BFE5E8EDE06 /* LatinMassCompanionFlowUITests.swift */,
 				1AD9B1B84866102C7E0AAD86 /* LatinMassCompanionUITests.swift */,
+				6E96A0CA333E92A8A60E24B7 /* UITestSupportHelpers.swift */,
 				2BA3F802E2D94E3A64DE2BE8 /* UITestTargetAppIntentsLink.swift */,
 			);
 			path = LatinMassCompanionUITests;
@@ -492,7 +495,6 @@
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					6901A7FF7EC427AF8D27645C = {
-						DevelopmentTeam = 22L6MB4Z6V;
 						ProvisioningStyle = Automatic;
 					};
 					CF9A5162F55FF25175490B07 = {
@@ -513,6 +515,7 @@
 			);
 			mainGroup = AFAF8F7D6F587DAE51DC7617;
 			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -621,6 +624,7 @@
 			files = (
 				0F1469244984F7BD1DA4D4F8 /* LatinMassCompanionFlowUITests.swift in Sources */,
 				8971B6834A10BF5DB893D31B /* LatinMassCompanionUITests.swift in Sources */,
+				6A63E71269F5D156ACE3F2F7 /* UITestSupportHelpers.swift in Sources */,
 				773FE255169885984F2EFDAE /* UITestTargetAppIntentsLink.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -843,7 +847,6 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5;
-				DEVELOPMENT_TEAM = 22L6MB4Z6V;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = LatinMassCompanion/Support/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
@@ -866,7 +869,6 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5;
-				DEVELOPMENT_TEAM = 22L6MB4Z6V;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = LatinMassCompanion/Support/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
@@ -906,7 +908,6 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5;
-				DEVELOPMENT_TEAM = 22L6MB4Z6V;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = LatinMassCompanionWidgets/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
@@ -947,7 +948,6 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5;
-				DEVELOPMENT_TEAM = 22L6MB4Z6V;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = LatinMassCompanionWidgets/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;

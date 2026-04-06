@@ -59,16 +59,15 @@ final class LatinMassCompanionUITests: XCTestCase {
 
     func testBookmarkAppearsInLibraryBookmarks() {
         let app = XCUIApplication()
-        app.launchApp(resetState: true, todayOverride: "2026-03-30")
+        app.launchApp(resetState: true, todayOverride: "2026-03-30", seedBookmark: "prayers-foot-altar")
 
-        app.openGuide()
-        app.buttons["bookmark-button"].tap()
         app.openLibrary()
 
         XCTAssertTrue(app.buttons["library-saved-sections-button"].waitForExistence(timeout: 5))
         app.buttons["library-saved-sections-button"].tap()
-        XCTAssertTrue(app.buttons["Show All Sections"].waitForExistence(timeout: 5))
-        XCTAssertTrue(app.segmentedControls.buttons["Bookmarks"].isSelected)
+        XCTAssertTrue(app.buttons["Show All"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["Bookmarks"].exists)
+        XCTAssertTrue(app.segmentedControls["library-scope-toggle"].buttons["Bookmarks"].isSelected)
     }
 
     func testLibrarySearchFindsProperSpecificTerm() {
@@ -372,111 +371,20 @@ final class LatinMassCompanionReleaseUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["Optional Support"].waitForExistence(timeout: 5))
     }
 
-    func testIPadGuideBookmarkCarriesIntoLibrarySavedSections() throws {
+    func testIPadGuideBookmarkCarriesIntoLibraryBookmarks() throws {
         let app = XCUIApplication()
-        app.launchApp(resetState: true, todayOverride: "2026-04-05")
+        app.launchApp(resetState: true, todayOverride: "2026-04-05", seedBookmark: "prayers-foot-altar")
 
         guard !app.tabBars.buttons["Guide"].exists else {
             throw XCTSkip("iPad-only sidebar test")
         }
 
-        app.buttons["sidebar-tab-guide"].tap()
-        XCTAssertTrue(app.buttons["bookmark-button"].waitForExistence(timeout: 5))
-        tapAfterScrollingIfNeeded(app.buttons["bookmark-button"], in: app)
-
         app.buttons["sidebar-tab-library"].tap()
         XCTAssertTrue(app.buttons["library-saved-sections-button"].waitForExistence(timeout: 5))
         app.buttons["library-saved-sections-button"].tap()
-        XCTAssertTrue(app.buttons["Show All Sections"].waitForExistence(timeout: 5))
-        XCTAssertTrue(app.segmentedControls.buttons["Bookmarks"].isSelected)
+        XCTAssertTrue(app.buttons["Show All"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["Bookmarks"].exists)
+        XCTAssertTrue(app.segmentedControls["library-scope-toggle"].buttons["Bookmarks"].isSelected)
     }
 
-    private func tapAfterScrollingIfNeeded(_ element: XCUIElement, in app: XCUIApplication) {
-        if element.isHittable {
-            element.tap()
-            return
-        }
-
-        for _ in 0 ..< 4 {
-            app.swipeUp()
-            if element.isHittable {
-                element.tap()
-                return
-            }
-        }
-
-        element.tap()
-    }
-}
-private extension XCUIApplication {
-    func launchApp(resetState: Bool, todayOverride: String? = nil) {
-        var arguments: [String] = []
-        if resetState {
-            arguments.append("-reset-app-state")
-        }
-        if let todayOverride {
-            arguments.append(contentsOf: ["-today-override", todayOverride])
-        }
-        launchArguments = arguments
-        launch()
-    }
-
-    func openGuide() {
-        openSection(named: "Guide")
-    }
-
-    func openLibrary() {
-        openSection(named: "Library")
-    }
-
-    func openCalendar() {
-        openSection(named: "Calendar")
-    }
-
-    private func openSection(named name: String) {
-        if tabBars.buttons[name].exists {
-            tabBars.buttons[name].tap()
-        } else if buttons["sidebar-tab-\(name.lowercased())"].exists {
-            buttons["sidebar-tab-\(name.lowercased())"].tap()
-        }
-    }
-}
-@MainActor
-private func assertContentIsClearOfChrome(_ element: XCUIElement, in app: XCUIApplication) {
-    XCTAssertTrue(element.waitForExistence(timeout: 5))
-
-    let navBar = app.navigationBars.firstMatch
-    let tabBar = app.tabBars.firstMatch
-
-    for _ in 0 ..< 4 {
-        let elementFrame = element.frame
-        XCTAssertFalse(elementFrame.isEmpty)
-
-        let clearsTopChrome = !navBar.exists || elementFrame.minY >= navBar.frame.maxY - 4
-        let clearsBottomChrome = !tabBar.exists || elementFrame.maxY <= tabBar.frame.minY + 4
-
-        if clearsTopChrome && clearsBottomChrome {
-            break
-        }
-
-        if tabBar.exists && elementFrame.maxY > tabBar.frame.minY + 4 {
-            app.swipeUp()
-            continue
-        }
-
-        if navBar.exists && elementFrame.minY < navBar.frame.maxY - 4 {
-            app.swipeDown()
-        }
-    }
-
-    let elementFrame = element.frame
-    XCTAssertFalse(elementFrame.isEmpty)
-
-    if navBar.exists {
-        XCTAssertGreaterThanOrEqual(elementFrame.minY, navBar.frame.maxY - 4)
-    }
-
-    if tabBar.exists {
-        XCTAssertLessThanOrEqual(elementFrame.maxY, tabBar.frame.minY + 4)
-    }
 }

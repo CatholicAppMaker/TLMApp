@@ -79,7 +79,7 @@ extension AppModel {
 
     var bookmarkCountText: String {
         let count = bookmarks.count
-        return count == 1 ? "1 saved section" : "\(count) saved sections"
+        return count == 1 ? "1 bookmark" : "\(count) bookmarks"
     }
 
     var celebrationListings: [CelebrationListing] {
