@@ -32,8 +32,8 @@
 		515F9DC73356F60EEF06ECAD /* learning.json in Resources */ = {isa = PBXBuildFile; fileRef = 7406F90901481F93D27D07DA /* learning.json */; };
 		580D5C962E96B027A9F5EDD6 /* AppAppearanceStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00E6AB11EAB0817B9FA6A5 /* AppAppearanceStore.swift */; };
 		6A63E71269F5D156ACE3F2F7 /* UITestSupportHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E96A0CA333E92A8A60E24B7 /* UITestSupportHelpers.swift */; };
-		6E61F5173D2A4C39AB735BF1 /* LatinMassCompanionVisualUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D5C2C9C4E7C4A0C8E7B01FA /* LatinMassCompanionVisualUITests.swift */; };
 		6B27CC19F808820DDFD976EF /* ordinary_parts.json in Resources */ = {isa = PBXBuildFile; fileRef = 663F4109AF5923D456E70FEA /* ordinary_parts.json */; };
+		6E61F5173D2A4C39AB735BF1 /* LatinMassCompanionVisualUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D5C2C9C4E7C4A0C8E7B01FA /* LatinMassCompanionVisualUITests.swift */; };
 		7098145A331D04AE3BB9DBD7 /* MassContentRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D535384164BEC883FB56E13 /* MassContentRepository.swift */; };
 		718E29CC8472286BAD5C6945 /* TestFixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FB8341833A77135B4C11AB /* TestFixtures.swift */; };
 		770BE73CC951F443B227A5EB /* LatinMassCompanionWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 61163B67EF501159840928B0 /* LatinMassCompanionWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -59,9 +59,9 @@
 		C7EA1A28EF94A51800970E2B /* ordinary_parts.json in Resources */ = {isa = PBXBuildFile; fileRef = 663F4109AF5923D456E70FEA /* ordinary_parts.json */; };
 		CC40F71AAAC88237C3504EDF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 106F141329708AC8836CB587 /* Assets.xcassets */; };
 		CD0DD2A7884BAD54A35D5669 /* PrayerbookChrome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D0BF0E9285B70CAD5059C7 /* PrayerbookChrome.swift */; };
-		CE4D34E360E84DA3A01D8B1E /* PrayerbookMotifs.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0A2A07D855D489195F6B40E /* PrayerbookMotifs.swift */; };
 		CD12988C92094BB943519E71 /* SourcesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63B69F90E842BE24F249EFE /* SourcesView.swift */; };
 		CD50DA88347B2D5E9B0C878F /* IPadRootShell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1638092EB2BAA6495A1F92F1 /* IPadRootShell.swift */; };
+		CE4D34E360E84DA3A01D8B1E /* PrayerbookMotifs.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0A2A07D855D489195F6B40E /* PrayerbookMotifs.swift */; };
 		CF393A723F219369187A852B /* BookmarkStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1CE4765B260EABAAA9A0CA6 /* BookmarkStore.swift */; };
 		D0D78C1763E65F758903CE59 /* LatinMassCompanionShortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A824BD89DB028721EA3164 /* LatinMassCompanionShortcuts.swift */; };
 		D5547BB0B7ECD31E45FC3536 /* GuideSupportComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A0CD0E6256CE9689B03A01 /* GuideSupportComponents.swift */; };
@@ -166,8 +166,8 @@
 		A64F73886138E28865495086 /* calendar_2026.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = calendar_2026.json; sourceTree = "<group>"; };
 		AA00E6AB11EAB0817B9FA6A5 /* AppAppearanceStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAppearanceStore.swift; sourceTree = "<group>"; };
 		B0B3013FC026B49298DF0357 /* invalid_mass_library.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = invalid_mass_library.json; sourceTree = "<group>"; };
-		B7343033CAD68BFE5E8EDE06 /* LatinMassCompanionFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatinMassCompanionFlowUITests.swift; sourceTree = "<group>"; };
 		B4976F21969541CDA2CF8F42 /* WidgetSharedState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetSharedState.swift; sourceTree = "<group>"; };
+		B7343033CAD68BFE5E8EDE06 /* LatinMassCompanionFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatinMassCompanionFlowUITests.swift; sourceTree = "<group>"; };
 		BC83773EAB733F7D68B3EEC3 /* SupportTipJarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportTipJarTests.swift; sourceTree = "<group>"; };
 		C08A22F568BF981B43E4E49C /* LatinMassCompanionTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = LatinMassCompanionTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C358BF61DA269E446F027C6E /* base.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = base.json; sourceTree = "<group>"; };
@@ -862,7 +862,7 @@
 				CODE_SIGN_ENTITLEMENTS = LatinMassCompanion/Support/LatinMassCompanion.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = 22L6MB4Z6V;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = LatinMassCompanion/Support/Info.plist;
@@ -887,7 +887,7 @@
 				CODE_SIGN_ENTITLEMENTS = LatinMassCompanion/Support/LatinMassCompanion.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = 22L6MB4Z6V;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = LatinMassCompanion/Support/Info.plist;
@@ -929,7 +929,7 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_ENTITLEMENTS = LatinMassCompanionWidgets/LatinMassCompanionWidgets.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = 22L6MB4Z6V;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = LatinMassCompanionWidgets/Info.plist;
@@ -971,7 +971,7 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_ENTITLEMENTS = LatinMassCompanionWidgets/LatinMassCompanionWidgets.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = 22L6MB4Z6V;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = LatinMassCompanionWidgets/Info.plist;

@@ -8,7 +8,7 @@ FLOW_UI_TEST_TARGET := LatinMassCompanionUITests/LatinMassCompanionFlowUITests
 APPEARANCE_UI_TEST := $(UI_TEST_TARGET)/testAppearanceTogglePersistsDarkModeWithoutBreakingGuide
 BOOKMARK_UI_TEST := $(UI_TEST_TARGET)/testBookmarkAppearsInLibraryBookmarks
 
-.PHONY: catalog format lint build test quality
+.PHONY: catalog format lint build test quality version
 
 catalog:
 	python3 scripts/build_mass_catalog.py
@@ -32,3 +32,6 @@ test:
 	$(TEST_COMMAND) -only-testing:$(UI_TEST_TARGET) -skip-testing:$(APPEARANCE_UI_TEST) -skip-testing:$(BOOKMARK_UI_TEST) test
 
 quality: catalog format lint build
+
+version:
+	xcodebuild -project $(PROJECT) -scheme $(SCHEME) -destination 'generic/platform=iOS Simulator' -showBuildSettings | rg "CURRENT_PROJECT_VERSION|MARKETING_VERSION|PRODUCT_BUNDLE_IDENTIFIER"

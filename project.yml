@@ -39,7 +39,7 @@ targets:
         INFOPLIST_FILE: LatinMassCompanion/Support/Info.plist
         CODE_SIGN_ENTITLEMENTS: LatinMassCompanion/Support/LatinMassCompanion.entitlements
         TARGETED_DEVICE_FAMILY: 1,2
-        CURRENT_PROJECT_VERSION: 5
+        CURRENT_PROJECT_VERSION: 7
         MARKETING_VERSION: 1.5
     scheme:
       gatherCoverageData: true
@@ -62,7 +62,7 @@ targets:
         INFOPLIST_FILE: LatinMassCompanionWidgets/Info.plist
         CODE_SIGN_ENTITLEMENTS: LatinMassCompanionWidgets/LatinMassCompanionWidgets.entitlements
         APPLICATION_EXTENSION_API_ONLY: YES
-        CURRENT_PROJECT_VERSION: 5
+        CURRENT_PROJECT_VERSION: 7
         MARKETING_VERSION: 1.5
   LatinMassCompanionTests:
     type: bundle.unit-test
