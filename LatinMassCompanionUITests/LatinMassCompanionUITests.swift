@@ -214,6 +214,45 @@ final class LatinMassCompanionUITests: XCTestCase {
         )
     }
 
+    func testGuideVisualHierarchyKeepsUtilityCardCalmOnIPhone() {
+        let app = XCUIApplication()
+        app.launchApp(resetState: true, todayOverride: "2026-03-30")
+
+        app.openGuide()
+
+        let massFormToggle = app.segmentedControls["guide-mass-form-toggle"]
+        let utilityCard = app.otherElements["guide-utility-card"]
+        let utilityTitle = app.staticTexts["guide-utility-title"]
+        let dismissButton = app.buttons["dismiss-guide-utility"]
+        let findMyPlaceButton = app.buttons["guide-find-my-place-button"]
+        let timelineTitle = app.staticTexts["guide-timeline-title"]
+
+        assertElementsAreStackedVertically(upper: massFormToggle, lower: utilityCard, minSpacing: 10)
+        assertElement(dismissButton, isContainedIn: utilityCard, inset: 6)
+        assertElementsDoNotOverlap(utilityTitle, dismissButton, minSpacing: 12)
+        assertElementsAreStackedVertically(upper: utilityTitle, lower: findMyPlaceButton, minSpacing: 16)
+        assertElementsAreStackedVertically(upper: utilityCard, lower: timelineTitle, minSpacing: 10)
+    }
+
+    func testCalendarAndLibraryMaintainReadableVerticalRhythmOnIPhone() {
+        let app = XCUIApplication()
+        app.launchApp(resetState: true, todayOverride: "2026-03-30")
+
+        app.openCalendar()
+        let calendarHero = app.otherElements.matching(identifier: "calendar-hero-card").firstMatch
+        let calendarSearch = app.textFields["calendar-search-field"]
+        assertElementsAreStackedVertically(upper: calendarHero, lower: calendarSearch, minSpacing: 10)
+        assertContentIsClearOfChrome(calendarHero, in: app)
+
+        app.openLibrary()
+        let libraryHero = app.otherElements.matching(identifier: "library-hero-card").firstMatch
+        let scopeToggle = app.segmentedControls["library-scope-toggle"]
+        let librarySearch = app.textFields["library-search-field"]
+        assertElementsAreStackedVertically(upper: libraryHero, lower: scopeToggle, minSpacing: 10)
+        assertElementsAreStackedVertically(upper: scopeToggle, lower: librarySearch, minSpacing: 10)
+        assertContentIsClearOfChrome(libraryHero, in: app)
+    }
+
     func testAppearanceTogglePersistsDarkModeWithoutBreakingGuide() {
         let firstLaunch = XCUIApplication()
         firstLaunch.launchApp(resetState: true, todayOverride: "2026-03-30")
@@ -293,6 +332,30 @@ final class LatinMassCompanionUITests: XCTestCase {
         let partTitle = app.staticTexts["mass-part-title"]
         XCTAssertTrue(partTitle.waitForExistence(timeout: 5))
         XCTAssertEqual(partTitle.label, "Canon of the Mass")
+    }
+
+    func testIPadGuideRailRemainsSeparatedFromDetailContent() throws {
+        let app = XCUIApplication()
+        app.launchApp(resetState: true, todayOverride: "2026-04-05")
+
+        guard !app.tabBars.buttons["Guide"].exists else {
+            throw XCTSkip("iPad-only sidebar test")
+        }
+
+        app.buttons["sidebar-tab-guide"].tap()
+
+        let railTimelineTitle = app.staticTexts["ipad-rite-timeline-title"]
+        let detailPartTitle = app.staticTexts["mass-part-title"]
+
+        XCTAssertTrue(railTimelineTitle.waitForExistence(timeout: 5))
+        XCTAssertTrue(detailPartTitle.waitForExistence(timeout: 5))
+
+        let railFrame = railTimelineTitle.frame
+        let detailFrame = detailPartTitle.frame
+
+        XCTAssertFalse(railFrame.isEmpty)
+        XCTAssertFalse(detailFrame.isEmpty)
+        XCTAssertLessThan(railFrame.maxX + 24, detailFrame.minX)
     }
 }
 @MainActor

@@ -235,21 +235,23 @@ private struct GuideUtilityCard: View {
 
                 Spacer(minLength: 12)
 
-                LiturgicalMotifBadge(kind: .guide)
+                VStack(alignment: .trailing, spacing: 10) {
+                    Button(action: onDismiss) {
+                        Image(systemName: "xmark")
+                            .font(.caption.weight(.bold))
+                            .foregroundStyle(AppTheme.mutedInk)
+                            .padding(8)
+                            .background(
+                                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                    .fill(AppTheme.secondarySurface)
+                            )
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityIdentifier("dismiss-guide-utility")
+                    .accessibilityLabel("Dismiss guide utility tips")
 
-                Button(action: onDismiss) {
-                    Image(systemName: "xmark")
-                        .font(.caption.weight(.bold))
-                        .foregroundStyle(AppTheme.mutedInk)
-                        .padding(8)
-                        .background(
-                            RoundedRectangle(cornerRadius: 8, style: .continuous)
-                                .fill(AppTheme.secondarySurface)
-                        )
+                    GuideUtilityEmblem()
                 }
-                .buttonStyle(.plain)
-                .accessibilityIdentifier("dismiss-guide-utility")
-                .accessibilityLabel("Dismiss guide utility tips")
             }
 
             HStack(spacing: 8) {
@@ -295,6 +297,32 @@ private struct GuideUtilityCard: View {
         )
         .accessibilityElement(children: .contain)
         .accessibilityIdentifier("guide-utility-card")
+    }
+}
+
+private struct GuideUtilityEmblem: View {
+    var body: some View {
+        ZStack {
+            Circle()
+                .fill(AppTheme.gold.opacity(0.14))
+                .frame(width: 44, height: 44)
+
+            Circle()
+                .fill(AppTheme.burgundy.opacity(0.1))
+                .frame(width: 32, height: 32)
+                .offset(x: 10, y: -8)
+
+            Image(systemName: "book.pages.fill")
+                .font(.system(size: 17, weight: .semibold))
+                .foregroundStyle(AppTheme.burgundy)
+                .frame(width: 26, height: 26)
+                .background(
+                    Circle()
+                        .fill(AppTheme.surface.opacity(0.9))
+                )
+        }
+        .frame(width: 54, height: 54)
+        .accessibilityHidden(true)
     }
 }
 

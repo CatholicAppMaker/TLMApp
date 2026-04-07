@@ -75,6 +75,83 @@ func assertContentIsClearOfChrome(_ element: XCUIElement, in app: XCUIApplicatio
     }
 }
 
+@MainActor
+func assertElementsDoNotOverlap(
+    _ first: XCUIElement,
+    _ second: XCUIElement,
+    minSpacing: CGFloat = 8,
+    file: StaticString = #filePath,
+    line: UInt = #line
+) {
+    XCTAssertTrue(first.waitForExistence(timeout: 5), file: file, line: line)
+    XCTAssertTrue(second.waitForExistence(timeout: 5), file: file, line: line)
+
+    let firstFrame = first.frame
+    let secondFrame = second.frame
+
+    XCTAssertFalse(firstFrame.isEmpty, file: file, line: line)
+    XCTAssertFalse(secondFrame.isEmpty, file: file, line: line)
+
+    let horizontalSeparation = max(firstFrame.minX, secondFrame.minX) - min(firstFrame.maxX, secondFrame.maxX)
+    let verticalSeparation = max(firstFrame.minY, secondFrame.minY) - min(firstFrame.maxY, secondFrame.maxY)
+
+    XCTAssertTrue(
+        horizontalSeparation >= minSpacing || verticalSeparation >= minSpacing,
+        "Expected elements to remain visually separated by at least \(minSpacing) points, but frames were \(firstFrame) and \(secondFrame)",
+        file: file,
+        line: line
+    )
+}
+
+@MainActor
+func assertElement(
+    _ element: XCUIElement,
+    isContainedIn container: XCUIElement,
+    inset: CGFloat = 0,
+    file: StaticString = #filePath,
+    line: UInt = #line
+) {
+    XCTAssertTrue(element.waitForExistence(timeout: 5), file: file, line: line)
+    XCTAssertTrue(container.waitForExistence(timeout: 5), file: file, line: line)
+
+    let elementFrame = element.frame
+    let containerFrame = container.frame
+
+    XCTAssertFalse(elementFrame.isEmpty, file: file, line: line)
+    XCTAssertFalse(containerFrame.isEmpty, file: file, line: line)
+
+    XCTAssertGreaterThanOrEqual(elementFrame.minX, containerFrame.minX + inset, file: file, line: line)
+    XCTAssertGreaterThanOrEqual(elementFrame.minY, containerFrame.minY + inset, file: file, line: line)
+    XCTAssertLessThanOrEqual(elementFrame.maxX, containerFrame.maxX - inset, file: file, line: line)
+    XCTAssertLessThanOrEqual(elementFrame.maxY, containerFrame.maxY - inset, file: file, line: line)
+}
+
+@MainActor
+func assertElementsAreStackedVertically(
+    upper: XCUIElement,
+    lower: XCUIElement,
+    minSpacing: CGFloat = 8,
+    file: StaticString = #filePath,
+    line: UInt = #line
+) {
+    XCTAssertTrue(upper.waitForExistence(timeout: 5), file: file, line: line)
+    XCTAssertTrue(lower.waitForExistence(timeout: 5), file: file, line: line)
+
+    let upperFrame = upper.frame
+    let lowerFrame = lower.frame
+
+    XCTAssertFalse(upperFrame.isEmpty, file: file, line: line)
+    XCTAssertFalse(lowerFrame.isEmpty, file: file, line: line)
+
+    XCTAssertGreaterThanOrEqual(
+        lowerFrame.minY,
+        upperFrame.maxY + minSpacing,
+        "Expected lower element to sit at least \(minSpacing) points below upper element, but frames were \(upperFrame) and \(lowerFrame)",
+        file: file,
+        line: line
+    )
+}
+
 extension XCUIApplication {
     func launchApp(
         resetState: Bool,
