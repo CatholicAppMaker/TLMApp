@@ -30,6 +30,62 @@ struct GuideView: View {
         appModel.canResumeSavedPlace(from: selectedPartID)
     }
 
+    private var inlineToolsContent: some View {
+        VStack(spacing: 10) {
+            GuideMassFormSwitcher(selectedMassFormBinding: selectedMassFormBinding)
+
+            if !hasDismissedUtilityCard {
+                GuideUtilityCard(
+                    bookmarkCountText: appModel.bookmarkCountText,
+                    hasBookmarks: !appModel.bookmarkedParts.isEmpty,
+                    canResumeSavedPlace: canResumeSavedPlace,
+                    onResume: {
+                        appModel.resumeMass()
+                        syncSelection()
+                    },
+                    onFindMyPlace: {
+                        isShowingFindMyPlace = true
+                    },
+                    onJump: {
+                        isShowingJumpList = true
+                    },
+                    onOpenBookmarks: {
+                        appModel.focusBookmarkedSections()
+                        selectedTab = .library
+                    },
+                    onDismiss: {
+                        hasDismissedUtilityCard = true
+                    }
+                )
+            } else if canResumeSavedPlace || !appModel.bookmarkedParts.isEmpty {
+                GuideQuickAccessStrip(
+                    canResumeSavedPlace: canResumeSavedPlace,
+                    hasBookmarks: !appModel.bookmarkedParts.isEmpty,
+                    onResume: {
+                        appModel.resumeMass()
+                        syncSelection()
+                    },
+                    onFindMyPlace: {
+                        isShowingFindMyPlace = true
+                    },
+                    onSaved: {
+                        appModel.focusBookmarkedSections()
+                        selectedTab = .library
+                    }
+                )
+            }
+
+            if !timelineCheckpoints.isEmpty {
+                RiteTimelineStrip(
+                    checkpoints: timelineCheckpoints,
+                    onSelect: { checkpoint in
+                        selectedPartID = checkpoint.partID
+                    }
+                )
+            }
+        }
+    }
+
     var body: some View {
         ZStack {
             Rectangle()
@@ -63,7 +119,8 @@ struct GuideView: View {
                     onOpenLearn: { destination in
                         appModel.openLearn(destination)
                         selectedTab = .learn
-                    }
+                    },
+                    topAccessory: showsInlineTools ? AnyView(inlineToolsContent) : nil
                 )
             } else {
                 ProgressView("Loading Mass Guide")
@@ -127,66 +184,6 @@ struct GuideView: View {
                 )
             }
         }
-        .safeAreaInset(edge: .top) {
-            if showsInlineTools {
-                VStack(spacing: 10) {
-                    GuideMassFormSwitcher(selectedMassFormBinding: selectedMassFormBinding)
-
-                    if !hasDismissedUtilityCard {
-                        GuideUtilityCard(
-                            bookmarkCountText: appModel.bookmarkCountText,
-                            hasBookmarks: !appModel.bookmarkedParts.isEmpty,
-                            canResumeSavedPlace: canResumeSavedPlace,
-                            onResume: {
-                                appModel.resumeMass()
-                                syncSelection()
-                            },
-                            onFindMyPlace: {
-                                isShowingFindMyPlace = true
-                            },
-                            onJump: {
-                                isShowingJumpList = true
-                            },
-                            onOpenBookmarks: {
-                                appModel.focusBookmarkedSections()
-                                selectedTab = .library
-                            },
-                            onDismiss: {
-                                hasDismissedUtilityCard = true
-                            }
-                        )
-                    } else if canResumeSavedPlace || !appModel.bookmarkedParts.isEmpty {
-                        GuideQuickAccessStrip(
-                            canResumeSavedPlace: canResumeSavedPlace,
-                            hasBookmarks: !appModel.bookmarkedParts.isEmpty,
-                            onResume: {
-                                appModel.resumeMass()
-                                syncSelection()
-                            },
-                            onFindMyPlace: {
-                                isShowingFindMyPlace = true
-                            },
-                            onSaved: {
-                                appModel.focusBookmarkedSections()
-                                selectedTab = .library
-                            }
-                        )
-                    }
-
-                    if !timelineCheckpoints.isEmpty {
-                        RiteTimelineStrip(
-                            checkpoints: timelineCheckpoints,
-                            onSelect: { checkpoint in
-                                selectedPartID = checkpoint.partID
-                            }
-                        )
-                    }
-                }
-                .padding(.horizontal, 20)
-                .padding(.top, 8)
-                .background(AppTheme.backgroundWash.opacity(0.96))
-            }
-        }
     }
 
     private func syncSelection() {
@@ -235,23 +232,7 @@ private struct GuideUtilityCard: View {
 
                 Spacer(minLength: 12)
 
-                VStack(alignment: .trailing, spacing: 10) {
-                    Button(action: onDismiss) {
-                        Image(systemName: "xmark")
-                            .font(.caption.weight(.bold))
-                            .foregroundStyle(AppTheme.mutedInk)
-                            .padding(8)
-                            .background(
-                                RoundedRectangle(cornerRadius: 8, style: .continuous)
-                                    .fill(AppTheme.secondarySurface)
-                            )
-                    }
-                    .buttonStyle(.plain)
-                    .accessibilityIdentifier("dismiss-guide-utility")
-                    .accessibilityLabel("Dismiss guide utility tips")
-
-                    GuideUtilityEmblem()
-                }
+                GuideUtilityEmblem()
             }
 
             HStack(spacing: 8) {
@@ -288,13 +269,30 @@ private struct GuideUtilityCard: View {
         }
         .padding(14)
         .background(
-            RoundedRectangle(cornerRadius: 14, style: .continuous)
-                .fill(AppTheme.surface)
+            RoundedRectangle(cornerRadius: 18, style: .continuous)
+                .fill(AppTheme.toolFill)
         )
         .overlay(
-            RoundedRectangle(cornerRadius: 14, style: .continuous)
-                .stroke(AppTheme.border, lineWidth: 1)
+            RoundedRectangle(cornerRadius: 18, style: .continuous)
+                .stroke(AppTheme.gold.opacity(0.28), lineWidth: 1)
         )
+        .overlay(alignment: .topTrailing) {
+            Button(action: onDismiss) {
+                Image(systemName: "xmark")
+                    .font(.caption.weight(.bold))
+                    .foregroundStyle(AppTheme.mutedInk)
+                    .padding(8)
+                    .background(
+                        RoundedRectangle(cornerRadius: 8, style: .continuous)
+                            .fill(AppTheme.surface)
+                    )
+            }
+            .buttonStyle(.plain)
+            .padding(12)
+            .accessibilityIdentifier("dismiss-guide-utility")
+            .accessibilityLabel("Dismiss guide utility tips")
+        }
+        .shadow(color: AppTheme.burgundy.opacity(0.12), radius: 14, y: 5)
         .accessibilityElement(children: .contain)
         .accessibilityIdentifier("guide-utility-card")
     }
@@ -302,26 +300,18 @@ private struct GuideUtilityCard: View {
 
 private struct GuideUtilityEmblem: View {
     var body: some View {
-        ZStack {
-            Circle()
-                .fill(AppTheme.gold.opacity(0.14))
-                .frame(width: 44, height: 44)
-
-            Circle()
-                .fill(AppTheme.burgundy.opacity(0.1))
-                .frame(width: 32, height: 32)
-                .offset(x: 10, y: -8)
-
-            Image(systemName: "book.pages.fill")
-                .font(.system(size: 17, weight: .semibold))
-                .foregroundStyle(AppTheme.burgundy)
-                .frame(width: 26, height: 26)
-                .background(
-                    Circle()
-                        .fill(AppTheme.surface.opacity(0.9))
-                )
-        }
-        .frame(width: 54, height: 54)
+        Image(systemName: "book.pages.fill")
+            .font(.system(size: 15, weight: .semibold))
+            .foregroundStyle(AppTheme.burgundy)
+            .frame(width: 34, height: 34)
+            .background(
+                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                    .fill(AppTheme.surface)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                    .stroke(AppTheme.gold.opacity(0.24), lineWidth: 1)
+            )
         .accessibilityHidden(true)
     }
 }
@@ -361,7 +351,7 @@ private struct GuideMassFormSwitcher: View {
         VStack(alignment: .leading, spacing: 10) {
             Text("Mass Form")
                 .font(.caption.weight(.semibold))
-                .foregroundStyle(AppTheme.mutedInk)
+                .foregroundStyle(AppTheme.burgundy)
 
             Picker("Mass Form", selection: selectedMassFormBinding) {
                 ForEach(MassForm.allCases) { massForm in
@@ -371,14 +361,6 @@ private struct GuideMassFormSwitcher: View {
             .pickerStyle(.segmented)
             .accessibilityIdentifier("guide-mass-form-toggle")
         }
-        .padding(12)
-        .background(
-            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .fill(AppTheme.surface)
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                .stroke(AppTheme.border, lineWidth: 1)
-        )
+        .prayerbookPanel(style: .tool)
     }
 }

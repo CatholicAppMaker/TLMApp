@@ -138,7 +138,8 @@ private struct PhoneTabShell: View {
             }
             .tag(AppTab.learn)
         }
-        .toolbarBackground(AppTheme.surface, for: .tabBar)
+        .toolbarBackground(AppTheme.tabBarFill, for: .tabBar)
         .toolbarBackground(.visible, for: .tabBar)
+        .toolbarColorScheme(.light, for: .tabBar)
     }
 }

@@ -49,6 +49,14 @@ enum AppTheme {
         light: Palette(0.34, 0.29, 0.24),
         dark: Palette(0.77, 0.72, 0.67)
     )
+    static let roseMist = dynamicColor(
+        light: Palette(0.93, 0.88, 0.86),
+        dark: Palette(0.28, 0.22, 0.24)
+    )
+    static let ember = dynamicColor(
+        light: Palette(0.60, 0.20, 0.19),
+        dark: Palette(0.90, 0.55, 0.50)
+    )
     static let divider = border.opacity(0.9)
     static let background = parchment
     static let cardShadow = Color(
@@ -62,7 +70,12 @@ enum AppTheme {
 
     static var backgroundWash: some ShapeStyle {
         LinearGradient(
-            colors: [parchment, parchmentShadow.opacity(0.75), surface.opacity(0.96)],
+            colors: [
+                parchment,
+                roseMist.opacity(0.38),
+                parchmentShadow.opacity(0.82),
+                surface.opacity(0.95)
+            ],
             startPoint: .topLeading,
             endPoint: .bottomTrailing
         )
@@ -70,7 +83,31 @@ enum AppTheme {
 
     static var cardFill: some ShapeStyle {
         LinearGradient(
-            colors: [surface, parchment.opacity(0.72)],
+            colors: [surface, parchment, secondarySurface],
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+        )
+    }
+
+    static var heroFill: some ShapeStyle {
+        LinearGradient(
+            colors: [
+                surface,
+                roseMist,
+                parchment
+            ],
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+        )
+    }
+
+    static var toolFill: some ShapeStyle {
+        LinearGradient(
+            colors: [
+                secondarySurface,
+                tertiarySurface,
+                roseMist.opacity(0.72)
+            ],
             startPoint: .topLeading,
             endPoint: .bottomTrailing
         )
@@ -78,7 +115,55 @@ enum AppTheme {
 
     static var insetPanelFill: some ShapeStyle {
         LinearGradient(
-            colors: [secondarySurface.opacity(0.92), parchment.opacity(0.65)],
+            colors: [
+                secondarySurface,
+                tertiarySurface,
+                parchment
+            ],
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+        )
+    }
+
+    static var referenceFill: some ShapeStyle {
+        LinearGradient(
+            colors: [
+                tertiarySurface,
+                secondarySurface,
+                surface
+            ],
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+        )
+    }
+
+    static var tabBarFill: some ShapeStyle {
+        LinearGradient(
+            colors: [
+                surface,
+                secondarySurface,
+                tertiarySurface.opacity(0.96)
+            ],
+            startPoint: .top,
+            endPoint: .bottom
+        )
+    }
+
+    static var selectedRowFill: some ShapeStyle {
+        LinearGradient(
+            colors: [
+                burgundy.opacity(0.18),
+                gold.opacity(0.08),
+                surface.opacity(0.86)
+            ],
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+        )
+    }
+
+    static var strongAccentFill: some ShapeStyle {
+        LinearGradient(
+            colors: [burgundyHighlight, burgundy, ember],
             startPoint: .topLeading,
             endPoint: .bottomTrailing
         )

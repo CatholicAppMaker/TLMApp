@@ -1,7 +1,7 @@
 # Latin Mass Companion Design Doc
 
 ## Overview
-Latin Mass Companion is an iPhone-first, offline-first SwiftUI app that helps newcomers and regular attendees follow the `1962 Mass` with an intentionally bounded, trust-first product shape.
+Latin Mass Companion is an offline-first SwiftUI app for iPhone and iPad that helps newcomers and regular attendees follow the `1962 Mass` with an intentionally bounded, trust-first product shape.
 
 The app is not trying to be a complete digital missal. Its current promise is narrower and clearer:
 
@@ -22,10 +22,10 @@ This document is for future builders and editors. It should stay aligned with th
 ## Current Product Shape
 
 ### Top-level navigation
-- `Today`: date, coverage status, celebration summary, Mass form, resume, and first-time guidance
-- `Guide`: resolved Mass flow for the selected date and Mass form
-- `Library`: local search across resolved Mass sections plus learning content
-- `Learn`: newcomer orientation, Ordinary vs Propers, participation guidance, pronunciation, glossary, and chant primer
+- `Guide`: the primary live-follow flow with Mass form switching, timeline guidance, resume, and landmarks
+- `Calendar`: bundled-year browsing for covered Sundays and major feasts
+- `Library`: local search across resolved Mass sections, bookmarks, and learning content
+- `Learn`: newcomer orientation, Ordinary vs Propers, participation guidance, pronunciation, glossary, chant primer, and support settings
 
 ### Supported runtime behavior
 - bundled `MassCatalog` loaded from local JSON
@@ -81,6 +81,66 @@ This keeps authoring more maintainable while preserving the offline runtime mode
 - Prefer explicit fallbacks over guessed content.
 - Prefer `landmarks` over line-by-line anxiety.
 - Keep the visual language prayerful, warm, and restrained rather than generic or overly decorative.
+
+## Visual Direction
+
+### Core visual stance
+- The app should feel `reverent and memorable`, not merely tidy.
+- Avoid the look of a generic “stack of rounded cards on beige.”
+- The product should feel calm enough for church use, but still have enough character that each screen is recognizable at a glance.
+- Restraint does not mean flatness. Use contrast, atmosphere, and hierarchy rather than decoration for its own sake.
+
+### Shared visual system
+- The shipped visual language should stay within a warm liturgical palette:
+  - parchment and stone neutrals
+  - burgundy as the main active accent
+  - restrained gold for emphasis and ornament
+  - darker “candlelit” variants in dark mode rather than plain charcoal UI
+- Shared surfaces should have distinct roles:
+  - `hero` surfaces for top-level orientation
+  - `tool` surfaces for active workflows and controls
+  - `reference` or inset surfaces for secondary supporting material
+- Not every panel should carry the same weight. Stronger hierarchy is required so the app does not feel visually monotonous.
+
+### Per-tab identity
+- `Guide` should be the most operational tab.
+  - Primary actions, timeline, and Mass-form controls should feel decisive and tool-like.
+  - Reading content should remain calmer than controls.
+- `Calendar` should be the most atmospheric browse surface.
+  - It should feel like entering the liturgical year, not scanning a plain data list.
+  - Selection state should be visually obvious.
+- `Library` should be the cleanest and sharpest tab.
+  - Search, bookmarks, and results should feel indexed and dependable.
+  - The bookmarks experience should be unmistakable.
+- `Learn` should be contemplative and editorial.
+  - It can be warmer and slightly more reflective, but it must not collapse into a wall of identical cards.
+
+### Imagery and ornament rules
+- Use restrained, SwiftUI-native imagery only:
+  - gradients
+  - layered shapes
+  - lines and rules
+  - SF Symbols
+  - simple motif compositions
+- Do not rely on photos, scanned textures, saint art, or decorative wallpaper backgrounds.
+- Imagery should support orientation and atmosphere, not compete with text or primary actions.
+- Hero areas may carry more atmosphere than content rows, but reading surfaces must stay clean.
+
+### Control styling
+- Important actions should look intentionally important:
+  - `Find My Place`
+  - `Jump to Major Moments`
+  - `Open Bookmarks`
+  - celebration open actions
+- Segmented controls, pills, and buttons should feel native but not stock.
+- Touch targets, contrast, and one-handed use remain more important than ornament.
+
+### Anti-patterns to avoid
+- visually identical stacked cards across every screen
+- generic glassmorphism or trendy iOS effects that do not fit the product
+- over-rounding, over-shadowing, or oversized decorative motifs
+- decorative elements placed inside reading content where they compete with the rite
+- adding more text as a substitute for better hierarchy
 
 ## Editorial Principles
 - Source visibility is part of product trust, not optional metadata.

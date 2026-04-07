@@ -14,6 +14,7 @@ struct MassPartDetailView: View {
     let onToggleBookmark: () -> Void
     let onJump: (() -> Void)?
     let onOpenLearn: (LearnDestination) -> Void
+    let topAccessory: AnyView?
 
     @State private var expandedNotes: Set<String> = []
 
@@ -24,6 +25,10 @@ struct MassPartDetailView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 18) {
+                if let topAccessory {
+                    topAccessory
+                }
+
                 HeroCard(
                     part: part,
                     position: position,

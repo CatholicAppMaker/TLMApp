@@ -46,12 +46,13 @@ struct RiteTimelineStrip: View {
         .padding(16)
         .background(
             RoundedRectangle(cornerRadius: 18, style: .continuous)
-                .fill(AppTheme.surface)
+                .fill(AppTheme.toolFill)
         )
         .overlay(
             RoundedRectangle(cornerRadius: 18, style: .continuous)
-                .stroke(AppTheme.border, lineWidth: 1)
+                .stroke(AppTheme.gold.opacity(0.28), lineWidth: 1)
         )
+        .shadow(color: AppTheme.burgundy.opacity(0.08), radius: 10, y: 4)
     }
 
     private func connectorColor(after checkpoint: RiteTimelineCheckpoint) -> Color {
@@ -329,11 +330,20 @@ struct GuideUtilityPrimaryButtonStyle: ButtonStyle {
             .frame(maxWidth: .infinity)
             .font(.system(.headline, design: .serif))
             .foregroundStyle(.white)
-            .padding(.vertical, 12)
+            .padding(.vertical, 13)
             .background(
-                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    .fill(AppTheme.burgundy.opacity(configuration.isPressed ? 0.85 : 1.0))
+                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                    .fill(
+                        configuration.isPressed
+                            ? AnyShapeStyle(AppTheme.burgundy)
+                            : AnyShapeStyle(AppTheme.strongAccentFill)
+                    )
             )
+            .overlay(
+                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                    .stroke(AppTheme.gold.opacity(0.16), lineWidth: 1)
+            )
+            .shadow(color: AppTheme.burgundy.opacity(configuration.isPressed ? 0.12 : 0.24), radius: 10, y: 4)
     }
 }
 
@@ -345,12 +355,16 @@ struct GuideUtilitySecondaryButtonStyle: ButtonStyle {
             .foregroundStyle(AppTheme.ink)
             .padding(.vertical, 12)
             .background(
-                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    .fill(AppTheme.secondarySurface.opacity(configuration.isPressed ? 0.82 : 1.0))
+                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                    .fill(
+                        configuration.isPressed
+                            ? AnyShapeStyle(AppTheme.secondarySurface.opacity(0.78))
+                            : AnyShapeStyle(AppTheme.referenceFill)
+                    )
             )
             .overlay(
-                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    .stroke(AppTheme.border, lineWidth: 1)
+                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                    .stroke(AppTheme.border.opacity(0.92), lineWidth: 1)
             )
     }
 }
@@ -444,11 +458,15 @@ struct GuideNavButtonStyle: ButtonStyle {
             .padding(.horizontal, 14)
             .padding(.vertical, 12)
             .background(
-                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    .fill(AppTheme.surface.opacity(configuration.isPressed ? 0.82 : 1.0))
+                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                    .fill(
+                        configuration.isPressed
+                            ? AnyShapeStyle(AppTheme.surface.opacity(0.82))
+                            : AnyShapeStyle(AppTheme.referenceFill)
+                    )
             )
             .overlay(
-                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                RoundedRectangle(cornerRadius: 14, style: .continuous)
                     .stroke(AppTheme.border, lineWidth: 1)
             )
     }

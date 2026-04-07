@@ -25,7 +25,8 @@ struct AppearanceLearnSection: View {
     var body: some View {
         LearnSectionCard(
             title: "Appearance",
-            subtitle: "Choose the reading mode that stays clearest for your eyes and your setting."
+            subtitle: "Choose the reading mode that stays clearest for your eyes and your setting.",
+            style: .tool
         ) {
             Picker("Appearance", selection: selectedAppearanceBinding) {
                 ForEach(AppAppearance.allCases) { appearance in
@@ -52,10 +53,11 @@ struct VoicesOfTraditionSection: View {
     var body: some View {
         LearnSectionCard(
             title: "Voices of the Tradition",
-            subtitle: "A few short lines that help set the tone without turning the app into a quotation wall."
+            subtitle: "A few short lines that help set the tone without turning the app into a quotation wall.",
+            style: .inset
         ) {
             ForEach(traditionQuotes) { quote in
-                LearnRowContainer {
+                LearnRowContainer(style: .tool) {
                     Text("\"\(quote.text)\"")
                         .font(.system(.body, design: .serif))
                         .foregroundStyle(AppTheme.ink)
@@ -77,7 +79,8 @@ struct SupportLearnSection: View {
     var body: some View {
         LearnSectionCard(
             title: "Optional Support",
-            subtitle: "If this companion has served you well, you can leave a simple in-app tip to support its continued care."
+            subtitle: "If this companion has served you well, you can leave a simple in-app tip to support its continued care.",
+            style: .tool
         ) {
             Text("Tips are entirely optional. They do not unlock content, and the app remains fully usable without them.")
                 .font(.body)

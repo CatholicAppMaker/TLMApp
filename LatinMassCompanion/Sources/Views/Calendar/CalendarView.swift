@@ -79,7 +79,8 @@ struct CalendarView: View {
                     title: "Browse the Bundled Year by Feast, Sunday, and Season",
                     subtitle: "Move directly from a covered celebration into the guide or library without guessing where to begin.",
                     kind: .calendar,
-                    caption: appModel.bundledCoverageSummary
+                    caption: appModel.bundledCoverageSummary,
+                    compact: true
                 )
                 .accessibilityIdentifier("calendar-hero-card")
 
@@ -118,7 +119,7 @@ struct CalendarView: View {
                     }
                     .buttonStyle(.plain)
                     .accessibilityIdentifier("calendar-row-\(listing.dateKey)")
-                    .listRowBackground(AppTheme.surface)
+                    .listRowBackground(Color.clear)
                 }
             }
         }
@@ -138,7 +139,7 @@ struct CalendarView: View {
                         selectedTab = .library
                     }
                 )
-            } else {
+            } else if isPadLayout {
                 CelebrationBundleCard(summary: appModel.bundledCoverageSummary)
             }
         }
@@ -150,14 +151,25 @@ private struct CelebrationBundleCard: View {
     let summary: String
 
     var body: some View {
-        LiturgicalHeroPanel(
-            eyebrow: "Covered Celebrations",
-            title: "Browse the Liturgical Year",
-            subtitle:
-                "Use this calendar to move directly into covered Sundays and feasts, then carry that selection into Guide and Library.",
-            kind: .calendar,
-            caption: summary
-        )
+        VStack(alignment: .leading, spacing: 12) {
+            Label("Covered Celebrations", systemImage: "calendar")
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(AppTheme.burgundy)
+
+            Text("Browse the Liturgical Year")
+                .font(.system(.title3, design: .serif).weight(.semibold))
+                .foregroundStyle(AppTheme.ink)
+
+            Text("Use this calendar to move directly into covered Sundays and feasts, then carry that selection into Guide and Library.")
+                .font(.subheadline)
+                .foregroundStyle(AppTheme.mutedInk)
+                .fixedSize(horizontal: false, vertical: true)
+
+            Text(summary)
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(AppTheme.burgundy)
+        }
+        .prayerbookPanel(style: .tool)
         .accessibilityIdentifier("calendar-bundle-card")
     }
 }
@@ -212,7 +224,7 @@ private struct CelebrationPreviewCard: View {
                     .accessibilityIdentifier("calendar-open-library-button")
             }
         }
-        .prayerbookPanel()
+        .prayerbookPanel(style: .tool)
     }
 }
 
@@ -248,6 +260,20 @@ private struct CelebrationListingRow: View {
                 }
             }
         }
+        .padding(14)
+        .background(
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .fill(
+                    isSelected
+                        ? AnyShapeStyle(AppTheme.selectedRowFill)
+                        : AnyShapeStyle(AppTheme.referenceFill)
+                )
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .stroke(isSelected ? AppTheme.burgundy.opacity(0.34) : AppTheme.border.opacity(0.92), lineWidth: 1)
+        )
+        .shadow(color: isSelected ? AppTheme.burgundy.opacity(0.10) : .clear, radius: 8, y: 3)
         .padding(.vertical, 4)
     }
 }

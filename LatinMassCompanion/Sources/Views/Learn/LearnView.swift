@@ -55,7 +55,7 @@ struct LearnView: View {
                     SupportLearnSection(supportTipJar: supportTipJar)
                 }
                 .padding(.horizontal, 20)
-                .padding(.top, 44)
+                .padding(.top, 32)
                 .padding(.bottom, 132)
             }
         }
@@ -71,7 +71,8 @@ struct LearnView: View {
         if let destination = appModel.focusedLearningDestination {
             LearnSectionCard(
                 title: "From the Guide",
-                subtitle: "This note was opened from the guide or library so you can stay oriented without hunting for it again."
+                subtitle: "This note was opened from the guide or library so you can stay oriented without hunting for it again.",
+                style: .tool
             ) {
                 focusedRow(for: destination)
 
@@ -195,31 +196,45 @@ private struct LearnIntroCard: View {
     var body: some View {
         LearnSectionCard(
             title: "Learn the Rite, Keep the Prayer",
-            subtitle: "Use this area to prepare for the guide, then let the liturgy remain primary in church."
+            subtitle: "Use this area to prepare for the guide, then let the liturgy remain primary in church.",
+            style: .hero
         ) {
-            Text(
-                """
-                The app is a bounded companion for the 1962 Mass. It helps you understand what changes by day,
-                what may vary locally, and how to follow Low or Sung Mass without expecting the phone to replace
-                a hand missal or to catch every line for you.
-                """
-            )
-            .font(.body)
-            .foregroundStyle(AppTheme.mutedInk)
-            .fixedSize(horizontal: false, vertical: true)
+            VStack(alignment: .leading, spacing: 10) {
+                LearnIntroPoint(
+                    title: "Know what changes",
+                    message: "See what belongs to the Ordinary, what changes by day, and where local custom may differ."
+                )
 
-            Text(
-                """
-                Practical confidence is the goal here. If you can recognize the broad movement of the rite,
-                recover by landmarks when you lose your place, and let the liturgy remain primary, you are
-                already using the app well.
-                """
-            )
-            .font(.subheadline)
-            .foregroundStyle(AppTheme.mutedInk)
-            .fixedSize(horizontal: false, vertical: true)
+                LearnIntroPoint(
+                    title: "Recover by landmarks",
+                    message: "Follow Low or Sung Mass without expecting the phone to replace a hand missal or catch every line."
+                )
+
+                LearnIntroPoint(
+                    title: "Let prayer stay primary",
+                    message: "Practical confidence is enough. If you can rejoin the broad movement of the rite calmly, the app is doing its work."
+                )
+            }
 
             SourceAttributionLine(references: sources)
+        }
+    }
+}
+
+private struct LearnIntroPoint: View {
+    let title: String
+    let message: String
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(title)
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(AppTheme.burgundy)
+
+            Text(message)
+                .font(.body)
+                .foregroundStyle(AppTheme.mutedInk)
+                .fixedSize(horizontal: false, vertical: true)
         }
     }
 }
@@ -227,6 +242,7 @@ private struct LearnIntroCard: View {
 struct LearnSectionCard<Content: View>: View {
     let title: String
     let subtitle: String
+    var style: PrayerbookPanelStyle = .standard
     @ViewBuilder let content: Content
 
     var body: some View {
@@ -244,7 +260,7 @@ struct LearnSectionCard<Content: View>: View {
             LiturgicalRule()
             content
         }
-        .prayerbookPanel()
+        .prayerbookPanel(style: style)
     }
 }
 
@@ -356,6 +372,7 @@ private struct ChantGuideRow: View {
 }
 
 struct LearnRowContainer<Content: View>: View {
+    var style: PrayerbookPanelStyle = .inset
     @ViewBuilder let content: Content
 
     var body: some View {
@@ -366,12 +383,36 @@ struct LearnRowContainer<Content: View>: View {
         .padding(14)
         .background(
             RoundedRectangle(cornerRadius: 10, style: .continuous)
-                .fill(AppTheme.secondarySurface)
+                .fill(backgroundFill)
         )
         .overlay(
             RoundedRectangle(cornerRadius: 10, style: .continuous)
-                .stroke(AppTheme.border.opacity(0.9), lineWidth: 1)
+                .stroke(strokeColor, lineWidth: 1)
         )
+    }
+
+    private var backgroundFill: AnyShapeStyle {
+        switch style {
+        case .tool:
+            AnyShapeStyle(AppTheme.toolFill)
+        case .hero:
+            AnyShapeStyle(AppTheme.heroFill)
+        case .inset:
+            AnyShapeStyle(AppTheme.referenceFill)
+        case .standard:
+            AnyShapeStyle(AppTheme.cardFill)
+        }
+    }
+
+    private var strokeColor: Color {
+        switch style {
+        case .tool:
+            AppTheme.gold.opacity(0.28)
+        case .hero:
+            AppTheme.burgundy.opacity(0.26)
+        case .standard, .inset:
+            AppTheme.border.opacity(0.9)
+        }
     }
 }
 
@@ -383,11 +424,15 @@ struct LearnOutlineButtonStyle: ButtonStyle {
             .font(.system(.headline, design: .serif))
             .foregroundStyle(AppTheme.ink)
             .background(
-                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    .fill(AppTheme.secondarySurface.opacity(configuration.isPressed ? 0.82 : 1.0))
+                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                    .fill(
+                        configuration.isPressed
+                            ? AnyShapeStyle(AppTheme.secondarySurface.opacity(0.82))
+                            : AnyShapeStyle(AppTheme.referenceFill)
+                    )
             )
             .overlay(
-                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                RoundedRectangle(cornerRadius: 14, style: .continuous)
                     .stroke(AppTheme.border, lineWidth: 1)
             )
     }

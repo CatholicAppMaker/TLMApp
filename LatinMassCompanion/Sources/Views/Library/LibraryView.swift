@@ -74,11 +74,9 @@ struct LibraryView: View {
     private var searchSection: some View {
         Section {
             VStack(alignment: .leading, spacing: 14) {
-                LiturgicalHeroPanel(
-                    eyebrow: "Search the Rite",
+                LibraryContextCard(
                     title: appModel.selectedCelebrationTitle,
                     subtitle: "\(appModel.selectedDateTitle) • \(appModel.selectedMassFormTitle)",
-                    kind: .guide,
                     caption: appModel.isShowingOrdinaryOnly
                         ? "Ordinary-only fallback remains searchable and clearly labeled."
                         : "Bundled propers, Bookmarks, and learning notes stay separated but close at hand."
@@ -106,7 +104,7 @@ struct LibraryView: View {
                     VStack(alignment: .leading, spacing: 10) {
                         Text("\(appModel.bookmarkCountText) ready for quick return in Bookmarks.")
                             .font(.subheadline.weight(.semibold))
-                            .foregroundStyle(AppTheme.ink)
+                            .foregroundStyle(AppTheme.burgundy)
 
                         Text(
                             """
@@ -127,12 +125,12 @@ struct LibraryView: View {
                     }
                     .padding(12)
                     .background(
-                        RoundedRectangle(cornerRadius: 12, style: .continuous)
-                            .fill(AppTheme.secondarySurface)
+                        RoundedRectangle(cornerRadius: 16, style: .continuous)
+                            .fill(AppTheme.toolFill)
                     )
                     .overlay(
-                        RoundedRectangle(cornerRadius: 12, style: .continuous)
-                            .stroke(AppTheme.border, lineWidth: 1)
+                        RoundedRectangle(cornerRadius: 16, style: .continuous)
+                            .stroke(AppTheme.gold.opacity(0.3), lineWidth: 1)
                     )
                 } else if scope == .bookmarks {
                     VStack(alignment: .leading, spacing: 10) {
@@ -147,11 +145,11 @@ struct LibraryView: View {
                     }
                     .padding(12)
                     .background(
-                        RoundedRectangle(cornerRadius: 12, style: .continuous)
-                            .fill(AppTheme.secondarySurface)
+                        RoundedRectangle(cornerRadius: 16, style: .continuous)
+                            .fill(AppTheme.referenceFill)
                     )
                     .overlay(
-                        RoundedRectangle(cornerRadius: 12, style: .continuous)
+                        RoundedRectangle(cornerRadius: 16, style: .continuous)
                             .stroke(AppTheme.border, lineWidth: 1)
                     )
                 } else {
@@ -226,7 +224,7 @@ struct LibraryView: View {
                             isBookmarked: appModel.isBookmarked(part)
                         )
                     }
-                    .listRowBackground(AppTheme.surface)
+                    .listRowBackground(Color.clear)
                 }
             }
         }
@@ -244,10 +242,46 @@ struct LibraryView: View {
                     }
                     .buttonStyle(.plain)
                     .accessibilityIdentifier("library-learning-\(item.id)")
-                    .listRowBackground(AppTheme.surface)
+                    .listRowBackground(Color.clear)
                 }
             }
         }
+    }
+}
+
+private struct LibraryContextCard: View {
+    let title: String
+    let subtitle: String
+    let caption: String
+
+    var body: some View {
+        HStack(alignment: .top, spacing: 14) {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Search the Rite")
+                    .font(.caption.weight(.semibold))
+                    .foregroundStyle(AppTheme.burgundy)
+
+                Text(title)
+                    .font(.system(.title3, design: .serif).weight(.semibold))
+                    .foregroundStyle(AppTheme.ink)
+                    .lineLimit(1)
+
+                Text(subtitle)
+                    .font(.callout)
+                    .foregroundStyle(AppTheme.mutedInk)
+
+                Text(caption)
+                    .font(.caption)
+                    .foregroundStyle(AppTheme.burgundy)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+
+            Spacer(minLength: 12)
+
+            LiturgicalMotifBadge(kind: .guide)
+                .frame(width: 56, height: 56)
+        }
+        .prayerbookPanel(style: .tool)
     }
 }
 
@@ -304,6 +338,19 @@ private struct LibraryRow: View {
                 .font(.caption)
                 .foregroundStyle(AppTheme.mutedInk)
         }
+        .padding(14)
+        .background(
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .fill(
+                    isBookmarked
+                        ? AnyShapeStyle(AppTheme.selectedRowFill)
+                        : AnyShapeStyle(AppTheme.referenceFill)
+                )
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .stroke(isBookmarked ? AppTheme.burgundy.opacity(0.34) : AppTheme.border.opacity(0.92), lineWidth: 1)
+        )
         .padding(.vertical, 6)
     }
 }
@@ -335,6 +382,15 @@ private struct LearningLibraryRow: View {
                 .font(.caption)
                 .foregroundStyle(AppTheme.mutedInk)
         }
+        .padding(14)
+        .background(
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .fill(AppTheme.referenceFill)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .stroke(AppTheme.border.opacity(0.92), lineWidth: 1)
+        )
         .padding(.vertical, 6)
     }
 }
@@ -368,7 +424,8 @@ private struct LibraryPartDetailView: View {
                 onOpenLearn: { destination in
                     appModel.openLearn(destination)
                     selectedTab = .learn
-                }
+                },
+                topAccessory: nil
             )
         }
         .navigationTitle(part.title)
