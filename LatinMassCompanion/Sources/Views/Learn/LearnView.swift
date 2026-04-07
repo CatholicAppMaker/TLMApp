@@ -1,5 +1,12 @@
 import SwiftUI
 
+enum LearnSectionAnchor: String {
+    case appearance
+    case startHere
+    case whatChanges
+    case pronunciation
+}
+
 struct LearnView: View {
     let appModel: AppModel
     let supportTipJar: SupportTipJar
@@ -17,46 +24,61 @@ struct LearnView: View {
                 .fill(AppTheme.backgroundWash)
                 .ignoresSafeArea()
 
-            ScrollView {
-                VStack(alignment: .leading, spacing: 18) {
-                    LearnIntroCard(
-                        sources: appModel.sourceReferences(for: ["ordinary", "translation", "chant"])
-                    )
-                    .accessibilityIdentifier("learn-intro-card")
-                    LiturgicalHeroPanel(
-                        eyebrow: "Prepare, Then Pray",
-                        title: "Study the Mass Without Losing the Atmosphere of Worship",
-                        subtitle: "These notes are here to steady your eye, your ear, and your expectations before you need them live.",
-                        kind: .learn,
-                        caption: "Keep the learning supportive, not louder than the rite itself."
-                    )
-                    .accessibilityIdentifier("learn-hero-card")
-                    AppearanceLearnSection(selectedAppearanceBinding: selectedAppearanceBinding)
-                    focusedSection
-                    guideSection(
-                        title: "Start Here",
-                        subtitle: "Practical orientation for newcomers and returning visitors.",
-                        guides: appModel.orientationGuides
-                    )
-                    guideSection(
-                        title: "What Changes",
-                        subtitle: "How the Ordinary, Propers, and Mass form selection affect what you see.",
-                        guides: appModel.changeGuides
-                    )
-                    guideSection(
-                        title: "Participate Calmly",
-                        subtitle: "Follow the rite without turning prayer into a race.",
-                        guides: appModel.participationHelpGuides
-                    )
-                    chantSection
-                    VoicesOfTraditionSection()
-                    pronunciationSection
-                    glossarySection
-                    SupportLearnSection(supportTipJar: supportTipJar)
+            ScrollViewReader { proxy in
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 18) {
+                        LearnIntroCard(
+                            sources: appModel.sourceReferences(for: ["ordinary", "translation", "chant"])
+                        )
+                        .accessibilityIdentifier("learn-intro-card")
+
+                        LiturgicalHeroPanel(
+                            eyebrow: "Prepare, Then Pray",
+                            title: "Study the Mass Without Losing the Atmosphere of Worship",
+                            subtitle: "These notes are here to steady your eye, your ear, and your expectations before you need them live.",
+                            kind: .learn,
+                            caption: "Keep the learning supportive, not louder than the rite itself.",
+                            compact: true
+                        )
+                        .accessibilityIdentifier("learn-hero-card")
+
+                        LearnQuickPathCard { anchor in
+                            withAnimation(.easeInOut(duration: 0.2)) {
+                                proxy.scrollTo(anchor.rawValue, anchor: .top)
+                            }
+                        }
+
+                        AppearanceLearnSection(selectedAppearanceBinding: selectedAppearanceBinding)
+                            .id(LearnSectionAnchor.appearance.rawValue)
+                        focusedSection
+                        guideSection(
+                            title: "Start Here",
+                            subtitle: "Practical orientation for newcomers and returning visitors.",
+                            guides: appModel.orientationGuides
+                        )
+                        .id(LearnSectionAnchor.startHere.rawValue)
+                        guideSection(
+                            title: "What Changes",
+                            subtitle: "How the Ordinary, Propers, and Mass form selection affect what you see.",
+                            guides: appModel.changeGuides
+                        )
+                        .id(LearnSectionAnchor.whatChanges.rawValue)
+                        guideSection(
+                            title: "Participate Calmly",
+                            subtitle: "Follow the rite without turning prayer into a race.",
+                            guides: appModel.participationHelpGuides
+                        )
+                        chantSection
+                        VoicesOfTraditionSection()
+                        pronunciationSection
+                            .id(LearnSectionAnchor.pronunciation.rawValue)
+                        glossarySection
+                        SupportLearnSection(supportTipJar: supportTipJar)
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.top, 32)
+                    .padding(.bottom, 132)
                 }
-                .padding(.horizontal, 20)
-                .padding(.top, 32)
-                .padding(.bottom, 132)
             }
         }
         .navigationTitle("Learn")
@@ -186,55 +208,6 @@ struct LearnView: View {
                     sources: appModel.sourceReferences(for: guide.sourceIDs)
                 )
             }
-        }
-    }
-}
-
-private struct LearnIntroCard: View {
-    let sources: [SourceReference]
-
-    var body: some View {
-        LearnSectionCard(
-            title: "Learn the Rite, Keep the Prayer",
-            subtitle: "Use this area to prepare for the guide, then let the liturgy remain primary in church.",
-            style: .hero
-        ) {
-            VStack(alignment: .leading, spacing: 10) {
-                LearnIntroPoint(
-                    title: "Know what changes",
-                    message: "See what belongs to the Ordinary, what changes by day, and where local custom may differ."
-                )
-
-                LearnIntroPoint(
-                    title: "Recover by landmarks",
-                    message: "Follow Low or Sung Mass without expecting the phone to replace a hand missal or catch every line."
-                )
-
-                LearnIntroPoint(
-                    title: "Let prayer stay primary",
-                    message: "Practical confidence is enough. If you can rejoin the broad movement of the rite calmly, the app is doing its work."
-                )
-            }
-
-            SourceAttributionLine(references: sources)
-        }
-    }
-}
-
-private struct LearnIntroPoint: View {
-    let title: String
-    let message: String
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text(title)
-                .font(.caption.weight(.semibold))
-                .foregroundStyle(AppTheme.burgundy)
-
-            Text(message)
-                .font(.body)
-                .foregroundStyle(AppTheme.mutedInk)
-                .fixedSize(horizontal: false, vertical: true)
         }
     }
 }

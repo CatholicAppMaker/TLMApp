@@ -122,6 +122,28 @@ struct LatinMassCompanionTests {
         #expect(store.loadProgress() == nil)
         defaults.removePersistentDomain(forName: suiteName)
     }
+
+    @Test
+    func appGroupWidgetStateStorePersistsAndClearsSnapshot() throws {
+        let suiteName = "LatinMassCompanionWidgetStateTests.\(UUID().uuidString)"
+        let defaults = try #require(UserDefaults(suiteName: suiteName))
+        let store = AppGroupWidgetStateStore(defaults: defaults)
+        let snapshot = WidgetStateSnapshot(
+            bookmarkCount: 2,
+            bookmarkTitles: ["Canon of the Mass", "Communion"],
+            resumePartTitle: "Canon of the Mass",
+            resumeCelebrationTitle: "Easter Sunday",
+            resumeDateText: "Sunday, April 5, 2026",
+            resumeMassFormTitle: "Low Mass"
+        )
+
+        store.saveSnapshot(snapshot)
+        #expect(store.loadSnapshot() == snapshot)
+
+        store.clearSnapshot()
+        #expect(store.loadSnapshot() == nil)
+        defaults.removePersistentDomain(forName: suiteName)
+    }
 }
 
 private func bundledSearch(

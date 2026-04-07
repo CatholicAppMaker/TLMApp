@@ -10,6 +10,7 @@ final class AppModel {
     private let progressStore: any MassModeProgressStore
     private let massFormStore: any MassFormStore
     private let appearanceStore: any AppAppearanceStore
+    private let widgetStateStore: any WidgetStateStore
     let calendar: Calendar
     let now: () -> Date
 
@@ -43,6 +44,7 @@ final class AppModel {
         progressStore: any MassModeProgressStore,
         massFormStore: any MassFormStore,
         appearanceStore: any AppAppearanceStore = UserDefaultsAppAppearanceStore(),
+        widgetStateStore: any WidgetStateStore = NoopWidgetStateStore(),
         now: @escaping () -> Date = Date.init,
         calendar: Calendar = .current
     ) {
@@ -52,6 +54,7 @@ final class AppModel {
         self.progressStore = progressStore
         self.massFormStore = massFormStore
         self.appearanceStore = appearanceStore
+        self.widgetStateStore = widgetStateStore
         self.now = now
         self.calendar = calendar
         selectedDate = calendar.startOfDay(for: now())
@@ -81,6 +84,7 @@ extension AppModel {
             selectedMassForm = massFormStore.loadMassForm()
             selectedAppearance = appearanceStore.loadAppearance()
             errorMessage = nil
+            syncWidgetState()
         } catch {
             coverageWindow = nil
             ordinaryParts = []
@@ -92,6 +96,7 @@ extension AppModel {
             chantGuides = []
             sources = []
             errorMessage = error.localizedDescription
+            widgetStateStore.clearSnapshot()
         }
     }
 }
@@ -99,6 +104,7 @@ extension AppModel {
 extension AppModel {
     func selectDate(_ date: Date) {
         selectedDate = calendar.startOfDay(for: date)
+        syncWidgetState()
     }
 
     func search(query: String, scope: LibraryScope) -> LibrarySearchResults {
@@ -127,6 +133,7 @@ extension AppModel {
         }
 
         bookmarkStore.saveBookmarks(bookmarks)
+        syncWidgetState()
     }
 
     func part(withID id: String?) -> ResolvedMassPart? {
@@ -173,6 +180,7 @@ extension AppModel {
         massFormStore.saveMassForm(savedProgressContext.progress.massForm)
         pendingGuideSectionID = savedProgressContext.progress.sectionID
         guideSelectionToken = UUID()
+        syncWidgetState()
     }
 
     func consumePendingGuideSectionID() -> String? {
@@ -190,6 +198,7 @@ extension AppModel {
         )
         self.progress = progress
         progressStore.saveProgress(progress)
+        syncWidgetState()
     }
 
     func openGuideSection(_ sectionID: String) {
@@ -354,6 +363,7 @@ extension AppModel {
 
         selectedMassForm = massForm
         massFormStore.saveMassForm(massForm)
+        syncWidgetState()
     }
 
     func selectAppearance(_ appearance: AppAppearance) {
@@ -406,5 +416,17 @@ extension AppModel {
         savedProgressContext.progress.sectionID == sectionID
             && savedProgressContext.progress.dateKey == dateKey
             && savedProgressContext.progress.massForm == massForm
+    }
+
+    private func syncWidgetState() {
+        let snapshot = WidgetStateSnapshot(
+            bookmarkCount: bookmarks.count,
+            bookmarkTitles: Array(bookmarkedParts.prefix(3).map(\.title)),
+            resumePartTitle: resumePreview?.partTitle,
+            resumeCelebrationTitle: resumePreview?.celebrationTitle,
+            resumeDateText: resumePreview?.dateText,
+            resumeMassFormTitle: resumePreview?.massFormTitle
+        )
+        widgetStateStore.saveSnapshot(snapshot)
     }
 }

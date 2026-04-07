@@ -8,6 +8,7 @@ struct LatinMassCompanionApp: App {
     init() {
         let processInfo = ProcessInfo.processInfo
         let defaults = UserDefaults.standard
+        let widgetStateStore = AppGroupWidgetStateStore()
 
         if processInfo.arguments.contains("-reset-bookmarks")
             || processInfo.arguments.contains("-reset-app-state")
@@ -17,6 +18,7 @@ struct LatinMassCompanionApp: App {
             defaults.removeObject(forKey: UserDefaultsMassFormStore.defaultKey)
             defaults.removeObject(forKey: UserDefaultsAppAppearanceStore.defaultKey)
             defaults.removeObject(forKey: "latin.mass.guide.utility.dismissed")
+            widgetStateStore.clearSnapshot()
         }
 
         if let seedIndex = processInfo.arguments.firstIndex(of: "-seed-bookmark"),
@@ -39,6 +41,7 @@ struct LatinMassCompanionApp: App {
                 progressStore: progressStore,
                 massFormStore: massFormStore,
                 appearanceStore: appearanceStore,
+                widgetStateStore: widgetStateStore,
                 now: nowProvider
             )
         )

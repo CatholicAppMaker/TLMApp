@@ -111,6 +111,26 @@ final class SpyAppAppearanceStore: AppAppearanceStore {
     }
 }
 
+final class SpyWidgetStateStore: WidgetStateStore {
+    private(set) var snapshot: WidgetStateSnapshot?
+    private(set) var saveCalls: [WidgetStateSnapshot] = []
+    private(set) var clearCallCount = 0
+
+    func loadSnapshot() -> WidgetStateSnapshot? {
+        snapshot
+    }
+
+    func saveSnapshot(_ snapshot: WidgetStateSnapshot) {
+        self.snapshot = snapshot
+        saveCalls.append(snapshot)
+    }
+
+    func clearSnapshot() {
+        snapshot = nil
+        clearCallCount += 1
+    }
+}
+
 actor SpySupportTipStorefront: SupportTipStorefront {
     var nextProducts: [SupportTipProduct] = []
     var nextPurchaseOutcome: SupportTipPurchaseOutcome = .success
@@ -187,6 +207,7 @@ extension AppModel {
         bookmarkStore: any BookmarkStore,
         progressStore: any MassModeProgressStore,
         appearanceStore: any AppAppearanceStore = SpyAppAppearanceStore(),
+        widgetStateStore: any WidgetStateStore = NoopWidgetStateStore(),
         now: @escaping () -> Date = Date.init
     ) {
         self.init(
@@ -196,6 +217,7 @@ extension AppModel {
             progressStore: progressStore,
             massFormStore: SpyMassFormStore(),
             appearanceStore: appearanceStore,
+            widgetStateStore: widgetStateStore,
             now: now
         )
     }

@@ -233,6 +233,47 @@ struct AppModelWorkflowTests {
         #expect(model.consumePendingGuideSectionID() == nil)
     }
 
+    @MainActor
+    @Test
+    func bookmarkingAndProgressSyncSharedWidgetSnapshot() throws {
+        let intro = TestFixtures.makePart(
+            id: "intro",
+            order: 1,
+            phase: .preparation,
+            title: "Prayers at the Foot of the Altar"
+        )
+        let canon = TestFixtures.makePart(
+            id: "canon",
+            order: 2,
+            phase: .canon,
+            title: "Canon of the Mass"
+        )
+        let widgetStateStore = SpyWidgetStateStore()
+        let model = AppModel(
+            repository: StubMassContentRepository {
+                TestFixtures.makeCatalog(parts: [intro, canon])
+            },
+            searchService: SpySearchService(),
+            bookmarkStore: SpyBookmarkStore(),
+            progressStore: SpyMassModeProgressStore(),
+            widgetStateStore: widgetStateStore,
+            now: { TestFixtures.date("2026-04-05") }
+        )
+
+        let canonPart = try #require(model.part(withID: "canon"))
+
+        model.toggleBookmark(for: canonPart)
+        model.recordMassProgress(for: canonPart)
+
+        let snapshot = try #require(widgetStateStore.snapshot)
+        #expect(snapshot.bookmarkCount == 1)
+        #expect(snapshot.bookmarkTitles == ["Canon of the Mass"])
+        #expect(snapshot.resumePartTitle == "Canon of the Mass")
+        #expect(snapshot.resumeMassFormTitle == "Low Mass")
+        #expect(snapshot.resumeDateText == "Sunday, April 5, 2026")
+        #expect(widgetStateStore.saveCalls.count >= 3)
+    }
+
 }
 
 struct AppModelCalendarWorkflowTests {

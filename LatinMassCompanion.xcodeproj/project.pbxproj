@@ -28,9 +28,11 @@
 		494C490D53C8C55563B12FEC /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FD7F1D1FA33F035EA1704AB /* CalendarView.swift */; };
 		4B82F555B22A0F19C8C78FD2 /* LatinMassCompanionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 063BECFCFAC505A5D82F2DBE /* LatinMassCompanionApp.swift */; };
 		4E879D723F402B2722146C97 /* SupportTipJar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A7D8F7D87BCA915494DAA8 /* SupportTipJar.swift */; };
+		4F3CC2C1D0194B15A6B3E2D8 /* WidgetStateStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94E668C6E4F84F5FB0979856 /* WidgetStateStore.swift */; };
 		515F9DC73356F60EEF06ECAD /* learning.json in Resources */ = {isa = PBXBuildFile; fileRef = 7406F90901481F93D27D07DA /* learning.json */; };
 		580D5C962E96B027A9F5EDD6 /* AppAppearanceStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00E6AB11EAB0817B9FA6A5 /* AppAppearanceStore.swift */; };
 		6A63E71269F5D156ACE3F2F7 /* UITestSupportHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E96A0CA333E92A8A60E24B7 /* UITestSupportHelpers.swift */; };
+		6E61F5173D2A4C39AB735BF1 /* LatinMassCompanionVisualUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D5C2C9C4E7C4A0C8E7B01FA /* LatinMassCompanionVisualUITests.swift */; };
 		6B27CC19F808820DDFD976EF /* ordinary_parts.json in Resources */ = {isa = PBXBuildFile; fileRef = 663F4109AF5923D456E70FEA /* ordinary_parts.json */; };
 		7098145A331D04AE3BB9DBD7 /* MassContentRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D535384164BEC883FB56E13 /* MassContentRepository.swift */; };
 		718E29CC8472286BAD5C6945 /* TestFixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FB8341833A77135B4C11AB /* TestFixtures.swift */; };
@@ -53,9 +55,11 @@
 		C009AE6311A3A027273DDF75 /* AppRouteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B1A45C51814B97C32A8A85 /* AppRouteTests.swift */; };
 		C038F8D0F43592790C181A10 /* LibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D4D2AAD25599AE0BFFB03DB /* LibraryView.swift */; };
 		C1775CABFB21CA3D194FD23D /* LatinMassCompanionWidgetsBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6046DA341452EA5F4EDFB7D0 /* LatinMassCompanionWidgetsBundle.swift */; };
+		C218C7547D9D426DBB743B0C /* WidgetSharedState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4976F21969541CDA2CF8F42 /* WidgetSharedState.swift */; };
 		C7EA1A28EF94A51800970E2B /* ordinary_parts.json in Resources */ = {isa = PBXBuildFile; fileRef = 663F4109AF5923D456E70FEA /* ordinary_parts.json */; };
 		CC40F71AAAC88237C3504EDF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 106F141329708AC8836CB587 /* Assets.xcassets */; };
 		CD0DD2A7884BAD54A35D5669 /* PrayerbookChrome.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D0BF0E9285B70CAD5059C7 /* PrayerbookChrome.swift */; };
+		CE4D34E360E84DA3A01D8B1E /* PrayerbookMotifs.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0A2A07D855D489195F6B40E /* PrayerbookMotifs.swift */; };
 		CD12988C92094BB943519E71 /* SourcesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F63B69F90E842BE24F249EFE /* SourcesView.swift */; };
 		CD50DA88347B2D5E9B0C878F /* IPadRootShell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1638092EB2BAA6495A1F92F1 /* IPadRootShell.swift */; };
 		CF393A723F219369187A852B /* BookmarkStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1CE4765B260EABAAA9A0CA6 /* BookmarkStore.swift */; };
@@ -145,6 +149,7 @@
 		61163B67EF501159840928B0 /* LatinMassCompanionWidgets.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = LatinMassCompanionWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		663F4109AF5923D456E70FEA /* ordinary_parts.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ordinary_parts.json; sourceTree = "<group>"; };
 		69BA6CB934A9E76C7621598F /* LatinMassCompanionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatinMassCompanionTests.swift; sourceTree = "<group>"; };
+		6D5C2C9C4E7C4A0C8E7B01FA /* LatinMassCompanionVisualUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatinMassCompanionVisualUITests.swift; sourceTree = "<group>"; };
 		6E96A0CA333E92A8A60E24B7 /* UITestSupportHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITestSupportHelpers.swift; sourceTree = "<group>"; };
 		70B1A45C51814B97C32A8A85 /* AppRouteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRouteTests.swift; sourceTree = "<group>"; };
 		7406F90901481F93D27D07DA /* learning.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = learning.json; sourceTree = "<group>"; };
@@ -152,6 +157,7 @@
 		819BFDA4451790F3FD373F73 /* sources.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = sources.json; sourceTree = "<group>"; };
 		8217AE3BCB7A9F4947D0313F /* LearningModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearningModels.swift; sourceTree = "<group>"; };
 		8EE25CE94D22A8D5125B3E93 /* LearnSupportComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearnSupportComponents.swift; sourceTree = "<group>"; };
+		94E668C6E4F84F5FB0979856 /* WidgetStateStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetStateStore.swift; sourceTree = "<group>"; };
 		9F59BE6F180AA5E262FB41A6 /* GuideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuideView.swift; sourceTree = "<group>"; };
 		A0FB8341833A77135B4C11AB /* TestFixtures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestFixtures.swift; sourceTree = "<group>"; };
 		A2493714425AECD214AF30C7 /* MassPartDetailComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MassPartDetailComponents.swift; sourceTree = "<group>"; };
@@ -161,6 +167,7 @@
 		AA00E6AB11EAB0817B9FA6A5 /* AppAppearanceStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAppearanceStore.swift; sourceTree = "<group>"; };
 		B0B3013FC026B49298DF0357 /* invalid_mass_library.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = invalid_mass_library.json; sourceTree = "<group>"; };
 		B7343033CAD68BFE5E8EDE06 /* LatinMassCompanionFlowUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatinMassCompanionFlowUITests.swift; sourceTree = "<group>"; };
+		B4976F21969541CDA2CF8F42 /* WidgetSharedState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetSharedState.swift; sourceTree = "<group>"; };
 		BC83773EAB733F7D68B3EEC3 /* SupportTipJarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportTipJarTests.swift; sourceTree = "<group>"; };
 		C08A22F568BF981B43E4E49C /* LatinMassCompanionTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = LatinMassCompanionTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C358BF61DA269E446F027C6E /* base.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = base.json; sourceTree = "<group>"; };
@@ -169,6 +176,7 @@
 		D8458B16C3DCF4E31DDB4D52 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DAE4A6F6A3FA0283A6246D1F /* mass_library.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = mass_library.json; sourceTree = "<group>"; };
 		DC4265A8F753F0E4CFB9D970 /* AppModelBehaviorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModelBehaviorTests.swift; sourceTree = "<group>"; };
+		E0A2A07D855D489195F6B40E /* PrayerbookMotifs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrayerbookMotifs.swift; sourceTree = "<group>"; };
 		E0BA31A6615FE3F58C877FF3 /* AppModelSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModelSupport.swift; sourceTree = "<group>"; };
 		ED06A214B2C57B89D0AE4AFB /* LearnView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearnView.swift; sourceTree = "<group>"; };
 		F1CE4765B260EABAAA9A0CA6 /* BookmarkStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkStore.swift; sourceTree = "<group>"; };
@@ -318,6 +326,7 @@
 				5C0A9D4666779B605330AF15 /* MassModeProgressStore.swift */,
 				A60C37073FC49FF400C422B6 /* SearchService.swift */,
 				A3A7D8F7D87BCA915494DAA8 /* SupportTipJar.swift */,
+				94E668C6E4F84F5FB0979856 /* WidgetStateStore.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -348,6 +357,7 @@
 			children = (
 				B7343033CAD68BFE5E8EDE06 /* LatinMassCompanionFlowUITests.swift */,
 				1AD9B1B84866102C7E0AAD86 /* LatinMassCompanionUITests.swift */,
+				6D5C2C9C4E7C4A0C8E7B01FA /* LatinMassCompanionVisualUITests.swift */,
 				6E96A0CA333E92A8A60E24B7 /* UITestSupportHelpers.swift */,
 				2BA3F802E2D94E3A64DE2BE8 /* UITestTargetAppIntentsLink.swift */,
 			);
@@ -393,6 +403,7 @@
 				244F54B2BC1A6A2AE0BD0A7D /* AppTheme.swift */,
 				1638092EB2BAA6495A1F92F1 /* IPadRootShell.swift */,
 				48D0BF0E9285B70CAD5059C7 /* PrayerbookChrome.swift */,
+				E0A2A07D855D489195F6B40E /* PrayerbookMotifs.swift */,
 				C7E99583743DCB00E26C2FE0 /* RootTabView.swift */,
 			);
 			path = Shared;
@@ -402,6 +413,7 @@
 			isa = PBXGroup;
 			children = (
 				6046DA341452EA5F4EDFB7D0 /* LatinMassCompanionWidgetsBundle.swift */,
+				B4976F21969541CDA2CF8F42 /* WidgetSharedState.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -623,6 +635,7 @@
 			files = (
 				0F1469244984F7BD1DA4D4F8 /* LatinMassCompanionFlowUITests.swift in Sources */,
 				8971B6834A10BF5DB893D31B /* LatinMassCompanionUITests.swift in Sources */,
+				6E61F5173D2A4C39AB735BF1 /* LatinMassCompanionVisualUITests.swift in Sources */,
 				6A63E71269F5D156ACE3F2F7 /* UITestSupportHelpers.swift in Sources */,
 				773FE255169885984F2EFDAE /* UITestTargetAppIntentsLink.swift in Sources */,
 			);
@@ -633,6 +646,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C1775CABFB21CA3D194FD23D /* LatinMassCompanionWidgetsBundle.swift in Sources */,
+				C218C7547D9D426DBB743B0C /* WidgetSharedState.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -648,6 +662,8 @@
 				1AED553E19B3C8D135851638 /* AppTheme.swift in Sources */,
 				CF393A723F219369187A852B /* BookmarkStore.swift in Sources */,
 				494C490D53C8C55563B12FEC /* CalendarView.swift in Sources */,
+				4F3CC2C1D0194B15A6B3E2D8 /* WidgetStateStore.swift in Sources */,
+				CE4D34E360E84DA3A01D8B1E /* PrayerbookMotifs.swift in Sources */,
 				9FC44E19A9FD639B19332DE0 /* CatalogMetadata.swift in Sources */,
 				D5547BB0B7ECD31E45FC3536 /* GuideSupportComponents.swift in Sources */,
 				18B17E819428C2ECEFFFD27D /* GuideView.swift in Sources */,
@@ -843,6 +859,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = LatinMassCompanion/Support/LatinMassCompanion.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5;
@@ -867,6 +884,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = LatinMassCompanion/Support/LatinMassCompanion.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5;
@@ -909,6 +927,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = LatinMassCompanionWidgets/LatinMassCompanionWidgets.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = 22L6MB4Z6V;
@@ -950,6 +969,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = LatinMassCompanionWidgets/LatinMassCompanionWidgets.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = 22L6MB4Z6V;

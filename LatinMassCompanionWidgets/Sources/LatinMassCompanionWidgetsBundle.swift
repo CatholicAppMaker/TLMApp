@@ -19,6 +19,7 @@ private struct TodayCelebrationEntry: TimelineEntry {
 
 private struct ActionEntry: TimelineEntry {
     let date: Date
+    let snapshot: WidgetSharedSnapshot
 }
 
 private struct TodayCelebrationProvider: TimelineProvider {
@@ -55,15 +56,20 @@ private struct TodayCelebrationProvider: TimelineProvider {
 
 private struct ActionProvider: TimelineProvider {
     func placeholder(in context: Context) -> ActionEntry {
-        ActionEntry(date: .now)
+        ActionEntry(date: .now, snapshot: .empty)
     }
 
     func getSnapshot(in context: Context, completion: @escaping (ActionEntry) -> Void) {
-        completion(ActionEntry(date: .now))
+        completion(ActionEntry(date: .now, snapshot: WidgetSharedStateLoader().loadSnapshot()))
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<ActionEntry>) -> Void) {
-        completion(Timeline(entries: [ActionEntry(date: .now)], policy: .never))
+        completion(
+            Timeline(
+                entries: [ActionEntry(date: .now, snapshot: WidgetSharedStateLoader().loadSnapshot())],
+                policy: .never
+            )
+        )
     }
 }
 
@@ -110,14 +116,38 @@ private struct ResumeGuideWidget: Widget {
     let kind = "LatinMassCompanion.ResumeGuide"
 
     var body: some WidgetConfiguration {
-        StaticConfiguration(kind: kind, provider: ActionProvider()) { _ in
+        StaticConfiguration(kind: kind, provider: ActionProvider()) { entry in
             VStack(alignment: .leading, spacing: 10) {
                 Label("Resume Guide", systemImage: "arrow.clockwise")
                     .font(.headline)
-                Text("Return to your last saved section without hunting through the full guide.")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-                    .lineLimit(3)
+
+                if let resumePartTitle = entry.snapshot.resumePartTitle {
+                    Text(resumePartTitle)
+                        .font(.system(.headline, design: .serif))
+                        .foregroundStyle(.primary)
+                        .lineLimit(2)
+
+                    if let celebrationTitle = entry.snapshot.resumeCelebrationTitle {
+                        Text(celebrationTitle)
+                            .font(.subheadline.weight(.semibold))
+                            .foregroundStyle(.secondary)
+                            .lineLimit(2)
+                    }
+
+                    if let resumeDateText = entry.snapshot.resumeDateText,
+                       let resumeMassFormTitle = entry.snapshot.resumeMassFormTitle
+                    {
+                        Text("\(resumeDateText) • \(resumeMassFormTitle)")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                            .lineLimit(2)
+                    }
+                } else {
+                    Text("Return to your last saved section without hunting through the full guide.")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(3)
+                }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
             .padding()
@@ -134,14 +164,30 @@ private struct SavedSectionsWidget: Widget {
     let kind = "LatinMassCompanion.SavedSections"
 
     var body: some WidgetConfiguration {
-        StaticConfiguration(kind: kind, provider: ActionProvider()) { _ in
+        StaticConfiguration(kind: kind, provider: ActionProvider()) { entry in
             VStack(alignment: .leading, spacing: 10) {
                 Label("Bookmarks", systemImage: "bookmark")
                     .font(.headline)
-                Text("Jump straight into your bookmarked sections when you need a quicker working library.")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-                    .lineLimit(4)
+
+                if entry.snapshot.bookmarkCount > 0 {
+                    Text(entry.snapshot.bookmarkCount == 1 ? "1 saved section" : "\(entry.snapshot.bookmarkCount) saved sections")
+                        .font(.system(.headline, design: .serif))
+                        .foregroundStyle(.primary)
+
+                    Text(entry.snapshot.bookmarkTitles.joined(separator: " • "))
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(4)
+                } else {
+                    Text("No bookmarks yet")
+                        .font(.system(.headline, design: .serif))
+                        .foregroundStyle(.primary)
+
+                    Text("Bookmark sections in Guide, then return here for a quicker working library.")
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(4)
+                }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
             .padding()
